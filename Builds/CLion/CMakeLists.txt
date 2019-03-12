@@ -17,7 +17,8 @@ project ("PlayingSoundFilesTutorial" C CXX)
 
 add_executable (APP
     "../../Source/Main.cpp"
-        "../../../../../../JUCE/modules/juce_audio_basics/audio_play_head/juce_AudioPlayHead.h"
+    "../../Source/MainComponent.h"
+    "../../../../../../JUCE/modules/juce_audio_basics/audio_play_head/juce_AudioPlayHead.h"
     "../../../../../../JUCE/modules/juce_audio_basics/buffers/juce_AudioChannelSet.cpp"
     "../../../../../../JUCE/modules/juce_audio_basics/buffers/juce_AudioChannelSet.h"
     "../../../../../../JUCE/modules/juce_audio_basics/buffers/juce_AudioDataConverters.cpp"
@@ -1285,7 +1286,7 @@ add_executable (APP
     "../../JuceLibraryCode/JuceHeader.h"
 )
 
-set_source_files_properties ("../../Source/PlayingSoundFilesTutorial_01.h" PROPERTIES HEADER_FILE_ONLY TRUE)
+set_source_files_properties ("../../Source/MainComponent.h" PROPERTIES HEADER_FILE_ONLY TRUE)
 set_source_files_properties ("../../../../../../JUCE/modules/juce_audio_basics/audio_play_head/juce_AudioPlayHead.h" PROPERTIES HEADER_FILE_ONLY TRUE)
 set_source_files_properties ("../../../../../../JUCE/modules/juce_audio_basics/buffers/juce_AudioChannelSet.cpp" PROPERTIES HEADER_FILE_ONLY TRUE)
 set_source_files_properties ("../../../../../../JUCE/modules/juce_audio_basics/buffers/juce_AudioChannelSet.h" PROPERTIES HEADER_FILE_ONLY TRUE)
@@ -2587,13 +2588,13 @@ set_target_properties (APP PROPERTIES
     XCODE_ATTRIBUTE_COPY_PHASE_STRIP NO
     XCODE_ATTRIBUTE_GCC_DYNAMIC_NO_PIC NO
     XCODE_ATTRIBUTE_GCC_VERSION com.apple.compilers.llvm.clang.1_0
-    XCODE_ATTRIBUTE_INFOPLIST_FILE "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/Debug-Info-App.plist"
+    XCODE_ATTRIBUTE_INFOPLIST_FILE "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/Debug-Info-App.plist"
     XCODE_ATTRIBUTE_INFOPLIST_PREPROCESS NO
     XCODE_ATTRIBUTE_INSTALL_PATH "$(HOME)/Applications"
     XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER com.JUCE.PlayingSoundFilesTutorial
     XCODE_ATTRIBUTE_PRODUCT_NAME "PlayingSoundFilesTutorial"
     XCODE_ATTRIBUTE_USE_HEADERMAP NO
-    MACOSX_BUNDLE_INFO_PLIST "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/Debug-Info-App.plist"
+    MACOSX_BUNDLE_INFO_PLIST "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/Debug-Info-App.plist"
     XCODE_ATTRIBUTE_PRODUCT_NAME "PlayingSoundFilesTutorial"
     MACOSX_BUNDLE TRUE
 )
@@ -2663,13 +2664,13 @@ set_target_properties (APP PROPERTIES
     XCODE_ATTRIBUTE_GCC_GENERATE_DEBUGGING_SYMBOLS NO
     XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN YES
     XCODE_ATTRIBUTE_GCC_VERSION com.apple.compilers.llvm.clang.1_0
-    XCODE_ATTRIBUTE_INFOPLIST_FILE "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/Release-Info-App.plist"
+    XCODE_ATTRIBUTE_INFOPLIST_FILE "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/Release-Info-App.plist"
     XCODE_ATTRIBUTE_INFOPLIST_PREPROCESS NO
     XCODE_ATTRIBUTE_INSTALL_PATH "$(HOME)/Applications"
     XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER com.JUCE.PlayingSoundFilesTutorial
     XCODE_ATTRIBUTE_PRODUCT_NAME "PlayingSoundFilesTutorial"
     XCODE_ATTRIBUTE_USE_HEADERMAP NO
-    MACOSX_BUNDLE_INFO_PLIST "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/Release-Info-App.plist"
+    MACOSX_BUNDLE_INFO_PLIST "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/Release-Info-App.plist"
     XCODE_ATTRIBUTE_PRODUCT_NAME "PlayingSoundFilesTutorial"
     MACOSX_BUNDLE TRUE
 )
@@ -2714,7 +2715,8 @@ pkg_search_module (LIBCURL REQUIRED libcurl)
 
 add_executable (APP
     "../../Source/Main.cpp"
-        "../../../../../../../JUCE/modules/juce_audio_basics/audio_play_head/juce_AudioPlayHead.h"
+    "../../Source/MainComponent.h"
+    "../../../../../../../JUCE/modules/juce_audio_basics/audio_play_head/juce_AudioPlayHead.h"
     "../../../../../../../JUCE/modules/juce_audio_basics/buffers/juce_AudioChannelSet.cpp"
     "../../../../../../../JUCE/modules/juce_audio_basics/buffers/juce_AudioChannelSet.h"
     "../../../../../../../JUCE/modules/juce_audio_basics/buffers/juce_AudioDataConverters.cpp"
@@ -3982,7 +3984,7 @@ add_executable (APP
     "../../JuceLibraryCode/JuceHeader.h"
 )
 
-set_source_files_properties ("../../Source/PlayingSoundFilesTutorial_01.h" PROPERTIES HEADER_FILE_ONLY TRUE)
+set_source_files_properties ("../../Source/MainComponent.h" PROPERTIES HEADER_FILE_ONLY TRUE)
 set_source_files_properties ("../../../../../../../JUCE/modules/juce_audio_basics/audio_play_head/juce_AudioPlayHead.h" PROPERTIES HEADER_FILE_ONLY TRUE)
 set_source_files_properties ("../../../../../../../JUCE/modules/juce_audio_basics/buffers/juce_AudioChannelSet.cpp" PROPERTIES HEADER_FILE_ONLY TRUE)
 set_source_files_properties ("../../../../../../../JUCE/modules/juce_audio_basics/buffers/juce_AudioChannelSet.h" PROPERTIES HEADER_FILE_ONLY TRUE)

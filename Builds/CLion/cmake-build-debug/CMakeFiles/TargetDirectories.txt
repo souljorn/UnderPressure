@@ -1,3 +1,3 @@
-/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/CMakeFiles/APP.dir
+/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles/APP.dir

@@ -290,6 +290,13 @@
 			path = "../../JuceLibraryCode/include_juce_audio_formats.mm";
 			sourceTree = "SOURCE_ROOT";
 		};
+		BCC7C1095A76AD0390D20685 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = MainComponent.h;
+			path = ../../Source/MainComponent.h;
+			sourceTree = "SOURCE_ROOT";
+		};
 		C2514A81B1D049ACCEF62FDA = {
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
@@ -332,13 +339,6 @@
 			path = System/Library/Frameworks/CoreMIDI.framework;
 			sourceTree = SDKROOT;
 		};
-		D5C816B9BEC2A38EC22603CE = {
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
-			name = "PlayingSoundFilesTutorial_01.h";
-			path = "../../Source/PlayingSoundFilesTutorial_01.h";
-			sourceTree = "SOURCE_ROOT";
-		};
 		E34AA37819E778890B7A61F4 = {
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.cpp.objcpp;
@@ -378,7 +378,6 @@
 			isa = PBXGroup;
 			children = (
 				4312D19D8BC890B959AD969E,
-				D5C816B9BEC2A38EC22603CE,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -387,6 +386,7 @@
 			isa = PBXGroup;
 			children = (
 				314D42DD5BF22A1656AC05C3,
+				BCC7C1095A76AD0390D20685,
 			);
 			name = PlayingSoundFilesTutorial;
 			sourceTree = "<group>";

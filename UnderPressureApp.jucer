@@ -6,9 +6,8 @@
   <MAINGROUP id="m0jG4B" name="PlayingSoundFilesTutorial">
     <GROUP id="{1B893438-7E76-94E1-12C1-EA67550B8B39}" name="Source">
       <FILE id="FqYlXI" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
-      <FILE id="HJFcox" name="PlayingSoundFilesTutorial_01.h" compile="0"
-            resource="0" file="Source/PlayingSoundFilesTutorial_01.h"/>
     </GROUP>
+    <FILE id="iWiHG6" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
   </MAINGROUP>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>

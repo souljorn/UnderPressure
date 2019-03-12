@@ -2211,8 +2211,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\PlayingSoundFilesTutorial_01.h">
-      <Filter>PlayingSoundFilesTutorial\Source</Filter>
+    <ClInclude Include="..\..\Source\MainComponent.h">
+      <Filter>PlayingSoundFilesTutorial</Filter>
     </ClInclude>
     <ClInclude Include="C:\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">
       <Filter>JUCE Modules\juce_audio_basics\audio_play_head</Filter>

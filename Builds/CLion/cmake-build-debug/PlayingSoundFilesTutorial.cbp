@@ -8,38 +8,38 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug"/>
+				<Option working_dir="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug"/>
+				<Option working_dir="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug"/>
+				<Option working_dir="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="APP">
-				<Option output="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/PlayingSoundFilesTutorial.app/Contents/MacOS/PlayingSoundFilesTutorial" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug"/>
+				<Option output="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/PlayingSoundFilesTutorial.app/Contents/MacOS/PlayingSoundFilesTutorial" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="0"/>
 				<Option compiler="gcc"/>
@@ -57,7 +57,7 @@
 					<Add option="-DJucePlugin_Build_AAX=0"/>
 					<Add option="-DJucePlugin_Build_Standalone=0"/>
 					<Add option="-DJucePlugin_Build_Unity=0"/>
-					<Add directory="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/../../JuceLibraryCode"/>
+					<Add directory="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/../../JuceLibraryCode"/>
 					<Add directory="/Users/timothybotelho/Desktop/JUCE/modules"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
@@ -67,15 +67,15 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 APP"/>
-					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 APP"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="APP/fast">
-				<Option output="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/PlayingSoundFilesTutorial.app/Contents/MacOS/PlayingSoundFilesTutorial" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug"/>
+				<Option output="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/PlayingSoundFilesTutorial.app/Contents/MacOS/PlayingSoundFilesTutorial" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="0"/>
 				<Option compiler="gcc"/>
@@ -93,7 +93,7 @@
 					<Add option="-DJucePlugin_Build_AAX=0"/>
 					<Add option="-DJucePlugin_Build_Standalone=0"/>
 					<Add option="-DJucePlugin_Build_Unity=0"/>
-					<Add directory="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/../../JuceLibraryCode"/>
+					<Add directory="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/../../JuceLibraryCode"/>
 					<Add directory="/Users/timothybotelho/Desktop/JUCE/modules"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
@@ -103,53 +103,56 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 APP/fast"/>
-					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 APP/fast"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/AppConfig.h">
+		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/AppConfig.h">
 			<Option target="APP"/>
 		</Unit>
-		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/JuceHeader.h">
+		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/JuceHeader.h">
 			<Option target="APP"/>
 		</Unit>
-		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.mm">
+		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.mm">
 			<Option target="APP"/>
 		</Unit>
-		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.mm">
+		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.mm">
 			<Option target="APP"/>
 		</Unit>
-		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.mm">
+		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.mm">
 			<Option target="APP"/>
 		</Unit>
-		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.mm">
+		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.mm">
 			<Option target="APP"/>
 		</Unit>
-		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.mm">
+		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.mm">
 			<Option target="APP"/>
 		</Unit>
-		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.mm">
+		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.mm">
 			<Option target="APP"/>
 		</Unit>
-		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.mm">
+		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm">
 			<Option target="APP"/>
 		</Unit>
-		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.mm">
+		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm">
 			<Option target="APP"/>
 		</Unit>
-		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.mm">
+		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm">
 			<Option target="APP"/>
 		</Unit>
-		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.mm">
+		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm">
 			<Option target="APP"/>
 		</Unit>
-		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.mm">
+		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm">
 			<Option target="APP"/>
 		</Unit>
-		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.cpp">
+		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.cpp">
+			<Option target="APP"/>
+		</Unit>
+		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/MainComponent.h">
 			<Option target="APP"/>
 		</Unit>
 		<Unit filename="/Users/timothybotelho/Desktop/JUCE/modules/juce_audio_basics/audio_play_head/juce_AudioPlayHead.h">
@@ -3911,10 +3914,10 @@
 		<Unit filename="/Users/timothybotelho/Desktop/JUCE/modules/juce_gui_extra/native/juce_win32_WebBrowserComponent.cpp">
 			<Option target="APP"/>
 		</Unit>
-		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/CMakeLists.txt">
+		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
-		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/Debug-Info-App.plist">
+		<Unit filename="/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/Debug-Info-App.plist">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>

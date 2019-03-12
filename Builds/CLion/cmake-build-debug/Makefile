@@ -48,10 +48,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion
+CMAKE_SOURCE_DIR = /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/CMakeFiles /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Builds/CLion/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -123,329 +123,329 @@ APP/fast:
 	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/build
 .PHONY : APP/fast
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.mm.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.mm.o
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.o
-
-# target to build an object file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.mm.o:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.mm.o
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.mm.o
-
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.mm.i
-
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.i
-
-# target to preprocess a source file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.mm.i:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.mm.i
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.mm.i
-
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.mm.s
-
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.s
-
-# target to generate assembly for a file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.mm.s:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.mm.s
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.mm.s
-
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.mm.o
-
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.o
 
 # target to build an object file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.mm.o:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.mm.o
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.mm.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.mm.o:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.mm.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.mm.o
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.mm.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.mm.i
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.i
 
 # target to preprocess a source file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.mm.i:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.mm.i
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.mm.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.mm.i:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.mm.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.mm.i
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.mm.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.mm.s
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.s
 
 # target to generate assembly for a file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.mm.s:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.mm.s
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.mm.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.mm.s:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.mm.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.mm.s
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.mm.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.mm.o
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.o
 
 # target to build an object file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.mm.o:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.mm.o
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.mm.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.mm.o:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.mm.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.mm.o
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.mm.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.mm.i
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.i
 
 # target to preprocess a source file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.mm.i:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.mm.i
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.mm.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.mm.i:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.mm.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.mm.i
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.mm.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.mm.s
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.s
 
 # target to generate assembly for a file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.mm.s:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.mm.s
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.mm.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.mm.s:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.mm.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.mm.s
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.mm.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.mm.o
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.o
 
 # target to build an object file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.mm.o:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.mm.o
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.mm.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.mm.o:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.mm.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.mm.o
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.mm.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.mm.i
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.i
 
 # target to preprocess a source file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.mm.i:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.mm.i
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.mm.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.mm.i:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.mm.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.mm.i
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.mm.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.mm.s
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.s
 
 # target to generate assembly for a file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.mm.s:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.mm.s
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.mm.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.mm.s:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.mm.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.mm.s
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.mm.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.mm.o
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.o
 
 # target to build an object file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.mm.o:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.mm.o
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.mm.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.mm.o:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.mm.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.mm.o
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.mm.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.mm.i
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.i
 
 # target to preprocess a source file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.mm.i:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.mm.i
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.mm.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.mm.i:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.mm.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.mm.i
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.mm.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.mm.s
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.s
 
 # target to generate assembly for a file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.mm.s:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.mm.s
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.mm.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.mm.s:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.mm.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.mm.s
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.mm.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.mm.o
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.o
 
 # target to build an object file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.mm.o:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.mm.o
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.mm.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.mm.o:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.mm.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.mm.o
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.mm.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.mm.i
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.i
 
 # target to preprocess a source file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.mm.i:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.mm.i
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.mm.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.mm.i:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.mm.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.mm.i
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.mm.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.mm.s
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.s
 
 # target to generate assembly for a file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.mm.s:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.mm.s
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.mm.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.mm.s:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.mm.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.mm.s
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.mm.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.mm.o
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.o
 
 # target to build an object file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.mm.o:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.mm.o
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.mm.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.mm.o:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.mm.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.mm.o
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.mm.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.mm.i
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.i
 
 # target to preprocess a source file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.mm.i:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.mm.i
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.mm.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.mm.i:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.mm.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.mm.i
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.mm.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.mm.s
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.s
 
 # target to generate assembly for a file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.mm.s:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.mm.s
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.mm.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.mm.s:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.mm.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.mm.s
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.mm.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm.o
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.o
 
 # target to build an object file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.mm.o:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.mm.o
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.mm.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm.o:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm.o
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.mm.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm.i
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.i
 
 # target to preprocess a source file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.mm.i:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.mm.i
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.mm.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm.i:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm.i
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.mm.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm.s
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.s
 
 # target to generate assembly for a file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.mm.s:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.mm.s
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.mm.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm.s:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm.s
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.mm.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.o
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.o
 
 # target to build an object file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.mm.o:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.mm.o
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.mm.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.o:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.o
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.mm.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.i
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.i
 
 # target to preprocess a source file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.mm.i:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.mm.i
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.mm.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.i:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.i
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.mm.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.s
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.s
 
 # target to generate assembly for a file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.mm.s:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.mm.s
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.mm.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.s:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.s
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.mm.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.o
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.o
 
 # target to build an object file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.mm.o:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.mm.o
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.mm.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.o:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.o
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.mm.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.i
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.i
 
 # target to preprocess a source file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.mm.i:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.mm.i
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.mm.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.i:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.i
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.mm.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.s
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.s
 
 # target to generate assembly for a file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.mm.s:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.mm.s
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.mm.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.s:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.s
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.mm.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.o
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.o
 
 # target to build an object file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.mm.o:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.mm.o
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.mm.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.o:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.o
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.mm.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.i
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.i
 
 # target to preprocess a source file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.mm.i:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.mm.i
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.mm.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.i:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.i
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.mm.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.s
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.s
 
 # target to generate assembly for a file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.mm.s:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.mm.s
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.mm.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.s:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.s
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.cpp.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm.o
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.o
 
 # target to build an object file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.cpp.o:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.cpp.o
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.cpp.o
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm.o:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm.o
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.cpp.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm.i
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.i
 
 # target to preprocess a source file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.cpp.i:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.cpp.i
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.cpp.i
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm.i:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm.i
 
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.cpp.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm.s
 
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.s
 
 # target to generate assembly for a file
-Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.cpp.s:
-	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.cpp.s
-.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.cpp.s
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm.s:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm.s
+
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.cpp.o
+
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.o
+
+# target to build an object file
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.cpp.o:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.cpp.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.cpp.o
+
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.cpp.i
+
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.i
+
+# target to preprocess a source file
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.cpp.i:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.cpp.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.cpp.i
+
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.cpp.s
+
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.s
+
+# target to generate assembly for a file
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.cpp.s:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.cpp.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.cpp.s
 
 # Help Target
 help:
@@ -456,42 +456,42 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... APP"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.o"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.i"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_basics.s"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.o"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.i"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_devices.s"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.o"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.i"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_formats.s"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.o"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.i"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_processors.s"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.o"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.i"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_audio_utils.s"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.o"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.i"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_core.s"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.o"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.i"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_data_structures.s"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.o"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.i"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_events.s"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.o"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.i"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_graphics.s"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.o"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.i"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_basics.s"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.o"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.i"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/JuceLibraryCode/include_juce_gui_extra.s"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.o"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.i"
-	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/PlayingSoundFilesTutorial/Source/Main.s"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.o"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.i"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_basics.s"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.o"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.i"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_devices.s"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.o"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.i"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_formats.s"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.o"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.i"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_processors.s"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.o"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.i"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.s"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.o"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.i"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.s"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.o"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.i"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.s"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.o"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.i"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.s"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.o"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.i"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.s"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.o"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.i"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.s"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.o"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.i"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.s"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.o"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.i"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Source/Main.s"
 .PHONY : help
 
 
