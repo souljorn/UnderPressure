@@ -312,6 +312,33 @@ Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLi
 	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm.s
 .PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm.s
 
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.o
+
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.o
+
+# target to build an object file
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.o:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.o
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.o
+
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.i: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.i
+
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.i
+
+# target to preprocess a source file
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.i:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.i
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.i
+
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.s: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.s
+
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.s
+
+# target to generate assembly for a file
+Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.s:
+	$(MAKE) -f CMakeFiles/APP.dir/build.make CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.s
+.PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.s
+
 Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.o: Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.o
 
 .PHONY : Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.o
@@ -477,6 +504,9 @@ help:
 	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.o"
 	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.i"
 	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.s"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.o"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.i"
+	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.s"
 	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.o"
 	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.i"
 	@echo "... Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.s"

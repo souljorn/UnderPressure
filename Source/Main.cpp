@@ -43,6 +43,7 @@ private:
            #endif
 
             setVisible (true);
+
         }
 
         void closeButtonPressed() override

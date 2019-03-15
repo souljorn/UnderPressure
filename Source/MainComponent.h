@@ -37,9 +37,9 @@ public:
     MainContentComponent()
         :   state (Stopped)
     {
-        addAndMakeVisible (&openButton);
-        openButton.setButtonText ("Open...");
-        openButton.onClick = [this] { openButtonClicked(); };
+//        addAndMakeVisible (&openButton);
+//        openButton.setButtonText ("Open...");
+//        openButton.onClick = [this] { openButtonClicked(); };
 
         addAndMakeVisible (&playButton);
         playButton.setButtonText ("Play");
@@ -76,9 +76,13 @@ public:
 
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override
     {
+        lastSampleRate = sampleRate;
+        loadFileToTransport();
+        impulseProcessing();
         transportSource.prepareToPlay (samplesPerBlockExpected, sampleRate);
     }
 
+    //Buffer to fill is
     void getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill) override
     {
         if (readerSource.get() == nullptr)
@@ -204,6 +208,30 @@ private:
         }
     }
 
+    void loadFileToTransport(){
+        AudioFormat *audioFormat = formatManager.getDefaultFormat();
+
+        auto dir = File::getCurrentWorkingDirectory();
+        int numTries = 0;
+
+        //find the resources dir
+        while (! dir.getChildFile ("Resources").exists() && numTries++ < 15) {
+            dir = dir.getParentDirectory();
+        }
+
+        File temp = File(dir.getChildFile ("Resources").getChildFile("piano.wav"));
+        //std::unique_ptr<AudioFormatReader> reader(formatManager.createReaderFor(temp));
+        auto* reader = formatManager.createReaderFor (temp);
+
+        if (reader != nullptr)
+        {
+            std::unique_ptr<AudioFormatReaderSource> newSource (new AudioFormatReaderSource (reader, true));
+            transportSource.setSource (newSource.get(), 0, nullptr, reader->sampleRate);
+            playButton.setEnabled (true);
+            readerSource.reset (newSource.release());
+        }
+    }
+
     void playButtonClicked()
     {
         updateLoopState (loopingToggle.getToggleState());
@@ -220,6 +248,59 @@ private:
         updateLoopState (loopingToggle.getToggleState());
     }
 
+    void impulseProcessing(){
+        AudioSampleBuffer sampleBuffer;
+        int position = 0;
+        AudioFormatManager formatManager1;
+        formatManager1.registerBasicFormats();
+
+        AudioFormat *audioFormat = formatManager1.getDefaultFormat();
+
+        auto dir = File::getCurrentWorkingDirectory();
+        int numTries = 0;
+
+        //find the resources dir
+        while (! dir.getChildFile ("Resources").exists() && numTries++ < 15) {
+            dir = dir.getParentDirectory();
+        }
+
+        File temp = File(dir.getChildFile ("Resources").getChildFile("HRIR").getChildFile("0azleft.wav"));
+        std::unique_ptr<AudioFormatReader> reader(formatManager1.createReaderFor(temp));
+
+        if (reader.get() != nullptr) {
+            auto duration = reader->lengthInSamples / reader->sampleRate;
+
+            sampleBuffer.setSize(reader->numChannels, (int) reader->lengthInSamples);
+            reader->read(&sampleBuffer, 0, (int) reader->lengthInSamples, 0, true, true);
+            position = 0;
+        }
+
+        if(reader != nullptr) {
+            std::cout << "File loaded into audio buffer\n";
+            std::cout << "Audio Buffer #Samples:" << sampleBuffer.getNumSamples() << "\n";
+            std::cout << "Audio Buffer #Channels:" << sampleBuffer.getNumChannels() << "\n";
+        }
+
+        //--------------------Reshape the HRIR to the correct shape-------------------------
+        AudioSampleBuffer rightZero;
+        rightZero.setSize(1, (int)200);
+        int count = 0;
+        while(count++ < 199) {
+
+            //Reallocate the buffer to the correct shape
+            rightZero.setSample(0, count, sampleBuffer.getSample(count, 9));
+            std::cout << rightZero.getSample(0, count) << "\n";
+
+        }
+        //Create a new buffer form the data stored
+        std::cout << "New Created audio buffer of HRIR\n";
+        std::cout << "Audio Buffer #Samples:" << rightZero.getNumSamples() << "\n";
+        std::cout << "Audio Buffer #Channels:" << rightZero.getNumChannels() << "\n";
+
+//         auto& convolution = processorChain.template get<convolutionIndex>();
+//         convolution.loadImpulseResponse (dir.getChildFile ("Resources").getChildFile ("guitar_amp.wav"), true, false, 1024);
+    }
+
     //==========================================================================
     TextButton openButton;
     TextButton playButton;
@@ -227,10 +308,22 @@ private:
     ToggleButton loopingToggle;
     Label currentPositionLabel;
 
+    double lastSampleRate;
     AudioFormatManager formatManager;
     std::unique_ptr<AudioFormatReaderSource> readerSource;
     AudioTransportSource transportSource;
     TransportState state;
 
+    enum
+    {
+        convolutionIndex
+    };
+
+    //This is where the processing of the convolution will occur.
+    juce::dsp::ProcessorChain<juce::dsp::Convolution> processorChain;
+    AudioFormatManager formatManager1;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };
+
+

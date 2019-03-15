@@ -161,9 +161,22 @@ CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/Unde
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm.s"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm -o CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm.s
 
+CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.o: CMakeFiles/APP.dir/flags.make
+CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.o: /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.o -c /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm
+
+CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm > CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.i
+
+CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm -o CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.s
+
 CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.o: CMakeFiles/APP.dir/flags.make
 CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.o: /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.o -c /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm
 
 CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.i: cmake_force
@@ -176,7 +189,7 @@ CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/Unde
 
 CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.o: CMakeFiles/APP.dir/flags.make
 CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.o: /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.o -c /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm
 
 CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.i: cmake_force
@@ -189,7 +202,7 @@ CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/Unde
 
 CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.o: CMakeFiles/APP.dir/flags.make
 CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.o: /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.o -c /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm
 
 CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.i: cmake_force
@@ -202,7 +215,7 @@ CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/Unde
 
 CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm.o: CMakeFiles/APP.dir/flags.make
 CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm.o: /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm.o -c /Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm
 
 CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm.i: cmake_force
@@ -223,6 +236,7 @@ APP_OBJECTS = \
 "CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.mm.o" \
 "CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.mm.o" \
 "CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm.o" \
+"CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.o" \
 "CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.o" \
 "CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.o" \
 "CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.o" \
@@ -239,13 +253,14 @@ PlayingSoundFilesTutorial.app/Contents/MacOS/PlayingSoundFilesTutorial: CMakeFil
 PlayingSoundFilesTutorial.app/Contents/MacOS/PlayingSoundFilesTutorial: CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.mm.o
 PlayingSoundFilesTutorial.app/Contents/MacOS/PlayingSoundFilesTutorial: CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.mm.o
 PlayingSoundFilesTutorial.app/Contents/MacOS/PlayingSoundFilesTutorial: CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm.o
+PlayingSoundFilesTutorial.app/Contents/MacOS/PlayingSoundFilesTutorial: CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.o
 PlayingSoundFilesTutorial.app/Contents/MacOS/PlayingSoundFilesTutorial: CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.o
 PlayingSoundFilesTutorial.app/Contents/MacOS/PlayingSoundFilesTutorial: CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.o
 PlayingSoundFilesTutorial.app/Contents/MacOS/PlayingSoundFilesTutorial: CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.o
 PlayingSoundFilesTutorial.app/Contents/MacOS/PlayingSoundFilesTutorial: CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_extra.mm.o
 PlayingSoundFilesTutorial.app/Contents/MacOS/PlayingSoundFilesTutorial: CMakeFiles/APP.dir/build.make
 PlayingSoundFilesTutorial.app/Contents/MacOS/PlayingSoundFilesTutorial: CMakeFiles/APP.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX executable PlayingSoundFilesTutorial.app/Contents/MacOS/PlayingSoundFilesTutorial"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Linking CXX executable PlayingSoundFilesTutorial.app/Contents/MacOS/PlayingSoundFilesTutorial"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/APP.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

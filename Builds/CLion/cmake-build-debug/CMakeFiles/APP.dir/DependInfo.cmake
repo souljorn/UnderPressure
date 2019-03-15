@@ -11,6 +11,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.mm" "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_audio_utils.mm.o"
   "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.mm" "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_core.mm.o"
   "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm" "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_data_structures.mm.o"
+  "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm" "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_dsp.mm.o"
   "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm" "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_events.mm.o"
   "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm" "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_graphics.mm.o"
   "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm" "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/Builds/CLion/cmake-build-debug/CMakeFiles/APP.dir/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/UnderPressureApp/JuceLibraryCode/include_juce_gui_basics.mm.o"
@@ -39,7 +40,7 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../../../JuceLibraryCode"
-  "/Users/timothybotelho/Desktop/JUCE/modules"
+  "/Users/timothybotelho/Desktop/Code/CCodeandLibraries/Juce/JUCE/modules"
   )
 
 # Targets to which this target links.
