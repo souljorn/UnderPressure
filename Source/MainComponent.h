@@ -28,6 +28,37 @@
 
 
 #pragma once
+
+template <typename Type>
+class SoundSim{
+public:
+SoundSim(){
+
+}
+
+template<typename ProcessContext>
+//==============================================================================
+void prepare(const juce::dsp::ProcessSpec &spec) {
+    processorChain.prepare(spec);
+}
+
+//==============================================================================
+template<typename ProcessContext>
+void process(const ProcessContext &context) noexcept {
+    processorChain.process(context);
+}
+
+void reset() noexcept {
+    processorChain.reset();
+}
+private:
+    juce::dsp::ProcessorChain<juce::dsp::Convolution> processorChain;
+    enum
+    {
+        convolutionIndex
+    };
+};
+
 //==============================================================================
 class MainContentComponent   : public AudioAppComponent,
                                public ChangeListener,
@@ -37,9 +68,6 @@ public:
     MainContentComponent()
         :   state (Stopped)
     {
-//        addAndMakeVisible (&openButton);
-//        openButton.setButtonText ("Open...");
-//        openButton.onClick = [this] { openButtonClicked(); };
 
         addAndMakeVisible (&playButton);
         playButton.setButtonText ("Play");
@@ -187,27 +215,6 @@ private:
         }
     }
 
-    void openButtonClicked()
-    {
-        FileChooser chooser ("Select a Wave file to play...",
-                             {},
-                             "*.wav");
-
-        if (chooser.browseForFileToOpen())
-        {
-            auto file = chooser.getResult();
-            auto* reader = formatManager.createReaderFor (file);
-
-            if (reader != nullptr)
-            {
-                std::unique_ptr<AudioFormatReaderSource> newSource (new AudioFormatReaderSource (reader, true));
-                transportSource.setSource (newSource.get(), 0, nullptr, reader->sampleRate);
-                playButton.setEnabled (true);
-                readerSource.reset (newSource.release());
-            }
-        }
-    }
-
     void loadFileToTransport(){
         AudioFormat *audioFormat = formatManager.getDefaultFormat();
 
@@ -232,6 +239,34 @@ private:
         }
     }
 
+    void loadFileToProcess() {
+        AudioFormat *audioFormat = formatManager.getDefaultFormat();
+
+        auto dir = File::getCurrentWorkingDirectory();
+        int numTries = 0;
+
+        //find the resources dir
+        while (!dir.getChildFile("Resources").exists() && numTries++ < 15) {
+            dir = dir.getParentDirectory();
+        }
+
+        File temp = File(dir.getChildFile("Resources").getChildFile("piano.wav"));
+        //std::unique_ptr<AudioFormatReader> reader(formatManager.createReaderFor(temp));
+        auto *reader = formatManager.createReaderFor(temp);
+
+        //Read the File into Left and right buffers
+        if (reader != nullptr) {
+            auto duration = reader->lengthInSamples / reader->sampleRate;
+
+            pianoBufferL.setSize(1, (int) reader->lengthInSamples);
+            reader->read(&pianoBufferL, 0, (int) reader->lengthInSamples, 0, true, true);
+
+            pianoBufferR.setSize(1, (int) reader->lengthInSamples);
+            reader->read(&pianoBufferR, 0, (int) reader->lengthInSamples, 0, true, true);
+            }
+    }
+
+
     void playButtonClicked()
     {
         updateLoopState (loopingToggle.getToggleState());
@@ -249,6 +284,20 @@ private:
     }
 
     void impulseProcessing(){
+        loadConvolutionFiles();
+
+        //--------------------Loading Convolutions-------------------------------------------------
+        auto& convolutionL = processorChain.template get<convolutionIndex>();
+        convolutionL.copyAndLoadImpulseResponseFromBuffer(leftZero, sampleRate, false, true, false, 0);
+
+        auto& convolutionR = processorChain.template get<convolutionIndex>();
+        convolutionL.copyAndLoadImpulseResponseFromBuffer(rightZero, sampleRate, false, true, false, 0);
+
+        //Todo Process the piano sample with convolution
+
+    }
+
+    void loadConvolutionFiles(){
         AudioSampleBuffer sampleBuffer;
         int position = 0;
         AudioFormatManager formatManager1;
@@ -264,25 +313,41 @@ private:
             dir = dir.getParentDirectory();
         }
 
-        File temp = File(dir.getChildFile ("Resources").getChildFile("HRIR").getChildFile("0azleft.wav"));
-        std::unique_ptr<AudioFormatReader> reader(formatManager1.createReaderFor(temp));
+        File left0 = File(dir.getChildFile ("Resources").getChildFile("HRIR").getChildFile("0azleft.wav"));
+        File right0 = File(dir.getChildFile ("Resources").getChildFile("HRIR").getChildFile("0azright.wav"));
+        std::unique_ptr<AudioFormatReader> readerLeft(formatManager1.createReaderFor(left0));
+        std::unique_ptr<AudioFormatReader> readerRight(formatManager1.createReaderFor(left0));
 
-        if (reader.get() != nullptr) {
-            auto duration = reader->lengthInSamples / reader->sampleRate;
+        //Load Left HRIR
+        if (readerLeft.get() != nullptr) {
+            auto duration = readerLeft->lengthInSamples / readerLeft->sampleRate;
 
-            sampleBuffer.setSize(reader->numChannels, (int) reader->lengthInSamples);
-            reader->read(&sampleBuffer, 0, (int) reader->lengthInSamples, 0, true, true);
-            position = 0;
+            sampleBuffer.setSize(readerLeft->numChannels, (int) readerRight->lengthInSamples);
+            readerLeft->read(&sampleBuffer, 0, (int) readerLeft->lengthInSamples, 0, true, true);
         }
 
-        if(reader != nullptr) {
-            std::cout << "File loaded into audio buffer\n";
+        //Load Right HRIR
+        if (readerRight.get() != nullptr) {
+            auto duration = readerRight->lengthInSamples / readerRight->sampleRate;
+
+            sampleBuffer.setSize(readerRight->numChannels, (int) readerRight->lengthInSamples);
+            readerRight->read(&sampleBuffer, 0, (int) readerRight->lengthInSamples, 0, true, true);
+
+        }
+
+        if(readerRight != nullptr) {
+            std::cout << "File loaded HRIR Right into audio buffer\n";
+            std::cout << "Audio Buffer #Samples:" << sampleBuffer.getNumSamples() << "\n";
+            std::cout << "Audio Buffer #Channels:" << sampleBuffer.getNumChannels() << "\n";
+        }
+
+        if(readerLeft != nullptr) {
+            std::cout << "File loaded HRIR Right into audio buffer\n";
             std::cout << "Audio Buffer #Samples:" << sampleBuffer.getNumSamples() << "\n";
             std::cout << "Audio Buffer #Channels:" << sampleBuffer.getNumChannels() << "\n";
         }
 
         //--------------------Reshape the HRIR to the correct shape-------------------------
-        AudioSampleBuffer rightZero;
         rightZero.setSize(1, (int)200);
         int count = 0;
         while(count++ < 199) {
@@ -292,13 +357,26 @@ private:
             std::cout << rightZero.getSample(0, count) << "\n";
 
         }
+
+        leftZero.setSize(1, (int)200);
+        count = 0;
+        while(count++ < 199) {
+
+            //Reallocate the buffer to the correct shape
+            leftZero.setSample(0, count, sampleBuffer.getSample(count, 9));
+            std::cout << leftZero.getSample(0, count) << "\n";
+
+        }
+
         //Create a new buffer form the data stored
-        std::cout << "New Created audio buffer of HRIR\n";
+        std::cout << "New Created audio buffer of HRIR Right\n";
         std::cout << "Audio Buffer #Samples:" << rightZero.getNumSamples() << "\n";
         std::cout << "Audio Buffer #Channels:" << rightZero.getNumChannels() << "\n";
 
-//         auto& convolution = processorChain.template get<convolutionIndex>();
-//         convolution.loadImpulseResponse (dir.getChildFile ("Resources").getChildFile ("guitar_amp.wav"), true, false, 1024);
+        //Create a new buffer form the data stored
+        std::cout << "New Created audio buffer of HRIR Left\n";
+        std::cout << "Audio Buffer #Samples:" << leftZero.getNumSamples() << "\n";
+        std::cout << "Audio Buffer #Channels:" << leftZero.getNumChannels() << "\n";
     }
 
     //==========================================================================
@@ -314,16 +392,18 @@ private:
     AudioTransportSource transportSource;
     TransportState state;
 
+    //This is where the processing of the convolution will occur.
+    juce::dsp::ProcessorChain<juce::dsp::Convolution> processorChain;
     enum
     {
         convolutionIndex
     };
 
-    //This is where the processing of the convolution will occur.
-    juce::dsp::ProcessorChain<juce::dsp::Convolution> processorChain;
     AudioFormatManager formatManager1;
-
+    AudioSampleBuffer pianoBufferL;
+    AudioSampleBuffer pianoBufferR;
+    AudioSampleBuffer rightZero;
+    AudioSampleBuffer leftZero;
+    double sampleRate = 44100.0;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };
-
-
