@@ -30,6 +30,10 @@
 #pragma once
 AudioSampleBuffer rightZero;
 AudioSampleBuffer leftZero;
+
+AudioSampleBuffer leftChannel;
+AudioSampleBuffer rightChannel;
+
 //==============================================================================
 class ProcessorBase  : public AudioProcessor
 {
@@ -107,20 +111,34 @@ class ConProcessorLeft  : public ProcessorBase
 {
 
 public:
-    ConProcessorLeft() {}
-
+    ConProcessorLeft() {
+        irBuffer = leftZero;
+    }
+    AudioSampleBuffer irBuffer;
     void prepareToPlay (double sampleRate, int samplesPerBlock) override
     {
-
+        std::cout << "---------------Reload HRIR------------------->\n";
         //--------------------Loading Convolutions-------------------------------------------------
-        auto& convolutionL = convolution.template get<convolutionIndex>();
-        convolutionL.copyAndLoadImpulseResponseFromBuffer(leftZero, sampleRate, true, false, false, 0);
-        dsp::ProcessSpec spec { sampleRate, static_cast<uint32> (samplesPerBlock), 1 };
+        //auto& convolutionL = convolution.template get<convolutionIndex>();
+        convolution.copyAndLoadImpulseResponseFromBuffer(irBuffer, sampleRate, false, true, true, irBuffer.getNumSamples());
+        dsp::ProcessSpec spec { sampleRate, static_cast<uint32> (samplesPerBlock), 2 };
         convolution.prepare (spec);
     }
 
     void processBlock (AudioSampleBuffer& buffer, MidiBuffer&) override
     {
+
+        //Make mono
+        float * buffLeft = buffer.getWritePointer(0,0);
+        for(int i =0; i < buffer.getNumSamples(); ++i){
+            buffLeft[i] = buffer.getSample(0,i);
+        }
+
+        float * buffRight = buffer.getWritePointer(1,0);
+        for(int i =0; i < buffer.getNumSamples(); ++i){
+            buffRight[i] = buffer.getSample(0,i);
+        }
+
         dsp::AudioBlock<float> block (buffer);
         dsp::ProcessContextReplacing<float> context (block);
         convolution.process (context);
@@ -134,32 +152,41 @@ public:
     const String getName() const override { return "Convolution"; }
 
 private:
-    dsp::ProcessorChain<juce::dsp::Convolution> convolution;
+    juce::dsp::Convolution convolution;
 
-    enum
-    {
-        convolutionIndex
-    };
 };
 
 class ConProcessorRight  : public ProcessorBase
 {
 
 public:
-    ConProcessorRight() {}
-
+    ConProcessorRight() {
+        irBuffer = rightZero;
+    }
+    AudioSampleBuffer irBuffer;
     void prepareToPlay (double sampleRate, int samplesPerBlock) override
     {
 
         //--------------------Loading Convolutions-------------------------------------------------
-        auto& convolutionL = convolution.template get<convolutionIndex>();
-        convolutionL.copyAndLoadImpulseResponseFromBuffer(leftZero, sampleRate, false, true, false, 0);
-        dsp::ProcessSpec spec { sampleRate, static_cast<uint32> (samplesPerBlock), 1 };
+        convolution.copyAndLoadImpulseResponseFromBuffer(irBuffer, sampleRate, false, true, true, irBuffer.getNumSamples());
+        dsp::ProcessSpec spec { sampleRate, static_cast<uint32> (samplesPerBlock), 2 };
         convolution.prepare (spec);
     }
 
     void processBlock (AudioSampleBuffer& buffer, MidiBuffer&) override
     {
+        //Make mono
+        float * buffLeft = buffer.getWritePointer(0,0);
+        for(int i =0; i < buffer.getNumSamples(); ++i){
+            buffLeft[i] = buffer.getSample(0,i);
+        }
+
+        float * buffRight = buffer.getWritePointer(1,0);
+        for(int i =0; i < buffer.getNumSamples(); ++i){
+            buffRight[i] = buffer.getSample(0,i);
+        }
+
+        //std::cout << "Num Channels" << buffer.getNumChannels() << "\n";
         dsp::AudioBlock<float> block (buffer);
         dsp::ProcessContextReplacing<float> context (block);
         convolution.process (context);
@@ -173,14 +200,54 @@ public:
     const String getName() const override { return "Convolution"; }
 
 private:
-    dsp::ProcessorChain<juce::dsp::Convolution> convolution;
-
-    enum
-    {
-        convolutionIndex
-    };
+    juce::dsp::Convolution convolution;
 };
 
+class ConvolutionRight  : public ProcessorBase
+{
+
+public:
+    ConvolutionRight() {}
+    ConvolutionRight(AudioSampleBuffer irBuffer): irBuffer(irBuffer) {}
+
+    void prepareToPlay (double sampleRate, int samplesPerBlock) override
+    {
+
+//--------------------Loading Convolutions-------------------------------------------------
+        convolution.copyAndLoadImpulseResponseFromBuffer(rightZero, sampleRate, false, true, true, rightZero.getNumSamples());
+        dsp::ProcessSpec spec { sampleRate, static_cast<uint32> (samplesPerBlock), 2 };
+        convolution.prepare (spec);
+    }
+
+    void processBlock (AudioSampleBuffer& buffer, MidiBuffer&) override
+    {
+        //Make mono
+        float * buffLeft = buffer.getWritePointer(0,0);
+        for(int i =0; i < buffer.getNumSamples(); ++i){
+            buffLeft[i] = buffer.getSample(0,i);
+        }
+
+        float * buffRight = buffer.getWritePointer(1,0);
+        for(int i =0; i < buffer.getNumSamples(); ++i){
+            buffRight[i] = buffer.getSample(0,i);
+        }
+
+        dsp::AudioBlock<float> block (buffer);
+        dsp::ProcessContextReplacing<float> context (block);
+        convolution.process (context);
+    }
+
+    void reset() override
+    {
+        convolution.reset();
+    }
+
+    const String getName() const override { return "Convolution"; }
+
+private:
+    juce::dsp::Convolution convolution;
+    AudioSampleBuffer irBuffer;
+};
 //==============================================================================
 class MainContentComponent   : public AudioAppComponent,
                                public ChangeListener,
@@ -188,14 +255,14 @@ class MainContentComponent   : public AudioAppComponent,
 {
 public:
     MainContentComponent()
-        :   state (Stopped)
+            :   state (Stopped)
     {
 
         addAndMakeVisible (&playButton);
         playButton.setButtonText ("Play");
         playButton.onClick = [this] { playButtonClicked(); };
         playButton.setColour (TextButton::buttonColourId, Colours::green);
-        playButton.setEnabled (false);
+        playButton.setEnabled (true);
 
         addAndMakeVisible (&stopButton);
         stopButton.setButtonText ("Stop");
@@ -206,6 +273,7 @@ public:
         addAndMakeVisible (&loopingToggle);
         loopingToggle.setButtonText ("Loop");
         loopingToggle.onClick = [this] { loopButtonChanged(); };
+        loopingToggle.setEnabled(true);
 
         addAndMakeVisible (&currentPositionLabel);
         currentPositionLabel.setText ("Stopped", dontSendNotification);
@@ -217,6 +285,7 @@ public:
 
         setAudioChannels (2, 2);
         startTimer (20);
+
     }
 
     ~MainContentComponent()
@@ -227,17 +296,29 @@ public:
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override
     {
         lastSampleRate = sampleRate;
+        samplesExpected = samplesPerBlockExpected;
+
+        tempL = std::unique_ptr<AudioSampleBuffer>(new AudioSampleBuffer);
+        tempR = std::unique_ptr<AudioSampleBuffer>(new AudioSampleBuffer);
+        inputL = std::unique_ptr<AudioSampleBuffer>(new AudioSampleBuffer);
+        inputR = std::unique_ptr<AudioSampleBuffer>(new AudioSampleBuffer);
+
         loadFileToTransport();
         //loadFileToProcess();
+        loadAudioFile();
         impulseProcessing();
         blockSize = samplesPerBlockExpected;
-        //conProcessorRight.prepareToPlay(sampleRate,samplesPerBlockExpected);
-        //conProcessorLeft.prepareToPlay(sampleRate,samplesPerBlockExpected);
+        conProcessorLeft = std::unique_ptr<ConProcessorLeft>(new ConProcessorLeft);
+        conProcessorRight = std::unique_ptr<ConProcessorRight>(new ConProcessorRight);
+
+        conProcessorRight->prepareToPlay(samplesPerBlockExpected, sampleRate);
+        conProcessorLeft->prepareToPlay(samplesPerBlockExpected, sampleRate);
+
         //filter.prepareToPlay(sampleRate,samplesPerBlockExpected);
         transportSource.prepareToPlay (samplesPerBlockExpected, sampleRate);
     }
 
-    //Buffer to fill is
+    //Buffer to fill
     void getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill) override
     {
 
@@ -246,14 +327,71 @@ public:
             bufferToFill.clearActiveBufferRegion();
             return;
         }
-        transportSource.getNextAudioBlock (bufferToFill);
-        conProcessorLeft.processBlock(*bufferToFill.buffer, emptyMidi);
 
+        //Get Audio loaded from transport source
+        transportSource.getNextAudioBlock (bufferToFill);
+
+        //Get a preprocessed verstion stored called inputL and inputR
+        inputL->setSize(1,bufferToFill.numSamples);
+        for(int i =0; i < bufferToFill.numSamples; ++i){
+            inputL->setSample(0, i, bufferToFill.buffer->getSample(0,i));
+        }
+        inputR->setSize(1,bufferToFill.numSamples);
+        for(int i =0; i < bufferToFill.numSamples; ++i){
+            inputR->setSample(0, i, bufferToFill.buffer->getSample(1,i));
+        }
+
+        //Perform convolution on left channel and store processed convolution in a temp buffer
+        conProcessorLeft->processBlock(*bufferToFill.buffer, emptyMidi);
+        tempL->setSize(1,bufferToFill.numSamples);
+        for(int i =0; i < bufferToFill.numSamples; ++i){
+            tempL->setSample(0, i, bufferToFill.buffer->getSample(0,i));
+        }
+
+        //Reset input buffer to original state
+        float * buffLeft = bufferToFill.buffer->getWritePointer(0,bufferToFill.startSample);
+        for(int i =0; i < bufferToFill.numSamples; ++i){
+            buffLeft[i] = inputL->getSample(0,i);
+        }
+
+        float * buffRight = bufferToFill.buffer->getWritePointer(1,bufferToFill.startSample);
+        for(int i =0; i < bufferToFill.numSamples; ++i){
+            buffRight[i] = inputR->getSample(0,i);
+        }
+
+        //Perform convolution on right channel
+        conProcessorRight->processBlock( *bufferToFill.buffer, emptyMidi);
+
+        //Overwrite left channel with left convolved buffer
+        for(int i =0; i < bufferToFill.numSamples; ++i){
+            buffLeft[i] = tempL->getSample(0,i);
+        }
+        std::cout << (relativeTime += relativeTime.milliseconds(10)).inMilliseconds() << "\n";
+        if(relativeTime.inMilliseconds() > 500.0f){
+            relativeTime = relativeTime.milliseconds(0);
+            conProcessorLeft->reset();
+            conProcessorRight->reset();
+            float * irWriteLeft =conProcessorLeft->irBuffer.getWritePointer(0);
+            float * irWriteRight =conProcessorRight->irBuffer.getWritePointer(0);
+            for(int i = 0; i < 200; i++){
+                irWriteLeft[i] = leftHRIR.at(impulseIndex).getSample(0,i);
+                irWriteRight[i] = rightHRIR.at(impulseIndex).getSample(0,i);
+            }
+            impulseIndex++;
+            if(impulseIndex >= leftHRIR.size() -1)
+                impulseIndex = 0;
+            conProcessorLeft->prepareToPlay(sampleRate, samplesExpected);
+            conProcessorRight->prepareToPlay(sampleRate, samplesExpected);
+
+        }
     }
 
     void releaseResources() override
     {
+
         transportSource.releaseResources();
+        conProcessorLeft->releaseResources();
+        conProcessorRight->releaseResources();
     }
 
     //Todo: Place Buttons and Make Gui suitable for App
@@ -354,7 +492,7 @@ private:
             dir = dir.getParentDirectory();
         }
 
-        File temp = File(dir.getChildFile ("Resources").getChildFile("Chuff.wav"));
+        File temp = File(dir.getChildFile ("Resources").getChildFile("BasketballFeet.wav"));
         //std::unique_ptr<AudioFormatReader> reader(formatManager.createReaderFor(temp));
         auto* reader = formatManager.createReaderFor (temp);
 
@@ -364,7 +502,62 @@ private:
             transportSource.setSource (newSource.get(), 0, nullptr, reader->sampleRate);
             playButton.setEnabled (true);
             readerSource.reset (newSource.release());
+            std::cout << "AudioFile Loaded! \n";
         }
+    }
+
+    void loadAudioFile(){
+        auto dir = File::getCurrentWorkingDirectory();
+        int numTries = 0;
+        AudioSampleBuffer sampleBuffer;
+        AudioFormatManager formatMan;
+        formatMan.registerBasicFormats();
+        AudioFormat *audioFormat = formatMan.getDefaultFormat();
+
+        //find the resources dir
+        while (! dir.getChildFile ("Resources").exists() && numTries++ < 15) {
+            dir = dir.getParentDirectory();
+        }
+
+        File temp = File(dir.getChildFile ("Resources").getChildFile("Chuff.wav"));
+        while (! dir.getChildFile ("Resources").exists() && numTries++ < 15) {
+            dir = dir.getParentDirectory();
+        }
+
+        std::unique_ptr<AudioFormatReader> source (formatManager.createReaderFor(temp));
+
+        if (source.get() != nullptr) {
+            auto duration = source->lengthInSamples / source->sampleRate;
+            sampleBuffer.setSize(1, (int)source->lengthInSamples);
+            source->read(&sampleBuffer, 0, (int)source->lengthInSamples, 0, true, true);
+        }
+
+        std::cout<< "Reader size:" << source->lengthInSamples << "\n";
+        std::cout<< "Channels:" << source->numChannels << "\n";
+        std::cout<< "Channels:" << sampleBuffer.getNumChannels() << "\n";
+
+        leftChannel.setSize(1, sampleBuffer.getNumSamples());
+        rightChannel.setSize(1, sampleBuffer.getNumSamples());
+        float * buff = leftChannel.getWritePointer(0,0);
+//        for(int i =0; i < sampleBuffer.getNumSamples(); ++i){
+//            buff[i] = random.nextFloat() * (0.4f - 0.2f) * .15;
+//
+//        }
+
+        //write left and right channels mono
+        for(int i = 0; i < sampleBuffer.getNumSamples(); ++i ){
+            leftChannel.setSample(0,i,sampleBuffer.getSample(0,i));
+            //std::cout<< "LeftChannel sample:" << leftChannel.getSample(0,i) << "\n";
+        }
+        std::cout<< "LeftChannel size:" << leftChannel.getNumSamples() << "\n";
+        std::cout<< "LeftChannel numChannels:" << leftChannel.getNumChannels() << "\n";
+
+        for(int i = 0; i < sampleBuffer.getNumSamples(); ++i ){
+            rightChannel.setSample(0,i,sampleBuffer.getSample(0,i));
+        }
+        std::cout<< "RightChannel size:" << rightChannel.getNumSamples() << "\n";
+        std::cout<< "RightChannel numChannels:" << rightChannel.getNumChannels() << "\n";
+
     }
 
     void playButtonClicked()
@@ -385,193 +578,231 @@ private:
 
     void impulseProcessing(){
         loadConvolutionFiles();
-
-        //--------------------Loading Convolutions-------------------------------------------------
-        auto& convolutionL = processorChain.template get<convolutionIndex>();
-        convolutionL.copyAndLoadImpulseResponseFromBuffer(leftZero, sampleRate, false, true, false, 0);
-
-        auto& convolutionR = processorChain.template get<convolutionIndex>();
-        convolutionL.copyAndLoadImpulseResponseFromBuffer(rightZero, sampleRate, false, true, false, 0);
-
-
-        //Todo Process the piano sample with convolution
-
+        loadConvolutionFile();
     }
 
-void loadConvolutionFiles() {
-    AudioSampleBuffer sampleBuffer;
-    int position = 0;
-    AudioFormatManager formatManager1;
-    formatManager1.registerBasicFormats();
-    AudioFormat *audioFormat = formatManager1.getDefaultFormat();
-    auto dir = File::getCurrentWorkingDirectory();
-    int numTries = 0;
-    //find the resources dir
-    while (!dir.getChildFile("Resources").exists() && numTries++ < 15) {
-        dir = dir.getParentDirectory();
+    void loadConvolutionFiles() {
+        AudioSampleBuffer sampleBufferLeft;
+        AudioSampleBuffer sampleBufferRight;
+        AudioSampleBuffer sampleBufferLeftNeg;
+        AudioSampleBuffer sampleBufferRightNeg;
+        AudioSampleBuffer copyL;
+        AudioSampleBuffer copyR;
+        AudioSampleBuffer negLBuf;
+        AudioSampleBuffer negRBuf;
+
+        int position = 0;
+        AudioFormatManager formatManager1;
+        formatManager1.registerBasicFormats();
+        AudioFormat *audioFormat = formatManager1.getDefaultFormat();
+        auto dir = File::getCurrentWorkingDirectory();
+        int numTries = 0;
+        //find the resources dir
+        while (!dir.getChildFile("Resources").exists() && numTries++ < 15) {
+            dir = dir.getParentDirectory();
+        }
+
+        for (int i = 0; i <= 80; i += 5) {
+            String fileR = "";
+            fileR += i;
+            fileR += "azright.wav";
+            std::cout << fileR;
+            String fileL = "";
+            fileL += i;
+            fileL += "azleft.wav";
+            std::cout << fileL;
+            if(i != 0){
+            String negR = "neg";
+            negR += i;
+            negR += "azright.wav";
+            String negL = "neg";
+            negL += i;
+            negL += "azleft.wav";
+                File negLeft = File(dir.getChildFile("Resources").getChildFile("HRIR").getChildFile(negL));
+                File negRight = File(dir.getChildFile("Resources").getChildFile("HRIR").getChildFile(negR));
+                std::unique_ptr<AudioFormatReader> readerNegLeft(formatManager1.createReaderFor(negLeft));
+                std::unique_ptr<AudioFormatReader> readerNegRight(formatManager1.createReaderFor(negRight));
+                //------Negative--------
+                //Load Left HRIR
+                if (readerNegLeft.get() != nullptr) {
+                    auto duration = readerNegLeft->lengthInSamples / readerNegLeft->sampleRate;
+                    sampleBufferLeftNeg.setSize(readerNegLeft->numChannels, (int)readerNegLeft->lengthInSamples);
+                    readerNegLeft->read(&sampleBufferLeftNeg, 0, (int)readerNegLeft->lengthInSamples, 0, true, true);
+                }
+                //Load Right HRIR
+                if (readerNegRight.get() != nullptr) {
+                    auto duration = readerNegRight->lengthInSamples / readerNegRight->sampleRate;
+                    sampleBufferRightNeg.setSize(readerNegRight->numChannels, (int)readerNegRight->lengthInSamples);
+                    readerNegRight->read(&sampleBufferRightNeg, 0, (int)readerNegRight->lengthInSamples, 0, true, true);
+                }
+            }
+            File fileLeft = File(dir.getChildFile("Resources").getChildFile("HRIR").getChildFile(fileL));
+            File fileRight = File(dir.getChildFile("Resources").getChildFile("HRIR").getChildFile(fileR));
+
+            std::unique_ptr<AudioFormatReader> readerLeft(formatManager1.createReaderFor(fileLeft));
+            std::unique_ptr<AudioFormatReader> readerRight(formatManager1.createReaderFor(fileRight));
+
+
+            //Load Left HRIR
+            if (readerLeft.get() != nullptr) {
+                auto duration = readerLeft->lengthInSamples / readerLeft->sampleRate;
+                sampleBufferLeft.setSize(readerLeft->numChannels, (int)readerRight->lengthInSamples);
+                readerLeft->read(&sampleBufferLeft, 0, (int)readerLeft->lengthInSamples, 0, true, true);
+            }
+            //Load Right HRIR
+            if (readerRight.get() != nullptr) {
+                auto duration = readerRight->lengthInSamples / readerRight->sampleRate;
+                sampleBufferRight.setSize(readerRight->numChannels, (int)readerRight->lengthInSamples);
+                readerRight->read(&sampleBufferRight, 0, (int)readerRight->lengthInSamples, 0, true, true);
+            }
+
+//            if (readerRight != nullptr) {
+//                std::cout << "----------------------------------------------------"  << "\n" ;
+//                std::cout << "File loaded HRIR Right into audio buffer for:" << i  << "\n" ;
+//                std::cout << "Audio Buffer #Samples:" << sampleBuffer.getNumSamples() << "\n";
+//                std::cout << "Audio Buffer #Channels:" << sampleBuffer.getNumChannels() << "\n";
+//            }
+//            if (readerLeft != nullptr) {
+//                std::cout << "File loaded HRIR Right into audio buffer\n";
+//                std::cout << "Audio Buffer #Samples:" << sampleBuffer.getNumSamples() << "\n";
+//                std::cout << "Audio Buffer #Channels:" << sampleBuffer.getNumChannels() << "\n";
+//            }
+
+            //--------------------Reshape the HRIR to the correct shape-------------------------
+            copyR.setSize(1, (int)200);
+            negRBuf.setSize(1,200);
+            int count = 0;
+            while (count++ < 199) {
+                //Reallocate the buffer to the correct shape
+                copyR.setSample(0, count, sampleBufferRight.getSample(count, 9));
+                if(i!=0)
+                negRBuf.setSample(0, count, sampleBufferRightNeg.getSample(count, 9));
+//                std::cout << rightZero.getSample(0, count) << "\n";
+            }
+
+            copyL.setSize(1, (int)200);
+            negLBuf.setSize(1,200);
+            count = 0;
+            while (count++ < 199) {
+                //Reallocate the buffer to the correct shape
+                copyL.setSample(0, count, sampleBufferLeft.getSample(count, 9));
+                if(i!=0)
+                negLBuf.setSample(0, count, sampleBufferLeftNeg.getSample(count, 9));
+
+            }
+//            //Create a new buffer form the data stored
+//            std::cout << "New Created audio buffer of HRIR Right\n";
+//            std::cout << "Audio Buffer #Samples:" << rightZero.getNumSamples() << "\n";
+//            std::cout << "Audio Buffer #Channels:" << rightZero.getNumChannels() << "\n";
+//            //Create a new buffer form the data stored
+//            std::cout << "New Created audio buffer of HRIR Left\n";
+//            std::cout << "Audio Buffer #Samples:" << leftZero.getNumSamples() << "\n";
+//            std::cout << "Audio Buffer #Channels:" << leftZero.getNumChannels() << "\n";
+            //push the value into the back of the vector for each iteration of the for loop (+5)
+            //ex: 0 is stored in [0], 5 is stored in [1], etc.
+            rightVec.push_back(copyR);
+            leftVec.push_back(copyL);
+            if(i!=0) {
+                leftVecNeg.push_back(negLBuf);
+                rightVecNeg.push_back(negRBuf);
+            }
+
+        }
+        for(int i = leftVecNeg.size() - 1; i > 0 ; i--){
+            leftHRIR.push_back(leftVecNeg.at(i));
+            rightHRIR.push_back(rightVecNeg.at(i));
+        }
+        for(int i =0; i <  leftVec.size() - 1; i++){
+            leftHRIR.push_back(leftVec.at(i));
+            rightHRIR.push_back(rightVec.at(i));
+        }
+        std::cout << "\nHRIR Vector<> Size(Right):"<< rightHRIR.size() << "\n";
+        std::cout << "HRIR Vector<> Size(Left):"<< leftVec.size() << "\n";
     }
 
-    for (int i = 0; i <= 80; i += 5) {
-        String fileR = "";
-        fileR += i;
-        fileR += "azright.wav";
-        std::cout << fileR;
-        String fileL = "";
-        fileL += i;
-        fileL += "azleft.wav";
-        std::cout << fileL;
-        String negR = "neg";
-        negR += i;
-        negR += "azright.wav";
-        String negL = "neg";
-        negL += i;
-        negL += "azleft.wav";
-        File fileLeft = File(dir.getChildFile("Resources").getChildFile("HRIR").getChildFile(fileL));
-        File fileRight = File(dir.getChildFile("Resources").getChildFile("HRIR").getChildFile(fileR));
-        File negLeft = File(dir.getChildFile("Resources").getChildFile("HRIR").getChildFile(negL));
-        File negRight = File(dir.getChildFile("Resources").getChildFile("HRIR").getChildFile(negR));
-        std::unique_ptr<AudioFormatReader> readerLeft(formatManager1.createReaderFor(fileLeft));
-        std::unique_ptr<AudioFormatReader> readerRight(formatManager1.createReaderFor(fileRight));
-        std::unique_ptr<AudioFormatReader> readerNegLeft(formatManager1.createReaderFor(negLeft));
-        std::unique_ptr<AudioFormatReader> readerNegRight(formatManager1.createReaderFor(negRight));
+    void loadConvolutionFile(){
+        AudioSampleBuffer sampleBufferLeft;
+        AudioSampleBuffer sampleBufferRight;
+        int position = 0;
+        AudioFormatManager formatManager1;
+        formatManager1.registerBasicFormats();
+
+        AudioFormat *audioFormat = formatManager1.getDefaultFormat();
+
+        auto dir = File::getCurrentWorkingDirectory();
+        int numTries = 0;
+
+        //find the resources dir
+        while (! dir.getChildFile ("Resources").exists() && numTries++ < 15) {
+            dir = dir.getParentDirectory();
+        }
+
+        File left0 = File(dir.getChildFile ("Resources").getChildFile("HRIR").getChildFile("25azleft.wav"));
+        File right0 = File(dir.getChildFile ("Resources").getChildFile("HRIR").getChildFile("25azright.wav"));
+//        File left0 = File(dir.getChildFile ("Resources").getChildFile("cassette_recorder.wav"));
+//        File right0 = File(dir.getChildFile ("Resources").getChildFile("guitar_amp.wav"));
+        std::unique_ptr<AudioFormatReader> readerLeft(formatManager1.createReaderFor(left0));
+        std::unique_ptr<AudioFormatReader> readerRight(formatManager1.createReaderFor(right0));
+
 
         //Load Left HRIR
         if (readerLeft.get() != nullptr) {
             auto duration = readerLeft->lengthInSamples / readerLeft->sampleRate;
-            sampleBuffer.setSize(readerLeft->numChannels, (int)readerRight->lengthInSamples);
-            readerLeft->read(&sampleBuffer, 0, (int)readerLeft->lengthInSamples, 0, true, true);
+
+            sampleBufferLeft.setSize(readerLeft->numChannels, (int) readerRight->lengthInSamples);
+            readerLeft->read(&sampleBufferLeft, 0, (int) readerLeft->lengthInSamples, 0, true, true);
         }
+
         //Load Right HRIR
         if (readerRight.get() != nullptr) {
             auto duration = readerRight->lengthInSamples / readerRight->sampleRate;
-            sampleBuffer.setSize(readerRight->numChannels, (int)readerRight->lengthInSamples);
-            readerRight->read(&sampleBuffer, 0, (int)readerRight->lengthInSamples, 0, true, true);
-        }
-        if (readerRight != nullptr) {
-            std::cout << "----------------------------------------------------"  << "\n" ;
-            std::cout << "File loaded HRIR Right into audio buffer for:" << i  << "\n" ;
-            std::cout << "Audio Buffer #Samples:" << sampleBuffer.getNumSamples() << "\n";
-            std::cout << "Audio Buffer #Channels:" << sampleBuffer.getNumChannels() << "\n";
-        }
-        if (readerLeft != nullptr) {
-            std::cout << "File loaded HRIR Right into audio buffer\n";
-            std::cout << "Audio Buffer #Samples:" << sampleBuffer.getNumSamples() << "\n";
-            std::cout << "Audio Buffer #Channels:" << sampleBuffer.getNumChannels() << "\n";
+
+            sampleBufferRight.setSize(readerRight->numChannels, (int) readerRight->lengthInSamples);
+            readerRight->read(&sampleBufferRight, 0, (int) readerRight->lengthInSamples, 0, true, true);
+
         }
 
-        //--------------------Reshape the HRIR to the correct shape-------------------------
+        if(readerRight != nullptr) {
+            std::cout << "File loaded HRIR Right into audio buffer\n";
+            std::cout << "Audio Buffer #Samples:" << sampleBufferRight.getNumSamples() << "\n";
+            std::cout << "Audio Buffer #Channels:" << sampleBufferRight.getNumChannels() << "\n";
+        }
+
+        if(readerLeft != nullptr) {
+            std::cout << "File loaded HRIR Left into audio buffer\n";
+            std::cout << "Audio Buffer #Samples:" << sampleBufferLeft.getNumSamples() << "\n";
+            std::cout << "Audio Buffer #Channels:" << sampleBufferLeft.getNumChannels() << "\n";
+        }
+
+
+//        //--------------------Reshape the HRIR to the correct shape-------------------------
         rightZero.setSize(1, (int)200);
         int count = 0;
-        while (count++ < 199) {
+        while(count++ < 199) {
             //Reallocate the buffer to the correct shape
-            rightZero.setSample(0, count, sampleBuffer.getSample(count, 8));
-            std::cout << rightZero.getSample(0, count) << "\n";
+            rightZero.setSample(0, count, sampleBufferRight.getSample(count, 9));
         }
 
         leftZero.setSize(1, (int)200);
         count = 0;
-        while (count++ < 199) {
+        while(count++ < 199) {
+
             //Reallocate the buffer to the correct shape
-            leftZero.setSample(0, count, sampleBuffer.getSample(count, 9));
+            leftZero.setSample(0, count, sampleBufferLeft.getSample(count, 9));
+
             std::cout << leftZero.getSample(0, count) << "\n";
         }
+
         //Create a new buffer form the data stored
         std::cout << "New Created audio buffer of HRIR Right\n";
         std::cout << "Audio Buffer #Samples:" << rightZero.getNumSamples() << "\n";
         std::cout << "Audio Buffer #Channels:" << rightZero.getNumChannels() << "\n";
+
         //Create a new buffer form the data stored
         std::cout << "New Created audio buffer of HRIR Left\n";
         std::cout << "Audio Buffer #Samples:" << leftZero.getNumSamples() << "\n";
         std::cout << "Audio Buffer #Channels:" << leftZero.getNumChannels() << "\n";
-        //push the value into the back of the vector for each iteration of the for loop (+5)
-        //ex: 0 is stored in [0], 5 is stored in [1], etc.
-        rightVec.push_back(rightZero);
-        leftVec.push_back(leftZero);
     }
-    }
-
-
-//    void loadConvolutionFiles(){
-//        AudioSampleBuffer sampleBuffer;
-//        int position = 0;
-//        AudioFormatManager formatManager1;
-//        formatManager1.registerBasicFormats();
-//
-//        AudioFormat *audioFormat = formatManager1.getDefaultFormat();
-//
-//        auto dir = File::getCurrentWorkingDirectory();
-//        int numTries = 0;
-//
-//        //find the resources dir
-//        while (! dir.getChildFile ("Resources").exists() && numTries++ < 15) {
-//            dir = dir.getParentDirectory();
-//        }
-//
-//        File left0 = File(dir.getChildFile ("Resources").getChildFile("HRIR").getChildFile("80azleft.wav"));
-//        File right0 = File(dir.getChildFile ("Resources").getChildFile("HRIR").getChildFile("80azright.wav"));
-//        std::unique_ptr<AudioFormatReader> readerLeft(formatManager1.createReaderFor(left0));
-//        std::unique_ptr<AudioFormatReader> readerRight(formatManager1.createReaderFor(left0));
-//
-//
-//        //Load Left HRIR
-//        if (readerLeft.get() != nullptr) {
-//            auto duration = readerLeft->lengthInSamples / readerLeft->sampleRate;
-//
-//            sampleBuffer.setSize(readerLeft->numChannels, (int) readerRight->lengthInSamples);
-//            readerLeft->read(&sampleBuffer, 0, (int) readerLeft->lengthInSamples, 0, true, true);
-//        }
-//
-//        //Load Right HRIR
-//        if (readerRight.get() != nullptr) {
-//            auto duration = readerRight->lengthInSamples / readerRight->sampleRate;
-//
-//            sampleBuffer.setSize(readerRight->numChannels, (int) readerRight->lengthInSamples);
-//            readerRight->read(&sampleBuffer, 0, (int) readerRight->lengthInSamples, 0, true, true);
-//
-//        }
-//
-//        if(readerRight != nullptr) {
-//            std::cout << "File loaded HRIR Right into audio buffer\n";
-//            std::cout << "Audio Buffer #Samples:" << sampleBuffer.getNumSamples() << "\n";
-//            std::cout << "Audio Buffer #Channels:" << sampleBuffer.getNumChannels() << "\n";
-//        }
-//
-//        if(readerLeft != nullptr) {
-//            std::cout << "File loaded HRIR Right into audio buffer\n";
-//            std::cout << "Audio Buffer #Samples:" << sampleBuffer.getNumSamples() << "\n";
-//            std::cout << "Audio Buffer #Channels:" << sampleBuffer.getNumChannels() << "\n";
-//        }
-//
-//        //--------------------Reshape the HRIR to the correct shape-------------------------
-//        rightZero.setSize(1, (int)200);
-//        int count = 0;
-//        while(count++ < 199) {
-//
-//            //Reallocate the buffer to the correct shape
-//            rightZero.setSample(0, count, sampleBuffer.getSample(count, 9));
-//            std::cout << rightZero.getSample(0, count) << "\n";
-//
-//        }
-//
-//        leftZero.setSize(1, (int)200);
-//        count = 0;
-//        while(count++ < 199) {
-//
-//            //Reallocate the buffer to the correct shape
-//            leftZero.setSample(0, count, sampleBuffer.getSample(count, 9));
-//            std::cout << leftZero.getSample(0, count) << "\n";
-//        }
-//
-//        //Create a new buffer form the data stored
-//        std::cout << "New Created audio buffer of HRIR Right\n";
-//        std::cout << "Audio Buffer #Samples:" << rightZero.getNumSamples() << "\n";
-//        std::cout << "Audio Buffer #Channels:" << rightZero.getNumChannels() << "\n";
-//
-//        //Create a new buffer form the data stored
-//        std::cout << "New Created audio buffer of HRIR Left\n";
-//        std::cout << "Audio Buffer #Samples:" << leftZero.getNumSamples() << "\n";
-//        std::cout << "Audio Buffer #Channels:" << leftZero.getNumChannels() << "\n";
-//    }
 
     //==========================================================================
     TextButton openButton;
@@ -584,6 +815,7 @@ void loadConvolutionFiles() {
     AudioFormatManager formatManager;
     std::unique_ptr<AudioFormatReaderSource> readerSource;
     AudioTransportSource transportSource;
+    //MemoryAudioSource memoryAudioSource;
     TransportState state;
 
     //This is where the processing of the convolution will occur.
@@ -593,21 +825,32 @@ void loadConvolutionFiles() {
         convolutionIndex
     };
 
-    ConProcessorRight conProcessorRight;
-    ConProcessorLeft conProcessorLeft;
+    std::unique_ptr<ConProcessorRight> conProcessorRight;
+    std::unique_ptr<ConProcessorLeft> conProcessorLeft;
+
+    std::unique_ptr<ConvolutionRight>  convolutionRight;
 
     FilterProcessor filter;
     AudioFormatManager formatManager1;
     AudioSampleBuffer pianoBufferL;
     AudioSampleBuffer pianoBufferR;
-    AudioSampleBuffer * tempL;
-    AudioSampleBuffer * tempR;
-
+    std::unique_ptr<AudioSampleBuffer>  tempL;
+    std::unique_ptr<AudioSampleBuffer>  tempR;
+    std::unique_ptr<AudioSampleBuffer>  inputL;
+    std::unique_ptr<AudioSampleBuffer>  inputR;
+    Random random;
     AudioSampleBuffer filterBuffer;
     double sampleRate = 44100.0;
     MidiBuffer emptyMidi;
     int blockSize;
+    int samplesExpected;
     std::vector<AudioSampleBuffer> rightVec;
     std::vector<AudioSampleBuffer> leftVec;
+    std::vector<AudioSampleBuffer> rightVecNeg;
+    std::vector<AudioSampleBuffer> leftVecNeg;
+    std::vector<AudioSampleBuffer> leftHRIR;
+    std::vector<AudioSampleBuffer> rightHRIR;
+    RelativeTime relativeTime;
+    int impulseIndex = 0;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };
