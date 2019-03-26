@@ -13,10 +13,6 @@
   <component name="ChangeListManager">
     <list default="true" id="0105529a-32f1-4520-a411-92736355231a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/PlayingSoundFilesTutorial.app/Contents/MacOS/PlayingSoundFilesTutorial" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/PlayingSoundFilesTutorial.app/Contents/MacOS/PlayingSoundFilesTutorial" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Source/MainComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/../../Source/MainComponent.h" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -32,7 +28,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../Source/Main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
+            <state relative-caret-position="677">
               <caret line="53" column="12" selection-start-line="53" selection-start-column="12" selection-end-line="53" selection-end-column="12" />
               <folding>
                 <element signature="e#245#287#0" expanded="true" />
@@ -44,8 +40,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../../Source/MainComponent.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="274">
-              <caret line="381" column="33" lean-forward="true" selection-start-line="381" selection-start-column="33" selection-end-line="381" selection-end-column="33" />
+            <state relative-caret-position="258">
+              <caret line="650" column="42" selection-start-line="650" selection-start-column="42" selection-end-line="650" selection-end-column="42" />
             </state>
           </provider>
         </entry>
@@ -107,8 +103,8 @@
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="170" />
-    <option name="y" value="76" />
+    <option name="x" value="291" />
+    <option name="y" value="75" />
     <option name="width" value="1591" />
     <option name="height" value="1158" />
   </component>
@@ -129,12 +125,6 @@
               <item name="PlayingSoundFilesTutorial" type="b2602c69:ProjectViewProjectNode" />
               <item name="UnderPressureApp" type="462c0819:PsiDirectoryNode" />
               <item name="Resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="PlayingSoundFilesTutorial" type="b2602c69:ProjectViewProjectNode" />
-              <item name="UnderPressureApp" type="462c0819:PsiDirectoryNode" />
-              <item name="Resources" type="462c0819:PsiDirectoryNode" />
-              <item name="HRIR" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -211,15 +201,15 @@
       <workItem from="1552671191827" duration="28715000" />
       <workItem from="1552879619383" duration="563000" />
       <workItem from="1553221449326" duration="6056000" />
-      <workItem from="1553293449322" duration="31686000" />
+      <workItem from="1553293449322" duration="40473000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="86009000" />
+    <option name="totallyTimeSpent" value="94796000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="170" y="76" width="1591" height="1158" extended-state="0" />
+    <frame x="291" y="75" width="1591" height="1158" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20857699" />
@@ -227,15 +217,15 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.525666" visible="true" weight="0.4746896" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.5042235" visible="true" weight="0.4746896" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49187785" weight="0.3992359" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Database Changes" order="7" />
-      <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.39376217" weight="0.4660936" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.3286026" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.47433397" side_tool="true" visible="true" weight="0.4746896" />
+      <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.37296945" weight="0.4660936" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.49967512" weight="0.3285578" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.49577647" side_tool="true" visible="true" weight="0.4746896" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.32969433" />
       <window_info anchor="bottom" id="CMake" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -389,27 +379,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../Source/Main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="53" column="12" selection-start-line="53" selection-start-column="12" selection-end-line="53" selection-end-column="12" />
-          <folding>
-            <element signature="e#245#287#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_audio_basics/buffers/juce_AudioSampleBuffer.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="199">
           <caret line="287" selection-start-line="287" selection-end-line="287" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_audio_formats/format/juce_AudioFormatReader.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-752">
-          <caret line="145" selection-start-line="145" selection-end-line="145" />
         </state>
       </provider>
     </entry>
@@ -420,10 +393,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../../Source/Main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="677">
+          <caret line="53" column="12" selection-start-line="53" selection-start-column="12" selection-end-line="53" selection-end-column="12" />
+          <folding>
+            <element signature="e#245#287#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_audio_formats/format/juce_AudioFormatReader.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-752">
+          <caret line="145" selection-start-line="145" selection-end-line="145" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../../Source/MainComponent.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="274">
-          <caret line="381" column="33" lean-forward="true" selection-start-line="381" selection-start-column="33" selection-end-line="381" selection-end-column="33" />
+        <state relative-caret-position="258">
+          <caret line="650" column="42" selection-start-line="650" selection-start-column="42" selection-end-line="650" selection-end-column="42" />
         </state>
       </provider>
     </entry>
