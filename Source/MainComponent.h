@@ -321,7 +321,7 @@ public:
         }
 
         //Add filter to rear HRIR
-        if(impulseIndex > 17 && impulseIndex < 50)
+        //if(impulseIndex > 17 && impulseIndex < 50)
            //  filter.processBlock(*bufferToFill.buffer,emptyMidi);
 
         //Reloading of HRIR every time period
@@ -462,10 +462,10 @@ private:
         }
 
         //File temp = File(dir.getChildFile ("Resources").getChildFile("BasketballFeet.wav"));
-        //File temp = File(dir.getChildFile ("Resources").getChildFile("PlayerLoopMonoWithVoice.wav"));
+        File temp = File(dir.getChildFile ("Resources").getChildFile("PlayerLoopMonoWithVoice.wav"));
 //        File temp = File(dir.getChildFile ("Resources").getChildFile("SodaCan.wav"));
        // File temp = File(dir.getChildFile ("Resources").getChildFile("PlayerMonoWhistle.wav"));
-        File temp = File(dir.getChildFile ("Resources").getChildFile("Register.wav"));
+        //File temp = File(dir.getChildFile ("Resources").getChildFile("Register.wav"));
         //std::unique_ptr<AudioFormatReader> reader(formatManager.createReaderFor(temp));
         auto* reader = formatManager.createReaderFor (temp);
 
@@ -808,6 +808,7 @@ private:
     }
 
     //==========================================================================
+    //Gui Elements
     TextButton openButton;
     TextButton playButton;
     TextButton stopButton;
