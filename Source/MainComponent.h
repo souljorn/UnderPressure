@@ -322,11 +322,11 @@ public:
 
         //Add filter to rear HRIR
         if(impulseIndex > 17 && impulseIndex < 50)
-            filter.processBlock(*bufferToFill.buffer,emptyMidi);
+           //  filter.processBlock(*bufferToFill.buffer,emptyMidi);
 
         //Reloading of HRIR every time period
         (relativeTime += relativeTime.milliseconds(10)).inMilliseconds();
-        if(relativeTime.inMilliseconds() > 200.0f){
+        if(relativeTime.inMilliseconds() > 500.0f){
             std::cout << "Approximate Azimuth Angle: " << degrees << "\n";
             degrees += 5;
             relativeTime = relativeTime.milliseconds(0);
@@ -464,8 +464,8 @@ private:
         //File temp = File(dir.getChildFile ("Resources").getChildFile("BasketballFeet.wav"));
         //File temp = File(dir.getChildFile ("Resources").getChildFile("PlayerLoopMonoWithVoice.wav"));
 //        File temp = File(dir.getChildFile ("Resources").getChildFile("SodaCan.wav"));
-        File temp = File(dir.getChildFile ("Resources").getChildFile("PlayerMonoWhistle.wav"));
-//        File temp = File(dir.getChildFile ("Resources").getChildFile("Register.wav"));
+       // File temp = File(dir.getChildFile ("Resources").getChildFile("PlayerMonoWhistle.wav"));
+        File temp = File(dir.getChildFile ("Resources").getChildFile("Register.wav"));
         //std::unique_ptr<AudioFormatReader> reader(formatManager.createReaderFor(temp));
         auto* reader = formatManager.createReaderFor (temp);
 
@@ -650,6 +650,8 @@ private:
             copyRBehind.setSize(1,200);         //behind +
             copyRNegativeBehind.setSize(1,200); //behind -
 
+            //Front level elevation 9
+            //Back level elevation 39
             const int elevationFront = 5;
             const int elevationBehind = 43;
             int count = 0;
