@@ -33,7 +33,22 @@ AudioSampleBuffer leftZero;
 
 AudioSampleBuffer leftChannel;
 AudioSampleBuffer rightChannel;
+struct AudioPlayer{
+    int playHead;
+    AudioSampleBuffer buffer;
+    AudioSampleBuffer convolvedBuffer;
+    int elevation;
+    int azimuth;
 
+
+    AudioPlayer(AudioSampleBuffer buffer) : buffer(buffer){
+
+    }
+
+    AudioPlayer(AudioSampleBuffer buffer, int elv, int az) : buffer(buffer), azimuth(az), elevation(elv){
+
+    }
+};
 //==============================================================================
 class ProcessorBase  : public AudioProcessor
 {
@@ -120,7 +135,7 @@ public:
         std::cout << "---------------Reload HRIR------------------->\n";
         //--------------------Loading Convolutions-------------------------------------------------
         //auto& convolutionL = convolution.template get<convolutionIndex>();
-        convolution.copyAndLoadImpulseResponseFromBuffer(irBuffer, sampleRate, false, true, true, irBuffer.getNumSamples());
+        convolution.copyAndLoadImpulseResponseFromBuffer(irBuffer, sampleRate, true, true, true, irBuffer.getNumSamples());
         dsp::ProcessSpec spec { sampleRate, static_cast<uint32> (samplesPerBlock), 2 };
         convolution.prepare (spec);
     }
@@ -168,7 +183,7 @@ public:
     {
 
         //--------------------Loading Convolutions-------------------------------------------------
-        convolution.copyAndLoadImpulseResponseFromBuffer(irBuffer, sampleRate, false, true, true, irBuffer.getNumSamples());
+        convolution.copyAndLoadImpulseResponseFromBuffer(irBuffer, sampleRate, true, true, true, irBuffer.getNumSamples());
         dsp::ProcessSpec spec { sampleRate, static_cast<uint32> (samplesPerBlock), 2 };
         convolution.prepare (spec);
     }
@@ -238,6 +253,10 @@ public:
         formatManager.registerBasicFormats();
         transportSource.addChangeListener (this);
 
+        //std::unique_ptr<AudioTransportSource> tempPtr(new AudioTransportSource());
+        //tempPtr->addChangeListener(this);
+        //audioSources.push_back(tempPtr);
+
         setAudioChannels (2, 2);
         startTimer (20);
 
@@ -259,6 +278,10 @@ public:
         inputR = std::unique_ptr<AudioSampleBuffer>(new AudioSampleBuffer);
 
         loadFileToTransport();
+//        loadAudioFile("PlayerLoopMono.wav");
+//        loadAudioFile("crowd1.wav");
+//        loadAudioFile("crowd2.wav");
+        loadAudioFile("cello.wav");
         impulseProcessing();
         blockSize = samplesPerBlockExpected;
         conProcessorLeft = std::unique_ptr<ConProcessorLeft>(new ConProcessorLeft);
@@ -269,91 +292,197 @@ public:
 
         filter.prepareToPlay(sampleRate,samplesPerBlockExpected);
         transportSource.prepareToPlay (samplesPerBlockExpected, sampleRate);
+
+        audioList.at(0).convolvedBuffer = placeSound(4, audioList.at(0).buffer);
+        std::cout << "num Channels " << audioList.at(0).buffer.getNumChannels() << "\n";
+        std::cout << "num Channels convolved " << audioList.at(0).convolvedBuffer.getNumChannels() << "\n";
     }
 
     //Buffer to fill
     void getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill) override
     {
 
-        if (readerSource.get() == nullptr)
-        {
-            bufferToFill.clearActiveBufferRegion();
-            return;
-        }
+//        if (readerSource.get() == nullptr)
+//        {
+//            bufferToFill.clearActiveBufferRegion();
+//            return;
+//        }
 
         //Get Audio loaded from transport source
-        transportSource.getNextAudioBlock (bufferToFill);
+        //transportSource.getNextAudioBlock (bufferToFill);
+        //audioSources.at(0)->getNextAudioBlock(bufferToFill);
+        //std::cout << audioBuffers.at(0).getNumSamples() << std::endl;
 
         //Get a preprocessed verstion stored called inputL and inputR
-        inputL->setSize(1,bufferToFill.numSamples);
-        for(int i =0; i < bufferToFill.numSamples; ++i){
-            inputL->setSample(0, i, bufferToFill.buffer->getSample(0,i));
-        }
-        inputR->setSize(1,bufferToFill.numSamples);
-        for(int i =0; i < bufferToFill.numSamples; ++i){
-            inputR->setSample(0, i, bufferToFill.buffer->getSample(1,i));
-        }
+//        inputL->setSize(1,bufferToFill.numSamples);
+////        inputR->setSize(1,bufferToFill.numSamples);
+////
+////        for(int i =0; i < bufferToFill.numSamples; ++i){
+////            inputL->setSample(0, i, bufferToFill.buffer->getSample(0,i) + audioList.at(0).buffer.getSample(0, audioList.at(0).playHead));
+////            inputR->setSample(0, i, bufferToFill.buffer->getSample(1,i) + audioList.at(0).buffer.getSample(0, audioList.at(0).playHead++));
+////            audioList.at(0).playHead %= audioList.at(0).buffer.getNumSamples();
+////            //std::cout << bufferToFill.buffer->getSample(1,i) << std::endl;
+////        }
+////
+////        //Reset input buffer to original state
+////        float * buffLeft = bufferToFill.buffer->getWritePointer(0,bufferToFill.startSample);
+////        for(int i =0; i < bufferToFill.numSamples; ++i){
+////            buffLeft[i] = inputL->getSample(0,i);
+////        }
+////
+////        float * buffRight = bufferToFill.buffer->getWritePointer(1,bufferToFill.startSample);
+////        for(int i =0; i < bufferToFill.numSamples; ++i){
+////            buffRight[i] = inputR->getSample(0,i);
+////        }
 
-        //Perform convolution on left channel and store processed convolution in a temp buffer
-        conProcessorLeft->processBlock(*bufferToFill.buffer, emptyMidi);
-        tempL->setSize(1,bufferToFill.numSamples);
-        for(int i =0; i < bufferToFill.numSamples; ++i){
-            tempL->setSample(0, i, bufferToFill.buffer->getSample(0,i));
+
+            addAudioBuffers(bufferToFill, audioList.at(0));
+
+            //addAudioBuffers(bufferToFill, audioList.at(1));
+
+//
+//        //Perform convolution on left channel and store processed convolution in a temp buffer
+//        conProcessorLeft->processBlock(*bufferToFill.buffer, emptyMidi);
+//        tempL->setSize(1,bufferToFill.numSamples);
+//        for(int i =0; i < bufferToFill.numSamples; ++i){
+//            tempL->setSample(0, i, bufferToFill.buffer->getSample(0,i));
+//        }
+//
+//        //Reset input buffer to original state
+//        float * buffLeft = bufferToFill.buffer->getWritePointer(0,bufferToFill.startSample);
+//        for(int i =0; i < bufferToFill.numSamples; ++i){
+//            buffLeft[i] = inputL->getSample(0,i);
+//        }
+//
+//        float * buffRight = bufferToFill.buffer->getWritePointer(1,bufferToFill.startSample);
+//        for(int i =0; i < bufferToFill.numSamples; ++i){
+//            buffRight[i] = inputR->getSample(0,i);
+//        }
+//
+//        //Perform convolution on right channel
+//        conProcessorRight->processBlock( *bufferToFill.buffer, emptyMidi);
+//
+//        //Overwrite left channel with left convolved buffer
+//        for(int i =0; i < bufferToFill.numSamples; ++i){
+//            buffLeft[i] = tempL->getSample(0,i);
+//        }
+//
+//        //Add filter to rear HRIR
+//        //if(impulseIndex > 17 && impulseIndex < 50)
+//           //  filter.processBlock(*bufferToFill.buffer,emptyMidi);
+//
+//        //Reloading of HRIR every time period
+//        (relativeTime += relativeTime.milliseconds(10)).inMilliseconds();
+//        if(relativeTime.inMilliseconds() > 500.0f){
+//            std::cout << "Approximate Azimuth Angle: " << degrees << "\n";
+//            degrees += 5;
+//            relativeTime = relativeTime.milliseconds(0);
+//
+//            //Reset convolution processes
+//            conProcessorLeft->reset();
+//            conProcessorRight->reset();
+//
+//            //Write new hrir for convolution at new angle
+//            float * irWriteLeft =conProcessorLeft->irBuffer.getWritePointer(0);
+//            float * irWriteRight =conProcessorRight->irBuffer.getWritePointer(0);
+//            for(int i = 0; i < 200; i++){
+//                irWriteLeft[i] = leftHRIR.at(impulseIndex).getSample(0,i);
+//                irWriteRight[i] = rightHRIR.at(impulseIndex).getSample(0,i);
+//            }
+//            impulseIndex++;
+//
+//            //Reset angle to 0
+//            if(impulseIndex > rightHRIR.size() -1) {
+//                impulseIndex = 0;
+//                degrees = 0;
+//            }
+//
+//            //prepare convolution processors
+//            conProcessorLeft->prepareToPlay(sampleRate, samplesExpected);
+//            conProcessorRight->prepareToPlay(sampleRate, samplesExpected);
+//        }
+    }
+
+    void addAudioBuffers(const AudioSourceChannelInfo& source, AudioPlayer &toAdd){
+        inputL->setSize(1,source.numSamples);
+        inputR->setSize(1,source.numSamples);
+
+        for(int i =0; i < source.numSamples; ++i){
+            inputL->setSample(0, i, source.buffer->getSample(0,i) + toAdd.buffer.getSample(0, toAdd.playHead));
+            inputR->setSample(0, i, source.buffer->getSample(1,i) + toAdd.buffer.getSample(1, toAdd.playHead++));
+            toAdd.playHead %= toAdd.buffer.getNumSamples();
+            //std::cout << bufferToFill.buffer->getSample(1,i) << std::endl;
         }
 
         //Reset input buffer to original state
-        float * buffLeft = bufferToFill.buffer->getWritePointer(0,bufferToFill.startSample);
-        for(int i =0; i < bufferToFill.numSamples; ++i){
+        float * buffLeft = source.buffer->getWritePointer(0,source.startSample);
+        for(int i =0; i < source.numSamples; ++i){
             buffLeft[i] = inputL->getSample(0,i);
+            //buffLeft[i] = 0;
         }
 
-        float * buffRight = bufferToFill.buffer->getWritePointer(1,bufferToFill.startSample);
-        for(int i =0; i < bufferToFill.numSamples; ++i){
+        float * buffRight = source.buffer->getWritePointer(1,source.startSample);
+        for(int i =0; i < source.numSamples; ++i){
             buffRight[i] = inputR->getSample(0,i);
+            //buffRight[i] = 0;
+        }
+    }
+
+   AudioSampleBuffer placeSound(int index, AudioSampleBuffer & inputBuffer){
+        AudioSampleBuffer leftBuffer;
+        AudioSampleBuffer rightBuffer;
+
+        //Write new hrir for convolution at new angle
+        float * irWriteLeft =conProcessorLeft->irBuffer.getWritePointer(0);
+        float * irWriteRight =conProcessorRight->irBuffer.getWritePointer(0);
+        for(int i = 0; i < 200; i++){
+            irWriteLeft[i] = leftHRIR.at(index).getSample(0,i);
+            irWriteRight[i] = rightHRIR.at(index).getSample(0,i);
+        }
+        //Reset convolution processes
+        conProcessorLeft->reset();
+        conProcessorRight->reset();
+
+        //prepare convolution processors
+        conProcessorLeft->prepareToPlay(sampleRate, samplesExpected);
+        conProcessorRight->prepareToPlay(sampleRate, samplesExpected);
+
+        inputL->setSize(1,inputBuffer.getNumSamples());
+        inputR->setSize(1,inputBuffer.getNumSamples());
+
+        for(int i =0; i < inputBuffer.getNumSamples(); ++i){
+            inputL->setSample(0, i, inputBuffer.getSample(0,i));
+            inputR->setSample(0, i, inputBuffer.getSample(0,i));
+
+            //std::cout << "Left: " << inputL->getSample(0,i) << std::endl;
+            //std::cout << "Right: " << inputR->getSample(0,i) << std::endl;
         }
 
-        //Perform convolution on right channel
-        conProcessorRight->processBlock( *bufferToFill.buffer, emptyMidi);
+        //ProcessLeft
+        conProcessorLeft->processBlock( inputBuffer, emptyMidi);
+
+        leftBuffer.setSize(1, inputBuffer.getNumSamples());
+        //Save and Reset input Buffer
+        for(int i =0; i < inputBuffer.getNumSamples(); ++i){
+            leftBuffer.setSample(0,i,inputBuffer.getSample(0,i));
+            inputBuffer.setSample(0, i, inputL->getSample(0,i));
+            inputBuffer.setSample(1, i, inputL->getSample(0,i));
+        }
+
+        //ProcessRight
+        conProcessorRight->processBlock( inputBuffer, emptyMidi);
 
         //Overwrite left channel with left convolved buffer
-        for(int i =0; i < bufferToFill.numSamples; ++i){
-            buffLeft[i] = tempL->getSample(0,i);
+        for(int i =0; i < inputBuffer.getNumSamples(); ++i){
+            inputBuffer.setSample(0, i,  leftBuffer.getSample(0,i));
         }
 
-        //Add filter to rear HRIR
-        //if(impulseIndex > 17 && impulseIndex < 50)
-           //  filter.processBlock(*bufferToFill.buffer,emptyMidi);
+       std::cout << "input Left: " << inputBuffer.getSample(0,1000) << std::endl;
+       std::cout << "input Right: " << inputBuffer.getSample(1,1000) << std::endl;
 
-        //Reloading of HRIR every time period
-        (relativeTime += relativeTime.milliseconds(10)).inMilliseconds();
-        if(relativeTime.inMilliseconds() > 500.0f){
-            std::cout << "Approximate Azimuth Angle: " << degrees << "\n";
-            degrees += 5;
-            relativeTime = relativeTime.milliseconds(0);
+       std::cout << inputBuffer.getNumChannels() << " input num channels\n";
+       return inputBuffer;
 
-            //Reset convolution processes
-            conProcessorLeft->reset();
-            conProcessorRight->reset();
-
-            //Write new hrir for convolution at new angle
-            float * irWriteLeft =conProcessorLeft->irBuffer.getWritePointer(0);
-            float * irWriteRight =conProcessorRight->irBuffer.getWritePointer(0);
-            for(int i = 0; i < 200; i++){
-                irWriteLeft[i] = leftHRIR.at(impulseIndex).getSample(0,i);
-                irWriteRight[i] = rightHRIR.at(impulseIndex).getSample(0,i);
-            }
-            impulseIndex++;
-
-            //Reset angle to 0
-            if(impulseIndex > rightHRIR.size() -1) {
-                impulseIndex = 0;
-                degrees = 0;
-            }
-
-            //prepare convolution processors
-            conProcessorLeft->prepareToPlay(sampleRate, samplesExpected);
-            conProcessorRight->prepareToPlay(sampleRate, samplesExpected);
-        }
     }
 
     void releaseResources() override
@@ -465,9 +594,10 @@ private:
         File temp = File(dir.getChildFile ("Resources").getChildFile("PlayerLoopMonoWithVoice.wav"));
 //        File temp = File(dir.getChildFile ("Resources").getChildFile("SodaCan.wav"));
        // File temp = File(dir.getChildFile ("Resources").getChildFile("PlayerMonoWhistle.wav"));
-        //File temp = File(dir.getChildFile ("Resources").getChildFile("Register.wav"));
+        File temp1 = File(dir.getChildFile ("Resources").getChildFile("Register.wav"));
         //std::unique_ptr<AudioFormatReader> reader(formatManager.createReaderFor(temp));
         auto* reader = formatManager.createReaderFor (temp);
+        auto* reader2 = formatManager.createReaderFor (temp1);
 
         if (reader != nullptr)
         {
@@ -477,9 +607,17 @@ private:
             readerSource.reset (newSource.release());
             std::cout << "AudioFile Loaded! \n";
         }
+//        if (reader2 != nullptr)
+//        {
+//            std::unique_ptr<AudioFormatReaderSource> newSource2 (new AudioFormatReaderSource (reader2, true));
+//            audioSources.at(0)->setSource (newSource2.get(), 0, nullptr, reader2->sampleRate);
+//            playButton.setEnabled (true);
+//            readerSource.reset (newSource2.release());
+//            std::cout << "AudioFile Loaded! \n";
+//        }
     }
 
-    void loadAudioFile(){
+    void loadAudioFile(String fileName){
         auto dir = File::getCurrentWorkingDirectory();
         int numTries = 0;
         AudioSampleBuffer sampleBuffer;
@@ -492,7 +630,7 @@ private:
             dir = dir.getParentDirectory();
         }
 
-        File temp = File(dir.getChildFile ("Resources").getChildFile("Chuff.wav"));
+        File temp = File(dir.getChildFile ("Resources").getChildFile(fileName));
         while (! dir.getChildFile ("Resources").exists() && numTries++ < 15) {
             dir = dir.getParentDirectory();
         }
@@ -501,32 +639,35 @@ private:
 
         if (source.get() != nullptr) {
             auto duration = source->lengthInSamples / source->sampleRate;
-            sampleBuffer.setSize(1, (int)source->lengthInSamples);
+            sampleBuffer.setSize(2, (int)source->lengthInSamples);
             source->read(&sampleBuffer, 0, (int)source->lengthInSamples, 0, true, true);
         }
 
-        std::cout<< "Reader size:" << source->lengthInSamples << "\n";
-        std::cout<< "Channels:" << source->numChannels << "\n";
-        std::cout<< "Channels:" << sampleBuffer.getNumChannels() << "\n";
-
-        leftChannel.setSize(1, sampleBuffer.getNumSamples());
-        rightChannel.setSize(1, sampleBuffer.getNumSamples());
-        float * buff = leftChannel.getWritePointer(0,0);
-
-
-        //write left and right channels mono
-        for(int i = 0; i < sampleBuffer.getNumSamples(); ++i ){
-            leftChannel.setSample(0,i,sampleBuffer.getSample(0,i));
-            //std::cout<< "LeftChannel sample:" << leftChannel.getSample(0,i) << "\n";
-        }
-        std::cout<< "LeftChannel size:" << leftChannel.getNumSamples() << "\n";
-        std::cout<< "LeftChannel numChannels:" << leftChannel.getNumChannels() << "\n";
-
-        for(int i = 0; i < sampleBuffer.getNumSamples(); ++i ){
-            rightChannel.setSample(0,i,sampleBuffer.getSample(0,i));
-        }
-        std::cout<< "RightChannel size:" << rightChannel.getNumSamples() << "\n";
-        std::cout<< "RightChannel numChannels:" << rightChannel.getNumChannels() << "\n";
+        audioBuffers.push_back(sampleBuffer);
+        AudioPlayer tempAudio(sampleBuffer, 9, 9);
+        audioList.push_back(tempAudio);
+//        std::cout<< "Reader size:" << source->lengthInSamples << "\n";
+//        std::cout<< "Channels:" << source->numChannels << "\n";
+//        std::cout<< "Channels:" << sampleBuffer.getNumChannels() << "\n";
+//
+//        leftChannel.setSize(1, sampleBuffer.getNumSamples());
+//        rightChannel.setSize(1, sampleBuffer.getNumSamples());
+//        float * buff = leftChannel.getWritePointer(0,0);
+//
+//
+//        //write left and right channels mono
+//        for(int i = 0; i < sampleBuffer.getNumSamples(); ++i ){
+//            leftChannel.setSample(0,i,sampleBuffer.getSample(0,i));
+//            //std::cout<< "LeftChannel sample:" << leftChannel.getSample(0,i) << "\n";
+//        }
+//        std::cout<< "LeftChannel size:" << leftChannel.getNumSamples() << "\n";
+//        std::cout<< "LeftChannel numChannels:" << leftChannel.getNumChannels() << "\n";
+//
+//        for(int i = 0; i < sampleBuffer.getNumSamples(); ++i ){
+//            rightChannel.setSample(0,i,sampleBuffer.getSample(0,i));
+//        }
+//        std::cout<< "RightChannel size:" << rightChannel.getNumSamples() << "\n";
+//        std::cout<< "RightChannel numChannels:" << rightChannel.getNumChannels() << "\n";
 
     }
 
@@ -650,10 +791,11 @@ private:
             copyRBehind.setSize(1,200);         //behind +
             copyRNegativeBehind.setSize(1,200); //behind -
 
+
             //Front level elevation 9
             //Back level elevation 39
-            const int elevationFront = 5;
-            const int elevationBehind = 43;
+            const int elevationFront = 9;
+            const int elevationBehind = 39;
             int count = 0;
             while (count++ < 199) {
                 //Reallocate the buffer to the correct shape
@@ -664,6 +806,11 @@ private:
                     copyRNegativeBehind.setSample(0, count, sampleBufferRightNeg.getSample(count, elevationBehind));
                 }
             }
+            std::cout << "\nRMS R Positive"  << copyR.getRMSLevel(0,0, copyR.getNumSamples()) << "\n";
+            std::cout << "RMS R Negative Behind"  << copyRNegativeBehind.getRMSLevel(0,0, copyRNegativeBehind.getNumSamples()) << "\n";
+            std::cout << "RMS R Positive Behind"  << copyRBehind.getRMSLevel(0,0, copyRBehind.getNumSamples()) << "\n";
+            std::cout << "RMS R Negative"  << copyRNegative.getRMSLevel(0,0, copyRNegative.getNumSamples()) << "\n";
+
 
             copyL.setSize(1, (int)200);         //front +
             copyLNegative.setSize(1,200);       //front -
@@ -680,7 +827,10 @@ private:
                     copyLNegativeBehind.setSample(0, count, sampleBufferLeftNeg.getSample(count, elevationBehind));
                 }
             }
-
+            std::cout << "\nRMS L Positive"  << copyL.getRMSLevel(0,0, copyL.getNumSamples()) << "\n";
+            std::cout << "RMS L Negative Behind"  << copyLNegativeBehind.getRMSLevel(0,0, copyLNegativeBehind.getNumSamples()) << "\n";
+            std::cout << "RMS L Positive Behind"  << copyLBehind.getRMSLevel(0,0, copyLBehind.getNumSamples()) << "\n";
+            std::cout << "RMS L Negative"  << copyLNegative.getRMSLevel(0,0, copyLNegative.getNumSamples()) << "\n";
             //Push audio buffer to temp vector
             // 0 - 80 (16 azimuths)
             rightVec.push_back(copyR);
@@ -706,19 +856,24 @@ private:
             leftHRIR.push_back(leftVec.at(i));
             rightHRIR.push_back(rightVec.at(i));
         }
-        for(int i = positiveBehindLeftVec.size() - 1; i > 0  ; i--){
+
+        for(int i = negativeBehindRightVec.size() - 1; i >= 0 ; i--){
+            leftHRIR.push_back(negativeBehindLeftVec.at(i));
+            rightHRIR.push_back(negativeBehindRightVec.at(i));
+        }
+
+        for(int i = 0; i < positiveBehindLeftVec.size()  ; i++){
             leftHRIR.push_back(positiveBehindLeftVec.at(i));
             rightHRIR.push_back(positiveBehindRightVec.at(i));
         }
 
-        for(int i = 0; i < negativeBehindRightVec.size() ; i++){
-            leftHRIR.push_back(negativeBehindLeftVec.at(i));
-            rightHRIR.push_back(negativeBehindRightVec.at(i));
-        }
         for(int i = leftVecNeg.size() - 1; i >= 0 ; i--){
             leftHRIR.push_back(leftVecNeg.at(i));
             rightHRIR.push_back(rightVecNeg.at(i));
         }
+
+
+
         std::cout << "\nHRIR Vector<> Size(Right):"<< rightHRIR.size() << "\n";
         std::cout << "HRIR Vector<> Size(Left):"<< leftHRIR.size() << "\n";
     }
@@ -819,6 +974,7 @@ private:
     AudioFormatManager formatManager;
     std::unique_ptr<AudioFormatReaderSource> readerSource;
     AudioTransportSource transportSource;
+    std::vector<std::unique_ptr<AudioTransportSource>> audioSources;
     //MemoryAudioSource memoryAudioSource;
     TransportState state;
 
@@ -852,8 +1008,12 @@ private:
     std::vector<AudioSampleBuffer> leftVecNeg;
     std::vector<AudioSampleBuffer> leftHRIR;
     std::vector<AudioSampleBuffer> rightHRIR;
+    std::vector<AudioSampleBuffer> audioBuffers;
+    std::vector<AudioPlayer> audioList;
+
     RelativeTime relativeTime;
     int impulseIndex = 0;
     int degrees = 0;
+    int playhead;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };
