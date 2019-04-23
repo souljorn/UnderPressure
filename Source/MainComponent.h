@@ -751,7 +751,7 @@ public:
         //----------Add sounds to the Audio List-----------------------
 
         //-------------Load files with gain adjustments---------------
-        loadAudioFile("CrowdDrumLoop.wav", 0.2f);
+        loadAudioFile("CrowdDrumLoop.wav", 0.4f);
         loadAudioFile("CrowdMediumClappingWithHorn.wav", 0.2f);
         loadAudioFile("OhCrowd.wav", 0.2f);
         loadAudioFile("ImInTheZoneMan.wav", 0.3f);
@@ -776,8 +776,8 @@ public:
         audioList.at(1).buffer = addSilence(audioList.at(1).buffer,1.5f);
         audioList.at(3).buffer = addSilence(audioList.at(3).buffer,14.0f);
         audioList.at(4).buffer = addSilence(audioList.at(4).buffer,12.0f);
-        audioList.at(7).buffer = addSilence(audioList.at(7).buffer,2.0f);
-        audioList.at(6).buffer = addSilence(audioList.at(6).buffer,4.2);
+        audioList.at(7).buffer = addSilence(audioList.at(7).buffer,7.0f);
+        audioList.at(6).buffer = addSilence(audioList.at(6).buffer,5.2);
         audioList.at(8).buffer =  addSilence(audioList.at(8).buffer,2.0);
         blockSize = samplesPerBlockExpected;
 
@@ -807,23 +807,27 @@ public:
 //            addAudioBuffers(&bufferToFill, audioList.at(2));
 //            addAudioBuffers(&bufferToFill, audioList.at(3));
 //            applyConvolution(&bufferToFill, 0);
-
+            followRoute(players.at(0));
             addAudioBuffers(&bufferToFill, players.at(0).audioPlayer);
             applyConvolution(&bufferToFill,0,players.at(0));
-            applyGain(&bufferToFill, 1.8f);
+            applyGain(&bufferToFill, 5.0f);
 
         }
 
         //----Add Static Sound -------------------
         if (state == Playing) {
-            addAudioBuffers(&bufferToFill, audioList.at(0));
-            if (frequencySlider.getValue() > 300) {
 
+
+            if (frequencySlider.getValue() > 100) {
                 addAudioBuffers(&bufferToFill, audioList.at(1));
+            }
+            if (frequencySlider.getValue() > 1000) {
+
+                addAudioBuffers(&bufferToFill, audioList.at(0));
                 addAudioBuffers(&bufferToFill, audioList.at(2));
 
             }
-            if (frequencySlider.getValue() > 600) {
+            if (frequencySlider.getValue() > 3000) {
                 addAudioBuffers(&bufferToFill, audioList.at(3));
                 addAudioBuffers(&bufferToFill, audioList.at(4));
                 addAudioBuffers(&bufferToFill, audioList.at(5));
@@ -842,8 +846,8 @@ public:
 //        std::cout << bufferToFill.buffer->getRMSLevel(0,bufferToFill.startSample,bufferToFill.numSamples) << std::endl;
 //        std::cout << bufferToFill.buffer->getNumSamples() << std::endl;
 
-        //applyGain(&bufferToFill,1.5f);
-        followRoute(players.at(0));
+        applyGain(&bufferToFill,2.0f);
+
     }
 
     /*=================================================================================*/
@@ -2104,7 +2108,7 @@ private:
     void followRoute(Player &player){
 
             relativeTime1 += relativeTime1.milliseconds(10).inMilliseconds();
-            if ( relativeTime1.inMilliseconds() > 10000.0f  ) {
+            if ( relativeTime1.inMilliseconds() > 1000000.0f) {
                 player.head = player.head->next;
 //                std::cout << "Path Node: x: " << player.head->current.x << "y:" << player.head->current.y << "\n";
 //                std::cout << "Path Node: Azimuth: " << vectorToSphere(player.head->current).azimuth << "\n";
@@ -2113,7 +2117,7 @@ private:
                 auto hr = findClosestHRTF(vectorToSphere(player.head->current).azimuth);
                 player.hrtfIndex =hr;
                 player.bufferCurrent = zeroPlane.at(hr);
-                std::cout << "HRTF index " << player.hrtfIndex << "\n";
+                //std::cout << "HRTF index " << player.hrtfIndex << "\n";
                 relativeTime1 = relativeTime1.milliseconds(0);
 
             }
