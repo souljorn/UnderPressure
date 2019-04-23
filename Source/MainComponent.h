@@ -13,19 +13,33 @@
 */
 
 #pragma once
+//
+//#include <AudioToolbox/AudioToolbox.h>
+
 AudioSampleBuffer rightZero;
 AudioSampleBuffer leftZero;
 //Foward Decleration for typedef
 struct HRTFData;
+class ConProcessorLeft;
+class ConProcessorRight;
+class AudioPlayer;
+struct Node;
 //Typedefs for simpler objects
 typedef dsp::Matrix<double> Mat;
 typedef std::map<int, HRTFData> AzimuthInnerMap;
 typedef std::map<int, AzimuthInnerMap> AzimuthMap;
-
-
+typedef std::pair<std::unique_ptr<ConProcessorLeft>,std::unique_ptr<ConProcessorRight>> ConvolverPair;
+typedef std::shared_ptr<Node> nPtr;
 //==============================================================================
 //                  Helper Functions
 //==============================================================================
+
+std::vector<const int> azimuthAngles = {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 55, 65, 80,
+                                        100, 115, 125, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180,
+                                        185, 190, 195, 200, 205, 210, 215, 220, 225, 235, 245, 260,
+                                        280, 295, 305, 315, 320, 325, 330, 335, 340, 345, 350, 355
+};
+
 float decibelsToGain(float decibels){
     return  pow(10.0,decibels/20);
 }
@@ -33,10 +47,84 @@ float decibelsToGain(float decibels){
 float gainToDecibels(float gain){
     return  20.0 * log10(gain);
 }
+
+
+struct Position{
+    float x;
+    float y;
+    Position(): x(0), y(0){}
+    Position(float x, float y): x(x), y(y){}
+};
+
+struct PositionSpherical{
+    float azimuth;
+    float elevation;
+    float radius;
+
+    PositionSpherical(): azimuth(0), elevation(0), radius(1){}
+    PositionSpherical(float az, float el, float rad): azimuth(az), elevation(el), radius(rad){}
+};
+
+Position sphereToVector(double radius, double azimuth) {
+    double x = cos(degreesToRadians(azimuth));
+    double y = radius * sin(degreesToRadians(azimuth));
+
+    Position temp;
+    temp.x = x;
+    temp.y = y;
+    return temp;
+}
+
+float radianToDegrees(float num){
+    if (num * 180.0/3.141592653589793238463 < 0)
+        return num * 180.0/3.141592653589793238463 + 360;
+    if (num * 180.0/3.141592653589793238463 > 360)
+        return num * 180.0/3.141592653589793238463 - 360;
+    return num * 180.0/3.141592653589793238463;
+}
+
+PositionSpherical vectorToSphere(Position pos){
+    PositionSpherical posSphere;
+    posSphere.radius = sqrt(pow(pos.x,2) + pow(pos.y,2));
+    posSphere.azimuth = atan(pos.x/pos.y);
+    posSphere.azimuth =radianToDegrees(posSphere.azimuth);
+    posSphere.elevation = 0;
+
+    return posSphere;
+}
+
+struct Node{
+    std::shared_ptr<Node> next;
+    Position current;
+
+    Node(Position pos, std::shared_ptr<Node> next): current(pos), next(next){
+    }
+
+    Node(Position pos){
+        current = pos;
+    }
+
+};
+
+int findClosestHRTF(float azimuth){
+
+    int min = 0;
+    float minNum = abs(azimuth - azimuthAngles.at(0));
+    for(int i =0; i < azimuthAngles.size(); i++){
+        if( abs(azimuth - azimuthAngles.at(i)) < minNum)
+        {
+            min = i;
+            minNum = abs(azimuth - azimuthAngles.at(i));
+        }
+    }
+    return min;
+}
+
 //==============================================================================
 //              Audio Player Object
 //              Plays stationary sounds
 //==============================================================================
+
 struct AudioPlayer {
     AudioSampleBuffer buffer;
     AudioSampleBuffer convolvedBuffer;
@@ -45,6 +133,7 @@ struct AudioPlayer {
     int elevation;
     float gain;
 
+    AudioPlayer():playHead(0), azimuth(0), elevation(0), gain(0){}
 
     AudioPlayer(AudioSampleBuffer buffer, float gain) :
             buffer(buffer),
@@ -57,7 +146,72 @@ struct AudioPlayer {
             convolvedBuffer(buffer),
             azimuth(az),
             elevation(elv) {}
+
+    AudioPlayer &operator=(AudioPlayer other) // (1)
+    {
+        swap(*this, other); // (2)
+        return *this;
+    }
+
+    friend void swap(AudioPlayer &first, AudioPlayer &second) // nothrow
+    {
+        // enable ADL (not necessary in our case, but good practice)
+        using std::swap;
+
+        // by swapping the members of two objects,
+        // the two objects are effectively swapped
+        swap(first.buffer, second.buffer);
+        swap(first.convolvedBuffer, second.convolvedBuffer);
+        swap(first.azimuth, second.azimuth);
+        swap(first.elevation, second.elevation);
+        swap(first.playHead, second.playHead);
+        swap(first.gain, second.gain);
+    }
+
+
+
 };
+
+
+struct AudioBufferLayered {
+    std::vector<AudioSampleBuffer> playerPositions;
+    int azimuth;
+    int elevation;
+    float gain;
+    int playHead;
+    AudioBufferLayered():playHead(0), azimuth(0), elevation(0), gain(0){}
+
+    AudioBufferLayered(AudioSampleBuffer buffer, float gain) :
+            playHead(0),
+            gain(gain) {}
+
+    AudioBufferLayered(AudioSampleBuffer buffer, int elv, int az) :
+            azimuth(az),
+            elevation(elv) {}
+
+    AudioBufferLayered &operator=(AudioBufferLayered other) // (1)
+    {
+        swap(*this, other); // (2)
+        return *this;
+    }
+
+    friend void swap(AudioBufferLayered &first, AudioBufferLayered &second) // nothrow
+    {
+        // enable ADL (not necessary in our case, but good practice)
+        using std::swap;
+
+        // by swapping the members of two objects,
+        // the two objects are effectively swapped
+        swap(first.playerPositions, second.playerPositions);
+        swap(first.azimuth, second.azimuth);
+        swap(first.elevation, second.elevation);
+        swap(first.playHead, second.playHead);
+        swap(first.gain, second.gain);
+    }
+
+};
+
+
 //==============================================================================
 //              HRTF DATA STRUCT
 //
@@ -197,6 +351,70 @@ struct HRTFData {
     }
 };
 
+//==============================================================================
+//              Player Position Class
+//
+//==============================================================================
+class Player{
+public:
+    Position currentPos;
+    Position nextPos;
+    std::shared_ptr<Node> route;
+    std::shared_ptr<Node> routeTail;
+    std::shared_ptr<Node> head;
+    float speed = 0;
+    float magnitude = 0;
+    Position direction;
+    AudioPlayer audioPlayer;
+    HRTFData bufferCurrent;
+
+    int hrtfIndex;
+    float gain;
+    int steps;
+
+
+    Player():currentPos(Position()), nextPos(Position()), direction(Position()){
+    bufferCurrent.hrtfL = leftZero;
+    bufferCurrent.hrtfR = rightZero;
+    hrtfIndex = 0;
+
+
+    }
+
+    Position calculatePosition(float deltaTime){
+        Position position;
+        currentPos.x = currentPos.x + direction.x * (speed * deltaTime);
+        currentPos.y = currentPos.y + direction.y * (speed * deltaTime);
+
+    }
+
+    void calculateDirection(){
+        magnitude= sqrt(pow(currentPos.x,2) + pow(currentPos.y,2));
+        direction.x = (nextPos.x - currentPos.x) / magnitude;
+        direction.y = (nextPos.y - currentPos.y) / magnitude;
+    }
+
+    void printPosition(){
+        std::cout << "Current Pos:[" << currentPos.x << ","<< currentPos.y <<  "]\n";
+        std::cout << "Direction:[" << direction.x << ","<< direction.y <<  "]\n";
+    }
+
+    void buildRoute(Position start){
+        route =  std::make_shared<Node>(start, route);
+        head = route;
+        routeTail = route;
+        steps ++;
+    }
+
+    void addToRoute( Position pos){
+        std::shared_ptr<Node> temp = std::make_shared<Node>(pos);
+        routeTail->next = temp;
+        temp->next = route;
+        routeTail = temp;
+        steps++;
+    }
+
+};
 //==============================================================================
 //                      Processors
 //
@@ -419,6 +637,34 @@ public:
     MainContentComponent()
             : state(Stopped) {
 
+        setSize (600, 400);
+
+        addAndMakeVisible(frequencySlider);
+        frequencySlider.setRange(100, 5000, 100);
+        //frequencySlider.setTextValueSuffix(" Hz");
+
+        addAndMakeVisible(frequencyLabel);
+        frequencyLabel.setText("Crowd size", dontSendNotification);
+        frequencyLabel.attachToComponent(&frequencySlider, true);
+
+        addAndMakeVisible(durationSlider);
+        durationSlider.setRange(1, 10, 1);
+        //durationSlider.setTextValueSuffix(" seconds");
+
+        addAndMakeVisible(durationLabel);
+        durationLabel.setText("Number of players", dontSendNotification);
+        durationLabel.attachToComponent(&durationSlider, true);
+
+        addAndMakeVisible(homeButton);
+        homeButton.setClickingTogglesState(true);
+        homeLabel.setText("Home", dontSendNotification);
+        homeLabel.attachToComponent(&homeButton, true);
+
+        addAndMakeVisible(awayButton);
+        awayLabel.setText("Away", dontSendNotification);
+        awayLabel.attachToComponent(&awayButton, true);
+
+
         addAndMakeVisible(&playButton);
         playButton.setButtonText("Play");
         playButton.onClick = [this] { playButtonClicked(); };
@@ -439,7 +685,6 @@ public:
         addAndMakeVisible(&currentPositionLabel);
         currentPositionLabel.setText("Stopped", dontSendNotification);
 
-        setSize(300, 200);
 
         formatManager.registerBasicFormats();
         formatManager1.registerBasicFormats();
@@ -447,7 +692,8 @@ public:
         transportSource = std::unique_ptr<AudioTransportSource>(new AudioTransportSource());
         transportSource.get()->addChangeListener(this);
 
-        setAudioChannels(2, 2);
+
+        setAudioChannels(0, 2);
         startTimer(20);
 
     }
@@ -462,46 +708,87 @@ public:
 
     void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override {
         samplesExpected = samplesPerBlockExpected;
-        samplesPerBlockExpected = 1024;
-
+        //samplesPerBlockExpected = 1024;
+        relativeTime1 = relativeTime1.milliseconds(0);
         //Set up of HRTF
         loadFileToTransport();
         impulseProcessing();
+
+        loadPlayer("PlayerLoopMono.wav",one);
 
         //Extra Buffers
         tempL = std::make_unique<AudioSampleBuffer>();
         tempR = std::make_unique<AudioSampleBuffer>();
         inputL = std::make_unique<AudioSampleBuffer>();
         inputR = std::make_unique<AudioSampleBuffer>();
+        indexCurCircular = 0;
+        indexPrevCircular = 0;
 
-        //
+
+        //Convolvers
         conProcessorLeft = std::make_unique<ConProcessorLeft>();
         conProcessorRight = std::make_unique<ConProcessorRight>();
         conProcessorRight->prepareToPlay(samplesPerBlockExpected, sampleRate);
         conProcessorLeft->prepareToPlay(samplesPerBlockExpected, sampleRate);
+
+        auto tempLeftCon = std::make_unique<ConProcessorLeft>();
+        auto tempRightCon = std::make_unique<ConProcessorRight>();
+        convolvers.push_back(std::make_pair(std::move(tempLeftCon),std::move(tempRightCon)));
+
+        auto tempLeftCon1 = std::make_unique<ConProcessorLeft>();
+        auto tempRightCon1 = std::make_unique<ConProcessorRight>();
+        convolvers.push_back(std::make_pair(std::move(tempLeftCon1),std::move(tempRightCon1)));
+
+        //Prepare Convolvers
+        for(auto it = convolvers.begin(); it != convolvers.end(); it++){
+           it->first->prepareToPlay(samplesPerBlockExpected,sampleRate);
+           it->second->prepareToPlay(samplesPerBlockExpected,sampleRate);
+        }
+
+
         filter.prepareToPlay(sampleRate, samplesPerBlockExpected);
 
         //----------Add sounds to the Audio List-----------------------
 
         //-------------Load files with gain adjustments---------------
-        loadAudioFile("CrowdDrumLoop.wav", 0.1f);
-        loadAudioFile("CrowdMediumChatting.wav", 0.2f);
-        loadAudioFile("PlayerLoopMono.wav", .2f);
-        loadAudioFile("BasketballFeet.wav", .2f);
-
+        loadAudioFile("CrowdDrumLoop.wav", 0.4f);
+        loadAudioFile("CrowdMediumClappingWithHorn.wav", 0.2f);
+        loadAudioFile("OhCrowd.wav", 0.2f);
+        loadAudioFile("ImInTheZoneMan.wav", 0.3f);
+        loadAudioFile("ItsGood.wav", 0.2f);
+        loadAudioFile("CrowdMediumClapping.wav", 0.4f);
+        loadAudioFile("PlayerMonoWhistle.wav", 0.4f);
+        loadAudioFile("PlayerLoopMono.wav", 0.4f);
+        loadAudioFile("Breathone.wav", 0.1f);
 
         //-------------Place Static Sounds here---------------
         audioList.at(0).convolvedBuffer = placeSound(25, audioList.at(0).buffer);
         audioList.at(1).convolvedBuffer = placeSound(15, audioList.at(1).buffer);
         audioList.at(2).convolvedBuffer = placeSound(40, audioList.at(2).buffer);
-        audioList.at(3).convolvedBuffer = placeSound(2, audioList.at(3).buffer);
+        audioList.at(3).convolvedBuffer = placeSound(16, audioList.at(3).buffer);
+        audioList.at(4).convolvedBuffer = placeSound(20, audioList.at(4).buffer);
+        audioList.at(5).convolvedBuffer = placeSound(8, audioList.at(5).buffer);
+        audioList.at(6).convolvedBuffer = placeSound(1, audioList.at(6).buffer);
+        audioList.at(7).convolvedBuffer = placeSound(36, audioList.at(7).buffer);
+        audioList.at(8).convolvedBuffer = placeSound(36, audioList.at(8).buffer);
+
+        audioList.at(2).buffer = addSilence(audioList.at(2).buffer,5.0f);
+        audioList.at(1).buffer = addSilence(audioList.at(1).buffer,1.5f);
+        audioList.at(3).buffer = addSilence(audioList.at(3).buffer,14.0f);
+        audioList.at(4).buffer = addSilence(audioList.at(4).buffer,12.0f);
+        audioList.at(7).buffer = addSilence(audioList.at(7).buffer,7.0f);
+        audioList.at(6).buffer = addSilence(audioList.at(6).buffer,5.2);
+        audioList.at(8).buffer =  addSilence(audioList.at(8).buffer,2.0);
         blockSize = samplesPerBlockExpected;
 
-
+        audioList.at(0).buffer.applyGainRamp(0,512,0,.4);
+        audioList.at(1).buffer.applyGainRamp(0,512,0,.4);
         //Prepare Mixer
         mixer.prepareToPlay(samplesPerBlockExpected, sampleRate);
         std::cout << "prepare to play called\n";
 
+        //Convolve player sounds
+        //followRoute(players.at(0));
     }
 /*=====================Main Buffer Loop============================================*/
     //Buffer to fill
@@ -512,21 +799,55 @@ public:
             return;
         }
 
+        if (state == Stopped){
+            bufferToFill.buffer->clear();
+        }
         //----Add Dynamic Sound Here-------------------
         if (state == Playing) {
-            addAudioBuffers(&bufferToFill, audioList.at(2));
-            addAudioBuffers(&bufferToFill, audioList.at(3));
-            applyConvolution(&bufferToFill);
+//            addAudioBuffers(&bufferToFill, audioList.at(2));
+//            addAudioBuffers(&bufferToFill, audioList.at(3));
+//            applyConvolution(&bufferToFill, 0);
+            followRoute(players.at(0));
+            addAudioBuffers(&bufferToFill, players.at(0).audioPlayer);
+            applyConvolution(&bufferToFill,0,players.at(0));
+            applyGain(&bufferToFill, 5.0f);
+
         }
 
         //----Add Static Sound -------------------
         if (state == Playing) {
-            addAudioBuffers(&bufferToFill, audioList.at(0));
-            addAudioBuffers(&bufferToFill, audioList.at(1));
+
+
+            if (frequencySlider.getValue() > 100) {
+                addAudioBuffers(&bufferToFill, audioList.at(1));
+            }
+            if (frequencySlider.getValue() > 1000) {
+
+                addAudioBuffers(&bufferToFill, audioList.at(0));
+                addAudioBuffers(&bufferToFill, audioList.at(2));
+
+            }
+            if (frequencySlider.getValue() > 3000) {
+                addAudioBuffers(&bufferToFill, audioList.at(3));
+                addAudioBuffers(&bufferToFill, audioList.at(4));
+                addAudioBuffers(&bufferToFill, audioList.at(5));
+            }
+            if (durationSlider.getValue() > 1){
+                addAudioBuffers(&bufferToFill, audioList.at(6));
+                addAudioBuffers(&bufferToFill, audioList.at(8));
+
+            }
+            if (durationSlider.getValue() > 2){
+                addAudioBuffers(&bufferToFill, audioList.at(7));
+            }
+
         }
 
 //        std::cout << bufferToFill.buffer->getRMSLevel(0,bufferToFill.startSample,bufferToFill.numSamples) << std::endl;
 //        std::cout << bufferToFill.buffer->getNumSamples() << std::endl;
+
+        applyGain(&bufferToFill,2.0f);
+
     }
 
     /*=================================================================================*/
@@ -538,7 +859,6 @@ public:
             inputL->setSample(0, i, source->buffer->getSample(0, i) + toAdd.buffer.getSample(0, toAdd.playHead));
             inputR->setSample(0, i, source->buffer->getSample(1, i) + toAdd.buffer.getSample(1, toAdd.playHead++));
             toAdd.playHead %= toAdd.buffer.getNumSamples();
-            //std::cout << bufferToFill.buffer->getSample(1,i) << std::endl;
         }
 
         //Reset input buffer to original state
@@ -555,6 +875,27 @@ public:
         }
     }
 
+/*=================================================================================*/
+    void applyGain(const AudioSourceChannelInfo *buffer, double gain){
+        for (int i = 0; i < buffer->buffer->getNumSamples(); ++i) {
+            buffer->buffer->setSample(0, i, buffer->buffer->getSample(0, i) * gain);
+            buffer->buffer->setSample(1, i, buffer->buffer->getSample(1, i) * gain);
+            //std::cout<< "LeftChannel sample:" << leftChannel.getSample(0,i) << "\n";
+        }
+    }
+
+    /*=================================================================================*/
+    AudioSampleBuffer addSilence(AudioSampleBuffer &buffer, double time){
+        AudioSampleBuffer temp;
+        temp.setSize(2,buffer.getNumSamples() + sampleRate * time);
+        float start = sampleRate * time;
+        temp.clear();
+        for (int i = 0; i < buffer.getNumSamples(); ++i) {
+            temp.setSample(0,start + i, buffer.getSample(0,i));
+            temp.setSample(1,start + i, buffer.getSample(0,i));
+        }
+        return temp;
+    }
     /*=================================================================================*/
 
     AudioSampleBuffer placeSound(int index, AudioSampleBuffer &inputBuffer) {
@@ -687,14 +1028,177 @@ public:
         }
     }
 
+
+/*==============================================================================================*/
+    void applyConvolution(const AudioSourceChannelInfo *buffer, size_t convolutionIndex) {
+
+        //Get a preprocessed verstion stored called inputL and inputR
+
+        if (state == Stopped)
+            return;
+
+        inputL->setSize(1, buffer->numSamples);
+        inputR->setSize(1, buffer->numSamples);
+
+        for (int i = 0; i < buffer->numSamples; ++i) {
+            inputL->setSample(0, i, buffer->buffer->getSample(0, i));
+            inputR->setSample(0, i, buffer->buffer->getSample(1, i));
+        }
+
+        //Perform convolution on left channel and store processed convolution in a temp buffer
+        convolvers.at(convolutionIndex).first->processBlock(*buffer->buffer, emptyMidi);
+        tempL->setSize(1, buffer->buffer->getNumSamples());
+        for (int i = 0; i < buffer->buffer->getNumSamples(); ++i) {
+            tempL->setSample(0, i, buffer->buffer->getSample(0, i));
+        }
+
+        //Reset input buffer to original state
+        float *buffLeft = buffer->buffer->getWritePointer(0, buffer->startSample);
+        for (int i = 0; i < buffer->buffer->getNumSamples(); ++i) {
+            buffLeft[i] = inputL->getSample(0, i);
+        }
+
+        float *buffRight = buffer->buffer->getWritePointer(1, buffer->startSample);
+        for (int i = 0; i < buffer->buffer->getNumSamples(); ++i) {
+            buffRight[i] = inputR->getSample(0, i);
+        }
+
+        //Perform convolution on right channel using convolvers list
+        convolvers.at(convolutionIndex).second->processBlock(*buffer->buffer, emptyMidi);
+
+        //Overwrite left channel with left convolved buffer
+        for (int i = 0; i < buffer->numSamples; ++i) {
+            buffLeft[i] = tempL->getSample(0, i);
+        }
+
+        //Add filter to rear HRIR
+        //if(impulseIndex > 17 && impulseIndex < 50)
+        filter.processBlock(*buffer->buffer, emptyMidi);
+
+        //  Reloading of HRIR every time period
+        (relativeTime += relativeTime.milliseconds(10)).inMilliseconds();
+        if (relativeTime.inMilliseconds() > 200.0f) {
+            std::cout << "Approximate Azimuth Angle: " << zeroPlane.at(impulseIndex).azimuth << "\n";
+            degrees += 5;
+            relativeTime = relativeTime.milliseconds(0);
+
+            //Reset convolution processes
+            convolvers.at(convolutionIndex).first->reset();
+            convolvers.at(convolutionIndex).second->reset();
+
+            //Write new hrir for convolution at new angle
+            float *irWriteLeft = convolvers.at(convolutionIndex).first->irBuffer.getWritePointer(0);
+            float *irWriteRight = convolvers.at(convolutionIndex).second->irBuffer.getWritePointer(0);
+            for (int i = 0; i < 200; i++) {
+                irWriteLeft[i] = zeroPlane.at(impulseIndex).hrtfL.getSample(0, i);
+                irWriteRight[i] = zeroPlane.at(impulseIndex).hrtfR.getSample(0, i);
+                //irWriteLeft[i] = hrtfMap.at(0).at(impulseIndex * 5).hrtfL.getSample(0, i);
+                //irWriteRight[i] = hrtfMap.at(0).at(impulseIndex * 5).hrtfR.getSample(0, i);
+
+            }
+            impulseIndex++;
+
+            //Reset angle to 0
+            if (impulseIndex > zeroPlane.size() - 1) {
+                impulseIndex = 0;
+                degrees = 0;
+            }
+
+            //prepare convolution processors
+            convolvers.at(convolutionIndex).first->prepareToPlay(sampleRate, samplesExpected);
+            convolvers.at(convolutionIndex).second->prepareToPlay(sampleRate, samplesExpected);
+        }
+    }
     /*=================================================================================*/
 
+    void applyConvolution(const AudioSourceChannelInfo *buffer, size_t convolutionIndex, Player& player) {
+
+        //Get a preprocessed verstion stored called inputL and inputR
+
+        if (state == Stopped)
+            return;
+
+        inputL->setSize(1, buffer->numSamples);
+        inputR->setSize(1, buffer->numSamples);
+
+        for (int i = 0; i < buffer->numSamples; ++i) {
+            inputL->setSample(0, i, buffer->buffer->getSample(0, i));
+            inputR->setSample(0, i, buffer->buffer->getSample(1, i));
+        }
+
+        //Perform convolution on left channel and store processed convolution in a temp buffer
+        convolvers.at(convolutionIndex).first->processBlock(*buffer->buffer, emptyMidi);
+        tempL->setSize(1, buffer->buffer->getNumSamples());
+        for (int i = 0; i < buffer->buffer->getNumSamples(); ++i) {
+            tempL->setSample(0, i, buffer->buffer->getSample(0, i));
+        }
+
+        //Reset input buffer to original state
+        float *buffLeft = buffer->buffer->getWritePointer(0, buffer->startSample);
+        for (int i = 0; i < buffer->buffer->getNumSamples(); ++i) {
+            buffLeft[i] = inputL->getSample(0, i);
+        }
+
+        float *buffRight = buffer->buffer->getWritePointer(1, buffer->startSample);
+        for (int i = 0; i < buffer->buffer->getNumSamples(); ++i) {
+            buffRight[i] = inputR->getSample(0, i);
+        }
+
+        //Perform convolution on right channel using convolvers list
+        convolvers.at(convolutionIndex).second->processBlock(*buffer->buffer, emptyMidi);
+
+        //Overwrite left channel with left convolved buffer
+        for (int i = 0; i < buffer->numSamples; ++i) {
+            buffLeft[i] = tempL->getSample(0, i);
+
+        }
+
+        if (player.hrtfIndex != indexPast) {
+            //Reset convolution processes
+            convolvers.at(convolutionIndex).first->reset();
+            convolvers.at(convolutionIndex).second->reset();
+
+            //Write new hrir for convolution at new angle
+            float *irWriteLeft = convolvers.at(convolutionIndex).first->irBuffer.getWritePointer(0);
+            float *irWriteRight = convolvers.at(convolutionIndex).second->irBuffer.getWritePointer(0);
+            for (int i = 0; i < 200; i++) {
+                irWriteLeft[i] = player.bufferCurrent.hrtfL.getSample(0, i);
+                irWriteRight[i] = player.bufferCurrent.hrtfR.getSample(0, i);
+                //irWriteLeft[i] = hrtfMap.at(0).at(impulseIndex * 5).hrtfL.getSample(0, i);
+                //irWriteRight[i] = hrtfMap.at(0).at(impulseIndex * 5).hrtfR.getSample(0, i);
+
+            }
+
+            //prepare convolution processors
+            convolvers.at(convolutionIndex).first->prepareToPlay(sampleRate, samplesExpected);
+            convolvers.at(convolutionIndex).second->prepareToPlay(sampleRate, samplesExpected);
+            indexPast =player.hrtfIndex;
+            std::cout << "convolution reset" << std::endl;
+
+
+
+        }
+        //Reset input buffer to original state
+
+        applyGain(buffer, player.gain);
+    }
+
+    void convolvePlayerSounds(Player player, int index, float gain){
+
+
+    }
+    /*=================================================================================*/
     void releaseResources() override {
         transportSource->releaseResources();
         transportSource1->releaseResources();
         mixer.releaseResources();
         conProcessorLeft->releaseResources();
         conProcessorRight->releaseResources();
+        //Prepare Convolvers
+        for(auto it = convolvers.begin(); it != convolvers.end(); it++){
+            it->first->releaseResources();
+            it->second->releaseResources();
+        }
     }
     /*=================================================================================*/
 
@@ -702,11 +1206,17 @@ public:
     //-Add necessary buttons and options
     //-Place in appropriate places
     void resized() override {
-        openButton.setBounds(10, 10, getWidth() - 20, 20);
-        playButton.setBounds(10, 40, getWidth() - 20, 20);
-        stopButton.setBounds(10, 70, getWidth() - 20, 20);
-        loopingToggle.setBounds(10, 100, getWidth() - 20, 20);
-        currentPositionLabel.setBounds(10, 130, getWidth() - 20, 20);
+        const int border = 120;
+        openButton.setBounds(border, 10, getWidth() - 20, 20);
+        playButton.setBounds(border - 60, 40, getWidth() - 20, 20);
+        stopButton.setBounds(border -60 , 70, getWidth() - 20, 20);
+        loopingToggle.setBounds(border, 100, getWidth() - 20, 20);
+        currentPositionLabel.setBounds(border, 130, getWidth() - 20, 20);
+
+        frequencySlider.setBounds(border,130 + 20, getWidth() - border, 20);
+        durationSlider.setBounds(border, 130 + 50, getWidth() - border, 50);
+        homeButton.setBounds(border, 130 + 110, 22, 22);
+        awayButton.setBounds(border + 100, 130 + 110, 22, 22);
     }
 
     /*=================================================================================*/
@@ -724,8 +1234,8 @@ public:
 
     void timerCallback() override {
         if (transportSource->isPlaying()) {
-            RelativeTime position(transportSource->getCurrentPosition());
 
+            position.operator+=(position.milliseconds(18));
             auto minutes = ((int) position.inMinutes()) % 60;
             auto seconds = ((int) position.inSeconds()) % 60;
             auto millis = ((int) position.inMilliseconds()) % 1000;
@@ -734,6 +1244,7 @@ public:
             currentPositionLabel.setText(positionString, dontSendNotification);
         } else {
             currentPositionLabel.setText("Stopped", dontSendNotification);
+            position= position.milliseconds(0);
         }
     }
 
@@ -856,7 +1367,41 @@ private:
         audioList.push_back(tempAudio);
 
     }
+    /*=================================================================================*/
+    AudioPlayer loadAudioFilePlayer(String fileName, float gain) {
+        auto dir = File::getCurrentWorkingDirectory();
+        int numTries = 0;
+        AudioSampleBuffer sampleBuffer;
+        AudioFormatManager formatMan;
+        formatMan.registerBasicFormats();
+        formatMan.getDefaultFormat();
 
+        //find the resources dir
+        while (!dir.getChildFile("Resources").exists() && numTries++ < 15) {
+            dir = dir.getParentDirectory();
+        }
+
+        File temp = File(dir.getChildFile("Resources").getChildFile(fileName));
+        while (!dir.getChildFile("Resources").exists() && numTries++ < 15) {
+            dir = dir.getParentDirectory();
+        }
+
+        std::unique_ptr<AudioFormatReader> source(formatManager.createReaderFor(temp));
+
+        if (source.get() != nullptr) {
+            sampleBuffer.setSize(2, (int) source->lengthInSamples);
+            source->read(&sampleBuffer, 0, (int) source->lengthInSamples, 0, true, true);
+        }
+
+        for (int i = 0; i < sampleBuffer.getNumSamples(); ++i) {
+            sampleBuffer.setSample(0, i, sampleBuffer.getSample(0, i) * gain);
+            sampleBuffer.setSample(1, i, sampleBuffer.getSample(1, i) * gain);
+            //std::cout<< "LeftChannel sample:" << leftChannel.getSample(0,i) << "\n";
+        }
+        AudioPlayer tempAudio(sampleBuffer, gain);
+        return tempAudio;
+
+    }
     /*=================================================================================*/
 
     void playButtonClicked() {
@@ -1428,6 +1973,178 @@ private:
     }
 
     /*=================================================================================*/
+    void loadPlayer(String filename, Player player){
+
+        AudioPlayer temp = loadAudioFilePlayer(filename,1.0f);
+        player.audioPlayer.buffer = temp.buffer;
+        player.audioPlayer.gain = temp.gain;
+        player.currentPos.x = -10.0f;
+
+
+        player.currentPos.y = 25.0f;
+        Position posTemp;
+
+        player.buildRoute(player.currentPos);
+
+        posTemp.x = -10.0f;
+        posTemp.y =  20.0f;
+        player.addToRoute(posTemp);
+        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+        posTemp.x =  -10.0f;
+        posTemp.y =  15.0f;
+        player.addToRoute(posTemp);
+        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+        posTemp.x = - 10.0f;
+        posTemp.y =  10.0f;
+        player.addToRoute(posTemp);
+        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+        posTemp.x = - 5.0f;
+        posTemp.y =   10.0f;
+        player.addToRoute(posTemp);
+        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+        posTemp.x =  0.0f;
+        posTemp.y =   10.0f;
+        player.addToRoute(posTemp);
+        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+        posTemp.x =   5.0f;
+        posTemp.y =   10.0f;
+        player.addToRoute(posTemp);
+        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+        posTemp.x =   10.0f;
+        posTemp.y =   10.0f;
+        player.addToRoute(posTemp);
+
+        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+        posTemp.x =   15.0f;
+        posTemp.y =   10.0f;
+        player.addToRoute(posTemp);
+
+        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+
+        posTemp.x =   20.0f;
+        posTemp.y =   10.0f;
+        player.addToRoute(posTemp);
+
+        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+
+        posTemp.x =   20.0f;
+        posTemp.y =   15.0f;
+        player.addToRoute(posTemp);
+
+        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+
+        posTemp.x =   20.0f;
+        posTemp.y =   20.0f;
+        player.addToRoute(posTemp);
+
+        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+
+        posTemp.x =   15.0f;
+        posTemp.y =   20.0f;
+        player.addToRoute(posTemp);
+
+        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+        posTemp.x =   10.0f;
+        posTemp.y =   20.0f;
+        player.addToRoute(posTemp);
+
+        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+        posTemp.x =   5.0f;
+        posTemp.y =   20.0f;
+        player.addToRoute(posTemp);
+
+        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+        posTemp.x =   5.0f;
+        posTemp.y =   20.0f;
+        player.addToRoute(posTemp);
+
+        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+        posTemp.x =   0.0f;
+        posTemp.y =   20.0f;
+        player.addToRoute(posTemp);
+
+        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+        posTemp.x =   -5.0f;
+        posTemp.y =   20.0f;
+        player.addToRoute(posTemp);
+
+        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+        posTemp.x =   -10.0f;
+        posTemp.y =   20.0f;
+        player.addToRoute(posTemp);
+
+        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+
+        posTemp.x =   -15.0f;
+        posTemp.y =   20.0f;
+        player.addToRoute(posTemp);
+
+        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+
+        players.push_back(player);
+
+    }
+
+/*=================================================================================*/
+    void followRoute(Player &player){
+
+            relativeTime1 += relativeTime1.milliseconds(10).inMilliseconds();
+            if ( relativeTime1.inMilliseconds() > 1000000.0f) {
+                player.head = player.head->next;
+//                std::cout << "Path Node: x: " << player.head->current.x << "y:" << player.head->current.y << "\n";
+//                std::cout << "Path Node: Azimuth: " << vectorToSphere(player.head->current).azimuth << "\n";
+//                std::cout << "Path Node: Radius: " << vectorToSphere(player.head->current).radius << "\n";
+                player.gain=  1/ vectorToSphere(player.head->current).radius;
+                auto hr = findClosestHRTF(vectorToSphere(player.head->current).azimuth);
+                player.hrtfIndex =hr;
+                player.bufferCurrent = zeroPlane.at(hr);
+                //std::cout << "HRTF index " << player.hrtfIndex << "\n";
+                relativeTime1 = relativeTime1.milliseconds(0);
+
+            }
+
+    }
+
+    /*=================================================================================*/
+    void findNearest(Player &player, int index){
+
+
+        for(int i =0; i < player.steps; i++)
+            player.head = player.head->next;
+//                std::cout << "Path Node: x: " << player.head->current.x << "y:" << player.head->current.y << "\n";
+//                std::cout << "Path Node: Azimuth: " << vectorToSphere(player.head->current).azimuth << "\n";
+//                std::cout << "Path Node: Radius: " << vectorToSphere(player.head->current).radius << "\n";
+            player.gain=  1/ vectorToSphere(player.head->current).radius;
+            auto hr = findClosestHRTF(vectorToSphere(player.head->current).azimuth);
+            player.hrtfIndex =hr;
+            player.bufferCurrent = zeroPlane.at(hr);
+//                std::cout << "HRTF index " << player.hrtfIndex << "\n";
+
+
+        }
+
+
+
+    /*=================================================================================*/
 
     void loadConvolutionFile() {
         AudioSampleBuffer sampleBufferLeft;
@@ -1469,19 +2186,6 @@ private:
 
         }
 
-//        if(readerRight != nullptr) {
-//            std::cout << "File loaded HRIR Right into audio buffer\n";
-//            std::cout << "Audio Buffer #Samples:" << sampleBufferRight.getNumSamples() << "\n";
-//            std::cout << "Audio Buffer #Channels:" << sampleBufferRight.getNumChannels() << "\n";
-//        }
-//
-//        if(readerLeft != nullptr) {
-//            std::cout << "File loaded HRIR Left into audio buffer\n";
-//            std::cout << "Audio Buffer #Samples:" << sampleBufferLeft.getNumSamples() << "\n";
-//            std::cout << "Audio Buffer #Channels:" << sampleBufferLeft.getNumChannels() << "\n";
-//        }
-
-
 //        //--------------------Reshape the HRIR to the correct shape-------------------------
         rightZero.setSize(1, (int) 200);
         int count = 0;
@@ -1515,7 +2219,8 @@ private:
     //
     //=========================================================================
     //========================Variables=========================================
-
+    RelativeTime position;
+    RelativeTime relativeTime1;
     Random random;
     AudioSampleBuffer filterBuffer;
     double sampleRate = 44100.0;
@@ -1525,12 +2230,8 @@ private:
     RelativeTime relativeTime;
     int impulseIndex = 0;
     int degrees = 0;
-
-    std::vector<const int> azimuthAngles = {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 55, 65, 80,
-                                            100, 115, 125, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180,
-                                            185, 190, 195, 200, 205, 210, 215, 220, 225, 235, 245, 260,
-                                            280, 295, 305, 315, 320, 325, 330, 335, 340, 345, 350, 355
-    };
+    int indexCurCircular = 0;
+    int indexPrevCircular = 0;
 
     std::vector<const int> elevations = {-45, -39, -34, -28, -23, -17, -11, -6, 0, 6, 11,
                                          17, 23, 28, 34, 39, 45, 51, 56, 62, 68, 73, 79,
@@ -1545,6 +2246,14 @@ private:
     TextButton stopButton;
     ToggleButton loopingToggle;
     Label currentPositionLabel;
+    Slider frequencySlider;
+    Label frequencyLabel;
+    Slider durationSlider;
+    Label durationLabel;
+    ToggleButton homeButton;
+    Label homeLabel;
+    ToggleButton awayButton;
+    Label awayLabel;
 
     //====================File and Resource loading=========================================
     AudioFormatManager formatManager;
@@ -1563,6 +2272,7 @@ private:
     FilterProcessor filter;
     std::unique_ptr<ConProcessorRight> conProcessorRight;
     std::unique_ptr<ConProcessorLeft> conProcessorLeft;
+    std::vector<std::pair<std::unique_ptr<ConProcessorLeft>,std::unique_ptr<ConProcessorRight>>> convolvers;
 
     std::unique_ptr<AudioSampleBuffer> tempL;
     std::unique_ptr<AudioSampleBuffer> tempR;
@@ -1580,6 +2290,10 @@ private:
     std::vector<HRTFData> minusSix;
     std::vector<HRTFData> zeroPlane;
     std::map<int, std::map<int, HRTFData>> hrtfMap;
+    std::unique_ptr<AudioBufferLayered> layeredBuffer;
 
+    std::vector<Player> players;
+    Player one;
+    int indexPast;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };
