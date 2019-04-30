@@ -9,7 +9,7 @@
 
 2)Start Projucer Juce Application 
 
-3)Open projucer file in projucer
+3)Open .jucer file in projucer
 
 4)Build the project either using visual studio, c-lion, or xcode using projucer tool
 
