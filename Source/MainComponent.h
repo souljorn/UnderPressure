@@ -13,31 +13,28 @@
 */
 
 #pragma once
-//
-//#include <AudioToolbox/AudioToolbox.h>
 
-AudioSampleBuffer rightZero;
-AudioSampleBuffer leftZero;
 //Foward Decleration for typedef
 struct HRTFData;
 class ConProcessorLeft;
 class ConProcessorRight;
 class AudioPlayer;
+
 struct Node;
 //Typedefs for simpler objects
 typedef dsp::Matrix<double> Mat;
 typedef std::map<int, HRTFData> AzimuthInnerMap;
 typedef std::map<int, AzimuthInnerMap> AzimuthMap;
-typedef std::pair<std::unique_ptr<ConProcessorLeft>,std::unique_ptr<ConProcessorRight>> ConvolverPair;
-typedef std::shared_ptr<Node> nPtr;
+AudioSampleBuffer rightZero;
+AudioSampleBuffer leftZero;
 //==============================================================================
 //                  Helper Functions
 //==============================================================================
 
-std::vector<const int> azimuthAngles = {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 55, 65, 80,
-                                        100, 115, 125, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180,
-                                        185, 190, 195, 200, 205, 210, 215, 220, 225, 235, 245, 260,
-                                        280, 295, 305, 315, 320, 325, 330, 335, 340, 345, 350, 355
+std::vector<int> azimuthAngles = {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 55, 65, 80, 90,
+                                  100, 115, 125, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180,
+                                  185, 190, 195, 200, 205, 210, 215, 220, 225, 235, 245, 260, 270,
+                                  280, 295, 305, 315, 320, 325, 330, 335, 340, 345, 350, 355
 };
 
 float decibelsToGain(float decibels){
@@ -47,7 +44,6 @@ float decibelsToGain(float decibels){
 float gainToDecibels(float gain){
     return  20.0 * log10(gain);
 }
-
 
 struct Position{
     float x;
@@ -167,50 +163,7 @@ struct AudioPlayer {
         swap(first.playHead, second.playHead);
         swap(first.gain, second.gain);
     }
-
-
-
 };
-
-
-struct AudioBufferLayered {
-    std::vector<AudioSampleBuffer> playerPositions;
-    int azimuth;
-    int elevation;
-    float gain;
-    int playHead;
-    AudioBufferLayered():playHead(0), azimuth(0), elevation(0), gain(0){}
-
-    AudioBufferLayered(AudioSampleBuffer buffer, float gain) :
-            playHead(0),
-            gain(gain) {}
-
-    AudioBufferLayered(AudioSampleBuffer buffer, int elv, int az) :
-            azimuth(az),
-            elevation(elv) {}
-
-    AudioBufferLayered &operator=(AudioBufferLayered other) // (1)
-    {
-        swap(*this, other); // (2)
-        return *this;
-    }
-
-    friend void swap(AudioBufferLayered &first, AudioBufferLayered &second) // nothrow
-    {
-        // enable ADL (not necessary in our case, but good practice)
-        using std::swap;
-
-        // by swapping the members of two objects,
-        // the two objects are effectively swapped
-        swap(first.playerPositions, second.playerPositions);
-        swap(first.azimuth, second.azimuth);
-        swap(first.elevation, second.elevation);
-        swap(first.playHead, second.playHead);
-        swap(first.gain, second.gain);
-    }
-
-};
-
 
 //==============================================================================
 //              HRTF DATA STRUCT
@@ -299,7 +252,7 @@ struct HRTFData {
     }
 //==============================================================================
 
-    HRTFData &findByAzimuth(std::vector<HRTFData> &data, int az) {
+    static HRTFData &findByAzimuth(std::vector<HRTFData> &data, int az) {
         std::vector<HRTFData>::iterator it;
         HRTFData temp;
         temp.azimuth = az;
@@ -369,14 +322,14 @@ public:
     HRTFData bufferCurrent;
 
     int hrtfIndex;
-    float gain;
+    float gain = 1;
     int steps;
 
 
     Player():currentPos(Position()), nextPos(Position()), direction(Position()){
-    bufferCurrent.hrtfL = leftZero;
-    bufferCurrent.hrtfR = rightZero;
-    hrtfIndex = 0;
+        bufferCurrent.hrtfL = leftZero;
+        bufferCurrent.hrtfR = rightZero;
+        hrtfIndex = 0;
 
 
     }
@@ -508,123 +461,81 @@ public:
 private:
     dsp::ProcessorDuplicator<dsp::IIR::Filter<float>, dsp::IIR::Coefficients<float>> filter;
 };
+
 //==============================================================================
-//                      Left Channel Convolution
+//                     Convolution Processor
 //
 //==============================================================================
 
-class ConProcessorLeft : public ProcessorBase {
+class ConvolutionProcessor : public ProcessorBase {
 
 public:
-    ConProcessorLeft() {
-        irBuffer = leftZero;
-    }
-
-    /*=================================================================================*/
-
-    void prepareToPlay(double sampleRate, int samplesPerBlock) override {
-        // std::cout << "---------------Reload HRIR------------------->\n";
-        //--------------------Loading Convolutions-------------------------------------------------
-        //auto& convolutionL = convolution.template get<convolutionIndex>();
-        convolution.copyAndLoadImpulseResponseFromBuffer(irBuffer, sampleRate, true, true, true,
-                                                         irBuffer.getNumSamples());
-        dsp::ProcessSpec spec{sampleRate, static_cast<uint32> (samplesPerBlock), 2};
-        convolution.prepare(spec);
-    }
-
-    /*=================================================================================*/
-
-    void processBlock(AudioSampleBuffer &buffer, MidiBuffer &) override {
-
-        //Make mono
-        float *buffLeft = buffer.getWritePointer(0, 0);
-        for (int i = 0; i < buffer.getNumSamples(); ++i) {
-            buffLeft[i] = buffer.getSample(0, i);
-        }
-
-        float *buffRight = buffer.getWritePointer(1, 0);
-        for (int i = 0; i < buffer.getNumSamples(); ++i) {
-            buffRight[i] = buffer.getSample(0, i);
-        }
-
-        dsp::AudioBlock<float> block(buffer);
-        dsp::ProcessContextReplacing<float> context(block);
-        convolution.process(context);
-    }
-
-    /*=================================================================================*/
-
-    void reset() override {
-        convolution.reset();
-    }
-
-    /*=================================================================================*/
-
-    const String getName() const override { return "Convolution"; }
-
-    AudioSampleBuffer irBuffer;
-
-private:
-    juce::dsp::Convolution convolution;
-
-};
-
-//==============================================================================
-//                      Right Channel Convolution
-//
-//==============================================================================
-class ConProcessorRight : public ProcessorBase {
-
-public:
-    ConProcessorRight() {
-        irBuffer = rightZero;
+    ConvolutionProcessor() {
     }
 
     /*=================================================================================*/
 
     void prepareToPlay(double sampleRate, int samplesPerBlock) override {
 
-        //--------------------Loading Convolutions-------------------------------------------------
-        convolution.copyAndLoadImpulseResponseFromBuffer(irBuffer, sampleRate, true, true, true,
-                                                         irBuffer.getNumSamples());
+        auto maxSize = static_cast<size_t> (roundToInt (sampleRate * (8192.0 / 44100.0)));
+        convolutionLeft.copyAndLoadImpulseResponseFromBuffer(irBufferLeft, 44100, true, true, false,
+                                                             maxSize);
+
+        convolutionRight.copyAndLoadImpulseResponseFromBuffer(irBufferRight, 44100, true, true, false,
+                                                              maxSize);
         dsp::ProcessSpec spec{sampleRate, static_cast<uint32> (samplesPerBlock), 2};
-        convolution.prepare(spec);
+        convolutionLeft.prepare(spec);
+        convolutionRight.prepare(spec);
+
+        rightChannel.setSize(1,samplesPerBlock);
+        leftChannel.setSize(1,samplesPerBlock);
+
     }
 
     /*=================================================================================*/
 
     void processBlock(AudioSampleBuffer &buffer, MidiBuffer &) override {
-        //Make mono
-        float *buffLeft = buffer.getWritePointer(0, 0);
-        for (int i = 0; i < buffer.getNumSamples(); ++i) {
-            buffLeft[i] = buffer.getSample(0, i);
-        }
+        rightChannel.setSize(1,buffer.getNumSamples());
+        leftChannel.setSize(1,buffer.getNumSamples());
+        leftChannel.copyFrom(0,0,buffer,0,0,buffer.getNumSamples());
+        rightChannel.copyFrom(0,0,buffer,1,0,buffer.getNumSamples());
 
-        float *buffRight = buffer.getWritePointer(1, 0);
-        for (int i = 0; i < buffer.getNumSamples(); ++i) {
-            buffRight[i] = buffer.getSample(0, i);
-        }
+        dsp::AudioBlock<float> blockLeft(leftChannel);
+        dsp::AudioBlock<float> blockRight(rightChannel);
+        dsp::ProcessContextReplacing<float> contextLeft(blockLeft);
+        dsp::ProcessContextReplacing<float> contextRight(blockRight);
 
-        //std::cout << "Num Channels" << buffer.getNumChannels() << "\n";
-        dsp::AudioBlock<float> block(buffer);
-        dsp::ProcessContextReplacing<float> context(block);
-        convolution.process(context);
+        convolutionLeft.process(contextLeft);
+        convolutionRight.process(contextRight);
+        buffer.copyFrom(0,0,blockLeft.getChannelPointer(0),leftChannel.getNumSamples());
+        buffer.copyFrom(1,0,blockRight.getChannelPointer(0),rightChannel.getNumSamples());
+
     }
 
     /*=================================================================================*/
 
     void reset() override {
-        convolution.reset();
+        convolutionLeft.reset();
+        convolutionRight.reset();
     }
 
     /*=================================================================================*/
+
     const String getName() const override { return "Convolution"; }
 
-    AudioSampleBuffer irBuffer;
-private:
-    juce::dsp::Convolution convolution;
-};
+    AudioSampleBuffer irBufferLeft;
+    AudioSampleBuffer irBufferRight;
 
+    AudioSampleBuffer leftChannel;
+    AudioSampleBuffer rightChannel;
+
+private:
+    juce::dsp::Convolution convolutionLeft;
+    juce::dsp::Convolution convolutionRight;
+    MemoryBlock irMem;
+
+
+};
 //==============================================================================
 //                      Main Application
 //
@@ -643,6 +554,13 @@ public:
         frequencySlider.setRange(100, 5000, 100);
         //frequencySlider.setTextValueSuffix(" Hz");
 
+        addAndMakeVisible(azimuthSlider);
+        azimuthSlider.setRange(0.0f, 355.0f, 5.0f);
+        addAndMakeVisible(azimuthPosition);
+        azimuthPosition.setText("azimuthAngle", dontSendNotification);
+        azimuthPosition.attachToComponent(&azimuthSlider, true);
+
+
         addAndMakeVisible(frequencyLabel);
         frequencyLabel.setText("Crowd size", dontSendNotification);
         frequencyLabel.attachToComponent(&frequencySlider, true);
@@ -655,14 +573,15 @@ public:
         durationLabel.setText("Number of players", dontSendNotification);
         durationLabel.attachToComponent(&durationSlider, true);
 
-        addAndMakeVisible(homeButton);
-        homeButton.setClickingTogglesState(true);
-        homeLabel.setText("Home", dontSendNotification);
-        homeLabel.attachToComponent(&homeButton, true);
+//        addAndMakeVisible(homeButton);
+//        homeButton.setClickingTogglesState(true);
+//        homeLabel.setText("Home", dontSendNotification);
+//        homeLabel.attachToComponent(&homeButton, true);
+//
+//        addAndMakeVisible(awayButton);
+//        awayLabel.setText("Away", dontSendNotification);
+//        awayLabel.attachToComponent(&awayButton, true);
 
-        addAndMakeVisible(awayButton);
-        awayLabel.setText("Away", dontSendNotification);
-        awayLabel.attachToComponent(&awayButton, true);
 
 
         addAndMakeVisible(&playButton);
@@ -677,21 +596,19 @@ public:
         stopButton.setColour(TextButton::buttonColourId, Colours::red);
         stopButton.setEnabled(false);
 
-        addAndMakeVisible(&loopingToggle);
-        loopingToggle.setButtonText("Loop");
-        loopingToggle.onClick = [this] { loopButtonChanged(); };
-        loopingToggle.setEnabled(true);
+//        addAndMakeVisible(&loopingToggle);
+//        loopingToggle.setButtonText("Loop");
+//        loopingToggle.onClick = [this] { loopButtonChanged(); };
+//        loopingToggle.setEnabled(true);
 
         addAndMakeVisible(&currentPositionLabel);
         currentPositionLabel.setText("Stopped", dontSendNotification);
-
 
         formatManager.registerBasicFormats();
         formatManager1.registerBasicFormats();
 
         transportSource = std::unique_ptr<AudioTransportSource>(new AudioTransportSource());
         transportSource.get()->addChangeListener(this);
-
 
         setAudioChannels(0, 2);
         startTimer(20);
@@ -708,8 +625,8 @@ public:
 
     void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override {
         samplesExpected = samplesPerBlockExpected;
-        //samplesPerBlockExpected = 1024;
         relativeTime1 = relativeTime1.milliseconds(0);
+
         //Set up of HRTF
         loadFileToTransport();
         impulseProcessing();
@@ -717,136 +634,73 @@ public:
         loadPlayer("PlayerLoopMono.wav",one);
 
         //Extra Buffers
-        tempL = std::make_unique<AudioSampleBuffer>();
-        tempR = std::make_unique<AudioSampleBuffer>();
         inputL = std::make_unique<AudioSampleBuffer>();
         inputR = std::make_unique<AudioSampleBuffer>();
-        indexCurCircular = 0;
-        indexPrevCircular = 0;
-
 
         //Convolvers
-        conProcessorLeft = std::make_unique<ConProcessorLeft>();
-        conProcessorRight = std::make_unique<ConProcessorRight>();
-        conProcessorRight->prepareToPlay(samplesPerBlockExpected, sampleRate);
-        conProcessorLeft->prepareToPlay(samplesPerBlockExpected, sampleRate);
+        convolutionProcessor = std::make_unique<ConvolutionProcessor>();
 
-        auto tempLeftCon = std::make_unique<ConProcessorLeft>();
-        auto tempRightCon = std::make_unique<ConProcessorRight>();
-        convolvers.push_back(std::make_pair(std::move(tempLeftCon),std::move(tempRightCon)));
+        convolutionProcessor->irBufferLeft = zeroPlane.at(0).hrtfL;
+        convolutionProcessor->irBufferRight = zeroPlane.at(0).hrtfR;
+        convolutionProcessor->prepareToPlay(sampleRate, samplesPerBlockExpected);
 
-        auto tempLeftCon1 = std::make_unique<ConProcessorLeft>();
-        auto tempRightCon1 = std::make_unique<ConProcessorRight>();
-        convolvers.push_back(std::make_pair(std::move(tempLeftCon1),std::move(tempRightCon1)));
-
-        //Prepare Convolvers
-        for(auto it = convolvers.begin(); it != convolvers.end(); it++){
-           it->first->prepareToPlay(samplesPerBlockExpected,sampleRate);
-           it->second->prepareToPlay(samplesPerBlockExpected,sampleRate);
-        }
-
-
+        //-----------Effects chaing prepare to play-----------------
         filter.prepareToPlay(sampleRate, samplesPerBlockExpected);
 
         //----------Add sounds to the Audio List-----------------------
-
-        //-------------Load files with gain adjustments---------------
-        loadAudioFile("CrowdDrumLoop.wav", 0.4f);
-        loadAudioFile("CrowdMediumClappingWithHorn.wav", 0.2f);
-        loadAudioFile("OhCrowd.wav", 0.2f);
-        loadAudioFile("ImInTheZoneMan.wav", 0.3f);
-        loadAudioFile("ItsGood.wav", 0.2f);
-        loadAudioFile("CrowdMediumClapping.wav", 0.4f);
-        loadAudioFile("PlayerMonoWhistle.wav", 0.4f);
-        loadAudioFile("PlayerLoopMono.wav", 0.4f);
-        loadAudioFile("Breathone.wav", 0.1f);
-
         //-------------Place Static Sounds here---------------
-        audioList.at(0).convolvedBuffer = placeSound(25, audioList.at(0).buffer);
-        audioList.at(1).convolvedBuffer = placeSound(15, audioList.at(1).buffer);
-        audioList.at(2).convolvedBuffer = placeSound(40, audioList.at(2).buffer);
-        audioList.at(3).convolvedBuffer = placeSound(16, audioList.at(3).buffer);
-        audioList.at(4).convolvedBuffer = placeSound(20, audioList.at(4).buffer);
-        audioList.at(5).convolvedBuffer = placeSound(8, audioList.at(5).buffer);
-        audioList.at(6).convolvedBuffer = placeSound(1, audioList.at(6).buffer);
-        audioList.at(7).convolvedBuffer = placeSound(36, audioList.at(7).buffer);
-        audioList.at(8).convolvedBuffer = placeSound(36, audioList.at(8).buffer);
+        loadAudioFile("CrowdDrumLoop.wav", 0.05f);
+        placeSound(65, audioList.at(0).buffer);
+        loadAudioFile("CrowdMediumClapping.wav", 0.05f);
+        placeSound(30, audioList.at(1).buffer);
 
-        audioList.at(2).buffer = addSilence(audioList.at(2).buffer,5.0f);
-        audioList.at(1).buffer = addSilence(audioList.at(1).buffer,1.5f);
-        audioList.at(3).buffer = addSilence(audioList.at(3).buffer,14.0f);
-        audioList.at(4).buffer = addSilence(audioList.at(4).buffer,12.0f);
-        audioList.at(7).buffer = addSilence(audioList.at(7).buffer,7.0f);
-        audioList.at(6).buffer = addSilence(audioList.at(6).buffer,5.2);
-        audioList.at(8).buffer =  addSilence(audioList.at(8).buffer,2.0);
-        blockSize = samplesPerBlockExpected;
-
-        audioList.at(0).buffer.applyGainRamp(0,512,0,.4);
-        audioList.at(1).buffer.applyGainRamp(0,512,0,.4);
-        //Prepare Mixer
-        mixer.prepareToPlay(samplesPerBlockExpected, sampleRate);
         std::cout << "prepare to play called\n";
-
-        //Convolve player sounds
-        //followRoute(players.at(0));
     }
 /*=====================Main Buffer Loop============================================*/
     //Buffer to fill
     void getNextAudioBlock(const AudioSourceChannelInfo &bufferToFill) override {
 
-        if (readerSource.get() == nullptr) {
-            bufferToFill.clearActiveBufferRegion();
-            return;
-        }
+        if (true){
 
-        if (state == Stopped){
-            bufferToFill.buffer->clear();
-        }
-        //----Add Dynamic Sound Here-------------------
-        if (state == Playing) {
-//            addAudioBuffers(&bufferToFill, audioList.at(2));
-//            addAudioBuffers(&bufferToFill, audioList.at(3));
-//            applyConvolution(&bufferToFill, 0);
-            followRoute(players.at(0));
-            addAudioBuffers(&bufferToFill, players.at(0).audioPlayer);
-            applyConvolution(&bufferToFill,0,players.at(0));
-            applyGain(&bufferToFill, 5.0f);
-
-        }
-
-        //----Add Static Sound -------------------
-        if (state == Playing) {
-
-
-            if (frequencySlider.getValue() > 100) {
-                addAudioBuffers(&bufferToFill, audioList.at(1));
+            if (readerSource.get() == nullptr) {
+                bufferToFill.clearActiveBufferRegion();
+                return;
             }
-            if (frequencySlider.getValue() > 1000) {
 
-                addAudioBuffers(&bufferToFill, audioList.at(0));
-                addAudioBuffers(&bufferToFill, audioList.at(2));
+            if (state == Stopped){
+                bufferToFill.buffer->clear();
+            }
+            //----Add Dynamic Sound Here-------------------
+            if (state == Playing) {
+//            addAudioBuffers(&bufferToFill, players.at(0).audioPlayer);
+//            applyConvolutionSlider(&bufferToFill);
 
+                followRoute(players.at(0));
+                addAudioBuffers(&bufferToFill, players.at(0).audioPlayer);
+                applyConvolutionPlayer(&bufferToFill,players.at(0));
             }
-            if (frequencySlider.getValue() > 3000) {
-                addAudioBuffers(&bufferToFill, audioList.at(3));
-                addAudioBuffers(&bufferToFill, audioList.at(4));
-                addAudioBuffers(&bufferToFill, audioList.at(5));
-            }
-            if (durationSlider.getValue() > 1){
-                addAudioBuffers(&bufferToFill, audioList.at(6));
-                addAudioBuffers(&bufferToFill, audioList.at(8));
 
-            }
-            if (durationSlider.getValue() > 2){
-                addAudioBuffers(&bufferToFill, audioList.at(7));
+            //----Add Static Sound -------------------
+            if (state == Playing) {
+                if (frequencySlider.getValue() > 100) {
+                    addAudioBuffers(&bufferToFill, audioList.at(0));
+                    addAudioBuffers(&bufferToFill, audioList.at(1));
+                }
+                if (frequencySlider.getValue() > 1000) {
+                }
+                if (frequencySlider.getValue() > 3000) {
+                    //addAudioBuffers(&bufferToFill, audioList.at(2));
+                }
+                if (durationSlider.getValue() > 1){
+
+                }
+                if (durationSlider.getValue() > 2){
+
+                }
+
             }
 
         }
-
-//        std::cout << bufferToFill.buffer->getRMSLevel(0,bufferToFill.startSample,bufferToFill.numSamples) << std::endl;
-//        std::cout << bufferToFill.buffer->getNumSamples() << std::endl;
-
-        applyGain(&bufferToFill,2.0f);
 
     }
 
@@ -896,123 +750,40 @@ public:
         }
         return temp;
     }
+
     /*=================================================================================*/
 
     AudioSampleBuffer placeSound(int index, AudioSampleBuffer &inputBuffer) {
-        AudioSampleBuffer leftBuffer;
-        AudioSampleBuffer rightBuffer;
+        convolutionProcessor->irBufferLeft = zeroPlane.at(index).hrtfL;
+        convolutionProcessor->irBufferRight = zeroPlane.at(index).hrtfR;
 
-        //Write new hrir for convolution at new angle
-        float *irWriteLeft = conProcessorLeft->irBuffer.getWritePointer(0);
-        float *irWriteRight = conProcessorRight->irBuffer.getWritePointer(0);
-        for (int i = 0; i < 200; i++) {
-            irWriteLeft[i] = leftHRIR.at(index).getSample(0, i);
-            irWriteRight[i] = rightHRIR.at(index).getSample(0, i);
-        }
-        //Reset convolution processes
-        conProcessorLeft->reset();
-        conProcessorRight->reset();
-
-        //prepare convolution processors
-        conProcessorLeft->prepareToPlay(sampleRate, samplesExpected);
-        conProcessorRight->prepareToPlay(sampleRate, samplesExpected);
-
-        inputL->setSize(1, inputBuffer.getNumSamples());
-        inputR->setSize(1, inputBuffer.getNumSamples());
-
-        for (int i = 0; i < inputBuffer.getNumSamples(); ++i) {
-            inputL->setSample(0, i, inputBuffer.getSample(0, i));
-            inputR->setSample(0, i, inputBuffer.getSample(0, i));
-        }
-
-        //ProcessLeft
-        conProcessorLeft->processBlock(inputBuffer, emptyMidi);
-
-        leftBuffer.setSize(1, inputBuffer.getNumSamples());
-        //Save and Reset input Buffer
-        for (int i = 0; i < inputBuffer.getNumSamples(); ++i) {
-            leftBuffer.setSample(0, i, inputBuffer.getSample(0, i));
-            inputBuffer.setSample(0, i, inputL->getSample(0, i));
-            inputBuffer.setSample(1, i, inputL->getSample(0, i));
-        }
-
-        //ProcessRight
-        conProcessorRight->processBlock(inputBuffer, emptyMidi);
-
-        //Overwrite left channel with left convolved buffer
-        for (int i = 0; i < inputBuffer.getNumSamples(); ++i) {
-            inputBuffer.setSample(0, i, leftBuffer.getSample(0, i));
-        }
-
+        convolutionProcessor->prepareToPlay(sampleRate, inputBuffer.getNumSamples());
+        convolutionProcessor->processBlock(inputBuffer,emptyMidi);
         return inputBuffer;
     }
 
     /*=================================================================================*/
 
-    void applyConvolution(const AudioSourceChannelInfo *buffer) {
+    void applyConvolutionSlider(const AudioSourceChannelInfo *buffer) {
         //Get a preprocessed verstion stored called inputL and inputR
 
         if (state == Stopped)
             return;
 
-        inputL->setSize(1, buffer->numSamples);
-        inputR->setSize(1, buffer->numSamples);
-
-        for (int i = 0; i < buffer->numSamples; ++i) {
-            inputL->setSample(0, i, buffer->buffer->getSample(0, i));
-            inputR->setSample(0, i, buffer->buffer->getSample(1, i));
-        }
-
-        //Perform convolution on left channel and store processed convolution in a temp buffer
-        conProcessorLeft->processBlock(*buffer->buffer, emptyMidi);
-        tempL->setSize(1, buffer->buffer->getNumSamples());
-        for (int i = 0; i < buffer->buffer->getNumSamples(); ++i) {
-            tempL->setSample(0, i, buffer->buffer->getSample(0, i));
-        }
-
-        //Reset input buffer to original state
-        float *buffLeft = buffer->buffer->getWritePointer(0, buffer->startSample);
-        for (int i = 0; i < buffer->buffer->getNumSamples(); ++i) {
-            buffLeft[i] = inputL->getSample(0, i);
-        }
-
-        float *buffRight = buffer->buffer->getWritePointer(1, buffer->startSample);
-        for (int i = 0; i < buffer->buffer->getNumSamples(); ++i) {
-            buffRight[i] = inputR->getSample(0, i);
-        }
-
-        //Perform convolution on right channel
-        conProcessorRight->processBlock(*buffer->buffer, emptyMidi);
-
-        //Overwrite left channel with left convolved buffer
-        for (int i = 0; i < buffer->numSamples; ++i) {
-            buffLeft[i] = tempL->getSample(0, i);
-        }
-
-        //Add filter to rear HRIR
-        //if(impulseIndex > 17 && impulseIndex < 50)
-        filter.processBlock(*buffer->buffer, emptyMidi);
-
-        //  Reloading of HRIR every time period
+        convolutionProcessor->processBlock(*buffer->buffer,emptyMidi);
         (relativeTime += relativeTime.milliseconds(10)).inMilliseconds();
-        if (relativeTime.inMilliseconds() > 500.0f) {
-            std::cout << "Approximate Azimuth Angle: " << zeroPlane.at(impulseIndex).azimuth << "\n";
+        if (azimuthSlider.getValue()/5 != lastAzimuthPos) {
+            std::cout << "Approximate Azimuth Angle: " << zeroPlane.at(azimuthSlider.getValue()/5).azimuth << "\n";
             degrees += 5;
             relativeTime = relativeTime.milliseconds(0);
 
-            //Reset convolution processes
-            conProcessorLeft->reset();
-            conProcessorRight->reset();
 
             //Write new hrir for convolution at new angle
-            float *irWriteLeft = conProcessorLeft->irBuffer.getWritePointer(0);
-            float *irWriteRight = conProcessorRight->irBuffer.getWritePointer(0);
+            float *irWriteLeft = convolutionProcessor->irBufferLeft.getWritePointer(0);
+            float *irWriteRight = convolutionProcessor->irBufferRight.getWritePointer(0);
             for (int i = 0; i < 200; i++) {
-                irWriteLeft[i] = zeroPlane.at(impulseIndex).hrtfL.getSample(0, i);
-                irWriteRight[i] = zeroPlane.at(impulseIndex).hrtfR.getSample(0, i);
-                //irWriteLeft[i] = hrtfMap.at(0).at(impulseIndex * 5).hrtfL.getSample(0, i);
-                //irWriteRight[i] = hrtfMap.at(0).at(impulseIndex * 5).hrtfR.getSample(0, i);
-
+                irWriteLeft[i] = zeroPlane.at(azimuthSlider.getValue() / 5).hrtfL.getSample(0, i);
+                irWriteRight[i] = zeroPlane.at(azimuthSlider.getValue() / 5).hrtfR.getSample(0, i);
             }
             impulseIndex++;
 
@@ -1023,193 +794,56 @@ public:
             }
 
             //prepare convolution processors
-            conProcessorLeft->prepareToPlay(sampleRate, samplesExpected);
-            conProcessorRight->prepareToPlay(sampleRate, samplesExpected);
+            convolutionProcessor->prepareToPlay(sampleRate, samplesExpected);
+            convolutionProcessor->prepareToPlay(sampleRate, samplesExpected);
+            lastAzimuthPos = azimuthSlider.getValue() / 5;
+//        }
         }
     }
 
-
-/*==============================================================================================*/
-    void applyConvolution(const AudioSourceChannelInfo *buffer, size_t convolutionIndex) {
-
-        //Get a preprocessed verstion stored called inputL and inputR
-
-        if (state == Stopped)
-            return;
-
-        inputL->setSize(1, buffer->numSamples);
-        inputR->setSize(1, buffer->numSamples);
-
-        for (int i = 0; i < buffer->numSamples; ++i) {
-            inputL->setSample(0, i, buffer->buffer->getSample(0, i));
-            inputR->setSample(0, i, buffer->buffer->getSample(1, i));
-        }
-
-        //Perform convolution on left channel and store processed convolution in a temp buffer
-        convolvers.at(convolutionIndex).first->processBlock(*buffer->buffer, emptyMidi);
-        tempL->setSize(1, buffer->buffer->getNumSamples());
-        for (int i = 0; i < buffer->buffer->getNumSamples(); ++i) {
-            tempL->setSample(0, i, buffer->buffer->getSample(0, i));
-        }
-
-        //Reset input buffer to original state
-        float *buffLeft = buffer->buffer->getWritePointer(0, buffer->startSample);
-        for (int i = 0; i < buffer->buffer->getNumSamples(); ++i) {
-            buffLeft[i] = inputL->getSample(0, i);
-        }
-
-        float *buffRight = buffer->buffer->getWritePointer(1, buffer->startSample);
-        for (int i = 0; i < buffer->buffer->getNumSamples(); ++i) {
-            buffRight[i] = inputR->getSample(0, i);
-        }
-
-        //Perform convolution on right channel using convolvers list
-        convolvers.at(convolutionIndex).second->processBlock(*buffer->buffer, emptyMidi);
-
-        //Overwrite left channel with left convolved buffer
-        for (int i = 0; i < buffer->numSamples; ++i) {
-            buffLeft[i] = tempL->getSample(0, i);
-        }
-
-        //Add filter to rear HRIR
-        //if(impulseIndex > 17 && impulseIndex < 50)
-        filter.processBlock(*buffer->buffer, emptyMidi);
-
-        //  Reloading of HRIR every time period
-        (relativeTime += relativeTime.milliseconds(10)).inMilliseconds();
-        if (relativeTime.inMilliseconds() > 200.0f) {
-            std::cout << "Approximate Azimuth Angle: " << zeroPlane.at(impulseIndex).azimuth << "\n";
-            degrees += 5;
-            relativeTime = relativeTime.milliseconds(0);
-
-            //Reset convolution processes
-            convolvers.at(convolutionIndex).first->reset();
-            convolvers.at(convolutionIndex).second->reset();
-
-            //Write new hrir for convolution at new angle
-            float *irWriteLeft = convolvers.at(convolutionIndex).first->irBuffer.getWritePointer(0);
-            float *irWriteRight = convolvers.at(convolutionIndex).second->irBuffer.getWritePointer(0);
-            for (int i = 0; i < 200; i++) {
-                irWriteLeft[i] = zeroPlane.at(impulseIndex).hrtfL.getSample(0, i);
-                irWriteRight[i] = zeroPlane.at(impulseIndex).hrtfR.getSample(0, i);
-                //irWriteLeft[i] = hrtfMap.at(0).at(impulseIndex * 5).hrtfL.getSample(0, i);
-                //irWriteRight[i] = hrtfMap.at(0).at(impulseIndex * 5).hrtfR.getSample(0, i);
-
-            }
-            impulseIndex++;
-
-            //Reset angle to 0
-            if (impulseIndex > zeroPlane.size() - 1) {
-                impulseIndex = 0;
-                degrees = 0;
-            }
-
-            //prepare convolution processors
-            convolvers.at(convolutionIndex).first->prepareToPlay(sampleRate, samplesExpected);
-            convolvers.at(convolutionIndex).second->prepareToPlay(sampleRate, samplesExpected);
-        }
-    }
     /*=================================================================================*/
 
-    void applyConvolution(const AudioSourceChannelInfo *buffer, size_t convolutionIndex, Player& player) {
+    void applyConvolutionPlayer(const AudioSourceChannelInfo *buffer, Player& player) {
 
         //Get a preprocessed verstion stored called inputL and inputR
 
         if (state == Stopped)
             return;
 
-        inputL->setSize(1, buffer->numSamples);
-        inputR->setSize(1, buffer->numSamples);
-
-        for (int i = 0; i < buffer->numSamples; ++i) {
-            inputL->setSample(0, i, buffer->buffer->getSample(0, i));
-            inputR->setSample(0, i, buffer->buffer->getSample(1, i));
-        }
-
-        //Perform convolution on left channel and store processed convolution in a temp buffer
-        convolvers.at(convolutionIndex).first->processBlock(*buffer->buffer, emptyMidi);
-        tempL->setSize(1, buffer->buffer->getNumSamples());
-        for (int i = 0; i < buffer->buffer->getNumSamples(); ++i) {
-            tempL->setSample(0, i, buffer->buffer->getSample(0, i));
-        }
-
-        //Reset input buffer to original state
-        float *buffLeft = buffer->buffer->getWritePointer(0, buffer->startSample);
-        for (int i = 0; i < buffer->buffer->getNumSamples(); ++i) {
-            buffLeft[i] = inputL->getSample(0, i);
-        }
-
-        float *buffRight = buffer->buffer->getWritePointer(1, buffer->startSample);
-        for (int i = 0; i < buffer->buffer->getNumSamples(); ++i) {
-            buffRight[i] = inputR->getSample(0, i);
-        }
-
-        //Perform convolution on right channel using convolvers list
-        convolvers.at(convolutionIndex).second->processBlock(*buffer->buffer, emptyMidi);
-
-        //Overwrite left channel with left convolved buffer
-        for (int i = 0; i < buffer->numSamples; ++i) {
-            buffLeft[i] = tempL->getSample(0, i);
-
-        }
+        convolutionProcessor->processBlock(*buffer->buffer,emptyMidi);
 
         if (player.hrtfIndex != indexPast) {
             //Reset convolution processes
-            convolvers.at(convolutionIndex).first->reset();
-            convolvers.at(convolutionIndex).second->reset();
 
             //Write new hrir for convolution at new angle
-            float *irWriteLeft = convolvers.at(convolutionIndex).first->irBuffer.getWritePointer(0);
-            float *irWriteRight = convolvers.at(convolutionIndex).second->irBuffer.getWritePointer(0);
+            float *irWriteLeft = convolutionProcessor->irBufferLeft.getWritePointer(0);
+            float *irWriteRight = convolutionProcessor->irBufferRight.getWritePointer(0);
             for (int i = 0; i < 200; i++) {
                 irWriteLeft[i] = player.bufferCurrent.hrtfL.getSample(0, i);
                 irWriteRight[i] = player.bufferCurrent.hrtfR.getSample(0, i);
-                //irWriteLeft[i] = hrtfMap.at(0).at(impulseIndex * 5).hrtfL.getSample(0, i);
-                //irWriteRight[i] = hrtfMap.at(0).at(impulseIndex * 5).hrtfR.getSample(0, i);
-
             }
 
             //prepare convolution processors
-            convolvers.at(convolutionIndex).first->prepareToPlay(sampleRate, samplesExpected);
-            convolvers.at(convolutionIndex).second->prepareToPlay(sampleRate, samplesExpected);
+            convolutionProcessor->prepareToPlay(sampleRate, samplesExpected);
             indexPast =player.hrtfIndex;
             std::cout << "convolution reset" << std::endl;
-
-
-
         }
-        //Reset input buffer to original state
-
         applyGain(buffer, player.gain);
     }
 
-    void convolvePlayerSounds(Player player, int index, float gain){
-
-
-    }
     /*=================================================================================*/
     void releaseResources() override {
         transportSource->releaseResources();
-        transportSource1->releaseResources();
-        mixer.releaseResources();
-        conProcessorLeft->releaseResources();
-        conProcessorRight->releaseResources();
-        //Prepare Convolvers
-        for(auto it = convolvers.begin(); it != convolvers.end(); it++){
-            it->first->releaseResources();
-            it->second->releaseResources();
-        }
+        convolutionProcessor->releaseResources();
+        filter.releaseResources();
     }
     /*=================================================================================*/
 
-    //Todo: Place Buttons and Make Gui suitable for App
-    //-Add necessary buttons and options
-    //-Place in appropriate places
     void resized() override {
         const int border = 120;
         openButton.setBounds(border, 10, getWidth() - 20, 20);
-        playButton.setBounds(border - 60, 40, getWidth() - 20, 20);
-        stopButton.setBounds(border -60 , 70, getWidth() - 20, 20);
+        playButton.setBounds(border - 60, 40, getWidth() - 100, 20);
+        stopButton.setBounds(border -60 , 70, getWidth() - 100, 20);
         loopingToggle.setBounds(border, 100, getWidth() - 20, 20);
         currentPositionLabel.setBounds(border, 130, getWidth() - 20, 20);
 
@@ -1217,6 +851,8 @@ public:
         durationSlider.setBounds(border, 130 + 50, getWidth() - border, 50);
         homeButton.setBounds(border, 130 + 110, 22, 22);
         awayButton.setBounds(border + 100, 130 + 110, 22, 22);
+        azimuthPosition.setBounds(border, 130 + 170, getWidth() - border, 50);
+        azimuthSlider.setBounds(border, 130 + 200, getWidth() - border, 50);
     }
 
     /*=================================================================================*/
@@ -1275,13 +911,11 @@ private:
                     stopButton.setEnabled(false);
                     playButton.setEnabled(true);
                     transportSource->setPosition(0.0);
-//                    transportSource1->setPosition(0.0);
                     break;
 
                 case Starting:
                     playButton.setEnabled(false);
                     transportSource->start();
-//                    transportSource1->start();
                     break;
 
                 case Playing:
@@ -1290,7 +924,6 @@ private:
 
                 case Stopping:
                     transportSource->stop();
-//                    transportSource1->stop();
                     break;
             }
         }
@@ -1310,10 +943,7 @@ private:
             dir = dir.getParentDirectory();
         }
 
-        //File temp = File(dir.getChildFile ("Resources").getChildFile("BasketballFeet.wav"));
-//        File temp = File(dir.getChildFile ("Resources").getChildFile("PlayerLoopMonoWithVoice.wav"));
         File temp = File(dir.getChildFile("Resources").getChildFile("PlayerLoopMono.wav"));
-        // File temp = File(dir.getChildFile ("Resources").getChildFile("PlayerMonoWhistle.wav"));
         File temp1 = File(dir.getChildFile("Resources").getChildFile("Register.wav"));
         auto *reader = formatManager.createReaderFor(temp);
 
@@ -1326,7 +956,6 @@ private:
             playButton.setEnabled(true);
             readerSource.reset(newSource.release());
             transportSource.get()->setGain(2.0);
-            mixer.addInputSource(transportSource.get(), true);
             std::cout << "AudioFile Loaded! \n";
         }
     }
@@ -1365,6 +994,41 @@ private:
         }
         AudioPlayer tempAudio(sampleBuffer, gain);
         audioList.push_back(tempAudio);
+
+    }
+
+    AudioSampleBuffer loadAudioFileToBuffer(String fileName, float gain) {
+        auto dir = File::getCurrentWorkingDirectory();
+        int numTries = 0;
+        AudioSampleBuffer sampleBuffer;
+        AudioFormatManager formatMan;
+        formatMan.registerBasicFormats();
+        formatMan.getDefaultFormat();
+
+        //find the resources dir
+        while (!dir.getChildFile("Resources").exists() && numTries++ < 15) {
+            dir = dir.getParentDirectory();
+        }
+
+        File temp = File(dir.getChildFile("Resources").getChildFile(fileName));
+        while (!dir.getChildFile("Resources").exists() && numTries++ < 15) {
+            dir = dir.getParentDirectory();
+        }
+
+        std::unique_ptr<AudioFormatReader> source(formatManager.createReaderFor(temp));
+
+        if (source.get() != nullptr) {
+            sampleBuffer.setSize(2, (int) source->lengthInSamples);
+            source->read(&sampleBuffer, 0, (int) source->lengthInSamples, 0, true, true);
+        }
+
+        for (int i = 0; i < sampleBuffer.getNumSamples(); ++i) {
+            sampleBuffer.setSample(0, i, sampleBuffer.getSample(0, i) * gain);
+            sampleBuffer.setSample(1, i, sampleBuffer.getSample(1, i) * gain);
+            //std::cout<< "LeftChannel sample:" << leftChannel.getSample(0,i) << "\n";
+        }
+
+        return sampleBuffer;
 
     }
     /*=================================================================================*/
@@ -1425,7 +1089,6 @@ private:
 
     void impulseProcessing() {
         loadConvolutionFiles();
-        loadConvolutionFile();
     }
 
     /*=================================================================================*/
@@ -1591,10 +1254,10 @@ private:
                     copyRNegative.setSample(0, count, sampleBufferRightNeg.getSample(count, elevationFront));
                     copyRNegativeBehind.setSample(0, count, sampleBufferRightNeg.getSample(count, elevationBehind));
 
-                    negFrontMinusSixR.setSample(0, count, sampleBufferRight.getSample(count, elevationFrontMinusSix));
-                    negFrontPlusSixR.setSample(0, count, sampleBufferRight.getSample(count, elevationFrontPlusSix));
-                    negBehindMinusSixR.setSample(0, count, sampleBufferRight.getSample(count, elevationBehindMinusSix));
-                    negBehindPlusSixR.setSample(0, count, sampleBufferRight.getSample(count, elevationBehindPlusSix));
+                    negFrontMinusSixR.setSample(0, count, sampleBufferRightNeg.getSample(count, elevationFrontMinusSix));
+                    negFrontPlusSixR.setSample(0, count, sampleBufferRightNeg.getSample(count, elevationFrontPlusSix));
+                    negBehindMinusSixR.setSample(0, count, sampleBufferRightNeg.getSample(count, elevationBehindMinusSix));
+                    negBehindPlusSixR.setSample(0, count, sampleBufferRightNeg.getSample(count, elevationBehindPlusSix));
                 }
             }
 
@@ -1619,10 +1282,10 @@ private:
                     copyLNegative.setSample(0, count, sampleBufferLeftNeg.getSample(count, elevationFront));
                     copyLNegativeBehind.setSample(0, count, sampleBufferLeftNeg.getSample(count, elevationBehind));
 
-                    negFrontMinusSixL.setSample(0, count, sampleBufferLeft.getSample(count, elevationFrontMinusSix));
-                    negFrontPlusSixL.setSample(0, count, sampleBufferLeft.getSample(count, elevationFrontPlusSix));
-                    negBehindMinusSixL.setSample(0, count, sampleBufferLeft.getSample(count, elevationBehindMinusSix));
-                    negBehindPlusSixL.setSample(0, count, sampleBufferLeft.getSample(count, elevationBehindPlusSix));
+                    negFrontMinusSixL.setSample(0, count, sampleBufferLeftNeg.getSample(count, elevationFrontMinusSix));
+                    negFrontPlusSixL.setSample(0, count, sampleBufferLeftNeg.getSample(count, elevationFrontPlusSix));
+                    negBehindMinusSixL.setSample(0, count, sampleBufferLeftNeg.getSample(count, elevationBehindMinusSix));
+                    negBehindPlusSixL.setSample(0, count, sampleBufferLeftNeg.getSample(count, elevationBehindPlusSix));
 
                 }
             }
@@ -1676,7 +1339,7 @@ private:
                     HRTFData tempPlusNeg(negFrontPlusSixL, negFrontPlusSixR, 360 - (i), 6, 1);
 
                     minusSix.push_back(tempMinusNeg);
-                    plusSix.push_back(tempMinusNeg);
+                    plusSix.push_back(tempPlusNeg);
                 }
             }
 
@@ -1711,11 +1374,10 @@ private:
                 minusSix.push_back(tempMinusB);
                 plusSix.push_back(tempPlusB);
 
-
                 //Q3
                 HRTFData tempMinusNegBehind(negBehindMinusSixL, negBehindMinusSixR, 180 + (i), -6, 1);
                 HRTFData tempPlusNegBehind(negBehindPlusSixL, negBehindPlusSixR, 180 + (i), 6, 1);
-                minusSix.push_back(tempPlusNegBehind);
+                minusSix.push_back(tempMinusNegBehind);
                 plusSix.push_back(tempPlusNegBehind);
 
                 //Q4
@@ -1723,7 +1385,7 @@ private:
                 HRTFData tempPlusNeg(negFrontPlusSixL, negFrontPlusSixR, 360 - (i), 6, 1);
 
                 minusSix.push_back(tempMinusNeg);
-                plusSix.push_back(tempMinusNeg);
+                plusSix.push_back(tempPlusNeg);
             }
 
             //disregard the 0th index for negative
@@ -1787,22 +1449,94 @@ private:
         minusSix = HRTFData::SortByAzimuth(minusSix);
         plusSix = HRTFData::SortByAzimuth(plusSix);
         zeroPlane = HRTFData::SortByAzimuth(zeroPlane);
-        minusSix.at(5).printAll();
 
-
-//        interpolatePoint(one, two, three, 90, 0);
         addInterpolatedPoints();
-        //Mat gain(1,3);
-        //gain = matrixHelper();
-
         convertBaselineHrtf();
+        leftZero = zeroPlane.at(0).hrtfL;
+        rightZero = zeroPlane.at(0).hrtfR;
     }
 
     /*=================================================================================*/
 
     void addInterpolatedPoints() {
         //add 50, 60, 70, 75, 85 90, 95
+        HRTFData newPoint;
+        HRTFData newPoint1;
+        HRTFData newPoint2;
 
+        int azimuthNew;
+
+        //pt1, pt2, pt3, az, elev
+        HRTFData pt1;
+        HRTFData pt2;
+        HRTFData pt3;
+
+        //90
+        azimuthNew = 90;
+        pt1 = HRTFData::findByAzimuth(minusSix, azimuthNew - 10);
+        pt2 = HRTFData::findByAzimuth(plusSix, azimuthNew - 10);
+        pt3 = HRTFData::findByAzimuth(zeroPlane, azimuthNew + 10);
+
+        newPoint = interpolatePoint(pt1,pt2,pt3, azimuthNew, 0);
+        newPoint1 = interpolatePoint(pt1,pt2,pt3, azimuthNew, +6);
+        newPoint2 = interpolatePoint(pt1,pt2,pt3, azimuthNew, -6);
+        newPoint.printAll();
+
+        zeroPlane.push_back(newPoint);
+        minusSix.push_back(newPoint1);
+        plusSix.push_back(newPoint2);
+
+        //270
+        azimuthNew = 270;
+        pt1 = HRTFData::findByAzimuth(minusSix, azimuthNew - 10);
+        pt2 = HRTFData::findByAzimuth(plusSix, azimuthNew - 10);
+        pt3 = HRTFData::findByAzimuth(zeroPlane,azimuthNew + 10);
+
+        newPoint = interpolatePoint(pt1,pt2,pt3, azimuthNew, 0);
+        newPoint1 = interpolatePoint(pt1,pt2,pt3, azimuthNew, +6);
+        newPoint2 = interpolatePoint(pt1,pt2,pt3, azimuthNew, -6);
+        zeroPlane.push_back(newPoint);
+        minusSix.push_back(newPoint1);
+        plusSix.push_back(newPoint2);
+        newPoint.printAll();
+
+        minusSix = HRTFData::SortByAzimuth(minusSix);
+        plusSix = HRTFData::SortByAzimuth(plusSix);
+        zeroPlane = HRTFData::SortByAzimuth(zeroPlane);
+
+        int index = 0;
+        std::vector<int>::iterator it;
+        it = azimuthAngles.begin();
+
+        while(true){
+            //Create a new point and add to azimuth angles
+            if (azimuthAngles[index] != index *5){
+                azimuthNew = index * 5;
+                pt1 = HRTFData::findByAzimuth(minusSix, azimuthAngles[index - 1]);
+                pt2 = HRTFData::findByAzimuth(plusSix, azimuthAngles[index - 1]);
+                pt3 = HRTFData::findByAzimuth(zeroPlane,azimuthAngles[index]);
+                newPoint = interpolatePoint(pt1,pt2,pt3, azimuthNew, 0);
+                newPoint1 = interpolatePoint(pt1,pt2,pt3, azimuthNew, +6);
+                newPoint2 = interpolatePoint(pt1,pt2,pt3, azimuthNew, -6);
+
+                zeroPlane.push_back(newPoint);
+                minusSix.push_back(newPoint1);
+                plusSix.push_back(newPoint2);
+
+                azimuthAngles.insert(it, azimuthNew);
+                newPoint.printAll();
+                index = 0;
+                it = azimuthAngles.begin();
+                minusSix = HRTFData::SortByAzimuth(minusSix);
+                plusSix = HRTFData::SortByAzimuth(plusSix);
+                zeroPlane = HRTFData::SortByAzimuth(zeroPlane);
+                if (azimuthNew == 310){break;}
+                continue;
+            }
+            index++;
+            it++;
+        }
+        std::cout << "Finished interpolation \n";
     }
 
     /*=================================================================================*/
@@ -1811,10 +1545,11 @@ private:
         std::map<int, HRTFData> tempPair;
 
         for (int i = 0; i < azimuthAngles.size(); i++) {
-            HRTFData temp(leftHRIR.at(i), rightHRIR.at(i), azimuthAngles.at(i), 0, 1);
+            HRTFData temp(zeroPlane.at(i).hrtfL, zeroPlane.at(i).hrtfR, azimuthAngles.at(i), 0, 1);
             tempPair.insert(std::pair<int, HRTFData>(azimuthAngles.at(i), temp));
         }
         hrtfMap.insert(std::pair<int, AzimuthInnerMap>(0, tempPair));
+
         std::cout << "Count Map Size:" << hrtfMap.size();
         HRTFData::printMap(hrtfMap);
     }
@@ -1885,28 +1620,6 @@ private:
 
     /*=================================================================================*/
 
-    Mat matrixHelper() {
-        //Vectors
-        dsp::Matrix<double> i(1, 3);
-        dsp::Matrix<double> j(1, 3);
-        dsp::Matrix<double> k(1, 3);
-        dsp::Matrix<double> l(1, 3);
-
-        i = getVector(1, 80, 90);
-        j = getVector(1, 100, 120);
-        k = getVector(1, 100, 80);
-        l = getVector(1, 90, 90);
-
-        for (int n = 0; n < 3; n++) {
-            std::cout << " | " << i(0, n) << " | \n";
-            std::cout << " | " << j(0, n) << " | \n";
-            std::cout << " | " << k(0, n) << " | \n";
-        }
-
-        return matrixGains(i, j, k, l);
-    }
-    /*=================================================================================*/
-
     //This is working and verified
     Mat matrixGains(dsp::Matrix<double> a, dsp::Matrix<double> b, dsp::Matrix<double> c, dsp::Matrix<double> p) {
         dsp::Matrix<double> m(3, 3);
@@ -1975,152 +1688,81 @@ private:
     /*=================================================================================*/
     void loadPlayer(String filename, Player player){
 
-        AudioPlayer temp = loadAudioFilePlayer(filename,1.0f);
+        AudioPlayer temp = loadAudioFilePlayer(filename, .80f);
         player.audioPlayer.buffer = temp.buffer;
         player.audioPlayer.gain = temp.gain;
-        player.currentPos.x = -10.0f;
 
 
-        player.currentPos.y = 25.0f;
+        player.currentPos.x = 0.0f;
+        player.currentPos.y = 8.0f;
         Position posTemp;
 
         player.buildRoute(player.currentPos);
-
-        posTemp.x = -10.0f;
-        posTemp.y =  20.0f;
-        player.addToRoute(posTemp);
-        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
-        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
-        posTemp.x =  -10.0f;
-        posTemp.y =  15.0f;
-        player.addToRoute(posTemp);
-        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
-        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
-        posTemp.x = - 10.0f;
-        posTemp.y =  10.0f;
-        player.addToRoute(posTemp);
-        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
-        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
-        posTemp.x = - 5.0f;
-        posTemp.y =   10.0f;
-        player.addToRoute(posTemp);
-        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
-        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
-        posTemp.x =  0.0f;
-        posTemp.y =   10.0f;
-        player.addToRoute(posTemp);
-        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
-        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
-        posTemp.x =   5.0f;
-        posTemp.y =   10.0f;
-        player.addToRoute(posTemp);
-        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
-        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
-        posTemp.x =   10.0f;
-        posTemp.y =   10.0f;
+        posTemp.x += 0.0;
+        posTemp.y += 8.0f;
         player.addToRoute(posTemp);
 
-        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
-        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
-        posTemp.x =   15.0f;
-        posTemp.y =   10.0f;
-        player.addToRoute(posTemp);
+        while(posTemp.y < 10.0f) {
+            posTemp.x += 0.25;
+            posTemp.y += 0.5f;
+            player.addToRoute(posTemp);
+            //std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+            //std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+        }
+        while(posTemp.y < 25.0f) {
+            posTemp.x += 0.5f;
+            posTemp.y += 1.0f;
+            player.addToRoute(posTemp);
+            //std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+            //std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+        }
+        while(posTemp.y >= 8.0f) {
+            posTemp.x -= 1.5f;
+            posTemp.y -= 1.0f;
+            player.addToRoute(posTemp);
+            //std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+            //std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+        }
 
-        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
-        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+        while(posTemp.x >= -20.0f) {
+            posTemp.x -= .5f;
+            player.addToRoute(posTemp);
+            //std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+            //std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+        }
 
-        posTemp.x =   20.0f;
-        posTemp.y =   10.0f;
-        player.addToRoute(posTemp);
-
-        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
-        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
-
-        posTemp.x =   20.0f;
-        posTemp.y =   15.0f;
-        player.addToRoute(posTemp);
-
-        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
-        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
-
-        posTemp.x =   20.0f;
-        posTemp.y =   20.0f;
-        player.addToRoute(posTemp);
-
-        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
-        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
-
-        posTemp.x =   15.0f;
-        posTemp.y =   20.0f;
-        player.addToRoute(posTemp);
-
-        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
-        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
-        posTemp.x =   10.0f;
-        posTemp.y =   20.0f;
-        player.addToRoute(posTemp);
-
-        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
-        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
-        posTemp.x =   5.0f;
-        posTemp.y =   20.0f;
-        player.addToRoute(posTemp);
-
-        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
-        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
-        posTemp.x =   5.0f;
-        posTemp.y =   20.0f;
-        player.addToRoute(posTemp);
-
-        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
-        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
-        posTemp.x =   0.0f;
-        posTemp.y =   20.0f;
-        player.addToRoute(posTemp);
-
-        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
-        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
-        posTemp.x =   -5.0f;
-        posTemp.y =   20.0f;
-        player.addToRoute(posTemp);
-
-        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
-        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
-        posTemp.x =   -10.0f;
-        posTemp.y =   20.0f;
-        player.addToRoute(posTemp);
-
-        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
-        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
-
-        posTemp.x =   -15.0f;
-        posTemp.y =   20.0f;
-        player.addToRoute(posTemp);
-
-        std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
-        std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
-
+        while(posTemp.x <= 0) {
+            posTemp.x += .5f;
+            player.addToRoute(posTemp);
+            //std::cout << "Azimuth: " << vectorToSphere(posTemp).azimuth << "\n";
+            //std::cout << "Radius: " << vectorToSphere(posTemp).radius << "\n";
+        }
         players.push_back(player);
 
     }
 
 /*=================================================================================*/
     void followRoute(Player &player){
+        static float distance = 0;
+        relativeTime1 += relativeTime1.milliseconds(10).inMilliseconds();
+        if ( relativeTime1.inMilliseconds() > 1000000.0f/3.0f) {
+            player.head = player.head->next;
+            std::cout << "Path Node: x: " << player.head->current.x << "y:" << player.head->current.y << "\n";
+            std::cout << "Path Node: Azimuth: " << vectorToSphere(player.head->current).azimuth << "\n";
+            std::cout << "Path Node: Radius: " << vectorToSphere(player.head->current).radius << "\n";
+            player.gain =  3/vectorToSphere(player.head->current).radius;
+            //Process gain for distance
+            std::cout << "Player Gain: " << .4 + player.gain << "\n";
 
-            relativeTime1 += relativeTime1.milliseconds(10).inMilliseconds();
-            if ( relativeTime1.inMilliseconds() > 1000000.0f) {
-                player.head = player.head->next;
-//                std::cout << "Path Node: x: " << player.head->current.x << "y:" << player.head->current.y << "\n";
-//                std::cout << "Path Node: Azimuth: " << vectorToSphere(player.head->current).azimuth << "\n";
-//                std::cout << "Path Node: Radius: " << vectorToSphere(player.head->current).radius << "\n";
-                player.gain=  1/ vectorToSphere(player.head->current).radius;
-                auto hr = findClosestHRTF(vectorToSphere(player.head->current).azimuth);
-                player.hrtfIndex =hr;
-                player.bufferCurrent = zeroPlane.at(hr);
-                //std::cout << "HRTF index " << player.hrtfIndex << "\n";
-                relativeTime1 = relativeTime1.milliseconds(0);
+            //gainProcessorPlayer.processBlock(player.audioPlayer.buffer,emptyMidi);
 
-            }
+            auto hr = findClosestHRTF(vectorToSphere(player.head->current).azimuth);
+            player.hrtfIndex =hr;
+            player.bufferCurrent = zeroPlane.at(hr);
+            //std::cout << "HRTF index " << player.hrtfIndex << "\n";
+            relativeTime1 = relativeTime1.milliseconds(0);
+            distance = vectorToSphere(player.head->current).radius;
+        }
 
     }
 
@@ -2133,105 +1775,25 @@ private:
 //                std::cout << "Path Node: x: " << player.head->current.x << "y:" << player.head->current.y << "\n";
 //                std::cout << "Path Node: Azimuth: " << vectorToSphere(player.head->current).azimuth << "\n";
 //                std::cout << "Path Node: Radius: " << vectorToSphere(player.head->current).radius << "\n";
-            player.gain=  1/ vectorToSphere(player.head->current).radius;
-            auto hr = findClosestHRTF(vectorToSphere(player.head->current).azimuth);
-            player.hrtfIndex =hr;
-            player.bufferCurrent = zeroPlane.at(hr);
+        player.gain=  4/ vectorToSphere(player.head->current).radius;
+        auto hr = findClosestHRTF(vectorToSphere(player.head->current).azimuth);
+        player.hrtfIndex =hr;
+        player.bufferCurrent = zeroPlane.at(hr);
 //                std::cout << "HRTF index " << player.hrtfIndex << "\n";
 
 
-        }
-
-
-
-    /*=================================================================================*/
-
-    void loadConvolutionFile() {
-        AudioSampleBuffer sampleBufferLeft;
-        AudioSampleBuffer sampleBufferRight;
-
-        AudioFormatManager formatManager1;
-        formatManager1.registerBasicFormats();
-
-        formatManager1.getDefaultFormat();
-
-        auto dir = File::getCurrentWorkingDirectory();
-        int numTries = 0;
-
-        //find the resources dir
-        while (!dir.getChildFile("Resources").exists() && numTries++ < 15) {
-            dir = dir.getParentDirectory();
-        }
-
-        File left0 = File(dir.getChildFile("Resources").getChildFile("HRIR").getChildFile("0azleft.wav"));
-        File right0 = File(dir.getChildFile("Resources").getChildFile("HRIR").getChildFile("0azright.wav"));
-//        File left0 = File(dir.getChildFile ("Resources").getChildFile("cassette_recorder.wav"));
-//        File right0 = File(dir.getChildFile ("Resources").getChildFile("guitar_amp.wav"));
-        std::unique_ptr<AudioFormatReader> readerLeft(formatManager1.createReaderFor(left0));
-        std::unique_ptr<AudioFormatReader> readerRight(formatManager1.createReaderFor(right0));
-
-
-        //Load Left HRIR
-        if (readerLeft.get() != nullptr) {
-
-            sampleBufferLeft.setSize(readerLeft->numChannels, (int) readerRight->lengthInSamples);
-            readerLeft->read(&sampleBufferLeft, 0, (int) readerLeft->lengthInSamples, 0, true, true);
-        }
-
-        //Load Right HRIR
-        if (readerRight.get() != nullptr) {
-
-            sampleBufferRight.setSize(readerRight->numChannels, (int) readerRight->lengthInSamples);
-            readerRight->read(&sampleBufferRight, 0, (int) readerRight->lengthInSamples, 0, true, true);
-
-        }
-
-//        //--------------------Reshape the HRIR to the correct shape-------------------------
-        rightZero.setSize(1, (int) 200);
-        int count = 0;
-        while (count++ < 199) {
-            //Reallocate the buffer to the correct shape
-            rightZero.setSample(0, count, sampleBufferRight.getSample(count, 9));
-        }
-
-        leftZero.setSize(1, (int) 200);
-        count = 0;
-        while (count++ < 199) {
-
-            //Reallocate the buffer to the correct shape
-            leftZero.setSample(0, count, sampleBufferLeft.getSample(count, 9));
-
-            // std::cout << leftZero.getSample(0, count) << "\n";
-        }
-
-        //Create a new buffer form the data stored
-        std::cout << "New Created audio buffer of HRIR Right\n";
-        std::cout << "Audio Buffer #Samples:" << rightZero.getNumSamples() << "\n";
-        std::cout << "Audio Buffer #Channels:" << rightZero.getNumChannels() << "\n";
-
-        //Create a new buffer form the data stored
-        std::cout << "New Created audio buffer of HRIR Left\n";
-        std::cout << "Audio Buffer #Samples:" << leftZero.getNumSamples() << "\n";
-        std::cout << "Audio Buffer #Channels:" << leftZero.getNumChannels() << "\n";
     }
 
-    //==========================================================================
-    //
     //=========================================================================
     //========================Variables=========================================
     RelativeTime position;
     RelativeTime relativeTime1;
-    Random random;
-    AudioSampleBuffer filterBuffer;
     double sampleRate = 44100.0;
     MidiBuffer emptyMidi;
-    int blockSize;
     int samplesExpected;
     RelativeTime relativeTime;
     int impulseIndex = 0;
     int degrees = 0;
-    int indexCurCircular = 0;
-    int indexPrevCircular = 0;
 
     std::vector<const int> elevations = {-45, -39, -34, -28, -23, -17, -11, -6, 0, 6, 11,
                                          17, 23, 28, 34, 39, 45, 51, 56, 62, 68, 73, 79,
@@ -2255,6 +1817,9 @@ private:
     ToggleButton awayButton;
     Label awayLabel;
 
+    Label azimuthPosition;
+    Slider azimuthSlider;
+
     //====================File and Resource loading=========================================
     AudioFormatManager formatManager;
     AudioFormatManager formatManager1;
@@ -2263,19 +1828,12 @@ private:
 
 //=====================Audio Sources=====================================================
     std::vector<AudioPlayer> audioList;
-    MixerAudioSource mixer;
     std::unique_ptr<AudioTransportSource> transportSource;
-    std::unique_ptr<AudioTransportSource> transportSource1;
     TransportState state;
 
     //=====================Effects and processing=====================================================
     FilterProcessor filter;
-    std::unique_ptr<ConProcessorRight> conProcessorRight;
-    std::unique_ptr<ConProcessorLeft> conProcessorLeft;
-    std::vector<std::pair<std::unique_ptr<ConProcessorLeft>,std::unique_ptr<ConProcessorRight>>> convolvers;
-
-    std::unique_ptr<AudioSampleBuffer> tempL;
-    std::unique_ptr<AudioSampleBuffer> tempR;
+    std::unique_ptr<ConvolutionProcessor> convolutionProcessor;
     std::unique_ptr<AudioSampleBuffer> inputL;
     std::unique_ptr<AudioSampleBuffer> inputR;
 
@@ -2290,10 +1848,13 @@ private:
     std::vector<HRTFData> minusSix;
     std::vector<HRTFData> zeroPlane;
     std::map<int, std::map<int, HRTFData>> hrtfMap;
-    std::unique_ptr<AudioBufferLayered> layeredBuffer;
+
+    //Gain Effects variables
+    float rawVolume;
 
     std::vector<Player> players;
     Player one;
     int indexPast;
+    int lastAzimuthPos;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };

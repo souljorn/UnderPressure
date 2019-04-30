@@ -30,13 +30,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../../Source/Main.cpp">
+        <entry file="file://$PROJECT_DIR$/../../Source/MainComponent.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="337">
-              <caret line="20" selection-start-line="20" selection-end-line="20" />
-              <folding>
-                <element signature="e#245#287#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="-5194">
+              <caret line="735" column="85" lean-forward="true" selection-start-line="735" selection-start-column="85" selection-end-line="735" selection-end-column="85" />
             </state>
           </provider>
         </entry>
@@ -45,9 +42,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>transportSource</find>
-      <find>openButtonClicked</find>
-      <find>reader</find>
       <find>Imp</find>
       <find>impulseProcessing</find>
       <find>AudioBlock.h</find>
@@ -70,6 +64,14 @@
       <find>loadFileToTransport</find>
       <find>LoadPlayers</find>
       <find>one</find>
+      <find>buffer</find>
+      <find>filter</find>
+      <find>previousGain</find>
+      <find>releas</find>
+      <find>loopingToggle</find>
+      <find>ConvolutionProcessor</find>
+      <find>tempL</find>
+      <find>AudioBufferLayered</find>
     </findStrings>
     <replaceStrings>
       <replace>readerRight</replace>
@@ -79,6 +81,7 @@
       <replace>AzimuthInnerMap</replace>
       <replace>azimuth</replace>
       <replace>player</replace>
+      <replace>nextBuffer</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -94,10 +97,10 @@
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="99" />
+    <option name="x" value="-72" />
     <option name="y" value="23" />
-    <option name="width" value="1498" />
-    <option name="height" value="1027" />
+    <option name="width" value="1920" />
+    <option name="height" value="1177" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -159,6 +162,7 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="restartRequiresConfirmation" value="false" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.completion" />
   </component>
   <component name="RecentsManager">
@@ -223,30 +227,52 @@
     <option name="totallyTimeSpent" value="187333000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="99" y="23" width="1498" height="1027" extended-state="0" />
+    <frame x="-72" y="23" width="1920" height="1177" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.27105978" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2127772" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.43274456" weight="0.31004366" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.68546194" weight="0.43995634" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.54487854" visible="true" weight="0.41275796" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.67053854" weight="0.4390244" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Database Changes" order="7" />
-      <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.7758152" weight="0.5338428" />
-      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.49320653" weight="0.3548035" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.56725544" side_tool="true" visible="true" weight="0.5338428" />
-      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.4986413" weight="0.3286026" />
+      <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.6937698" weight="0.5121951" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.4918478" weight="0.09606987" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.32946146" side_tool="true" weight="0.4390244" />
+      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.49796197" weight="0.3286026" />
       <window_info anchor="bottom" id="CMake" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Database" order="3" />
     </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" weight="0.24123338" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.54487854" visible="true" weight="0.41275796" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.67053854" weight="0.4390244" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Database Changes" order="7" />
+      <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.6937698" weight="0.5121951" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.4918478" weight="0.09606987" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.32946146" side_tool="true" weight="0.4390244" />
+      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.49796197" weight="0.3286026" />
+      <window_info anchor="bottom" id="CMake" order="12" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -256,7 +282,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/../../Source/MainComponent.h</url>
-          <line>1117</line>
+          <line>816</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
@@ -304,76 +330,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_audio_formats/format/juce_AudioFormatReaderSource.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="833">
-          <caret line="49" column="46" selection-start-line="49" selection-start-column="29" selection-end-line="49" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_audio_formats/format/juce_AudioFormatReader.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="952">
-          <caret line="56" column="30" selection-start-line="56" selection-start-column="30" selection-end-line="56" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_core/streams/juce_InputStream.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="35" column="16" selection-start-line="35" selection-start-column="16" selection-end-line="35" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_audio_basics/sources/juce_PositionableAudioSource.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="37" column="53" selection-start-line="37" selection-start-column="53" selection-end-line="37" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_core/memory/juce_LeakedObjectDetector.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="89" selection-start-line="89" selection-end-line="89" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_dsp/frequency/juce_Convolution.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="131" column="9" selection-start-line="131" selection-start-column="9" selection-end-line="131" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_dsp/frequency/juce_Convolution.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="117">
-          <caret line="1127" column="31" lean-forward="true" selection-start-line="1127" selection-start-column="31" selection-end-line="1127" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_dsp/processors/juce_ProcessContext.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="83">
-          <caret line="129" column="7" selection-start-line="129" selection-start-column="7" selection-end-line="129" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_dsp/containers/juce_AudioBlock.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1957">
-          <caret line="56" column="6" selection-start-line="56" selection-start-column="6" selection-end-line="56" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_audio_formats/format/juce_AudioFormatReader.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-752">
-          <caret line="145" selection-start-line="145" selection-end-line="145" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_audio_basics/juce_audio_basics.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
@@ -489,13 +445,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_audio_devices/sources/juce_AudioTransportSource.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="39" column="14" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///Library/Developer/CommandLineTools/usr/include/c++/v1/algorithm">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="151">
@@ -546,13 +495,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_events/native/juce_mac_MessageManager.mm">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6498">
-          <caret line="342" selection-start-line="342" selection-end-line="342" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_core/maths/juce_MathsFunctions.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8075">
@@ -590,37 +532,58 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_core/native/juce_posix_SharedCode.h">
+    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_audio_formats/format/juce_AudioFormatReaderSource.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="137" selection-start-line="137" selection-end-line="137" />
+        <state relative-caret-position="284">
+          <caret line="42" column="30" selection-start-line="42" selection-start-column="30" selection-end-line="42" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Library/Developer/CommandLineTools/usr/include/c++/v1/__config">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="509" selection-start-line="509" selection-end-line="509" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_core/threads/juce_Thread.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
+        <state relative-caret-position="142">
           <caret line="117" selection-start-line="117" selection-end-line="117" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_events/messages/juce_ApplicationBase.cpp">
+    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_core/native/juce_posix_SharedCode.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="261" selection-start-line="261" selection-end-line="261" />
+        <state relative-caret-position="160">
+          <caret line="896" selection-start-line="896" selection-end-line="896" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Library/Developer/CommandLineTools/usr/include/c++/v1/complex">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="934" selection-start-line="934" selection-end-line="934" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_audio_basics/sources/juce_AudioSource.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="129">
+          <caret line="31" column="17" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_audio_devices/sources/juce_AudioSourcePlayer.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
+        <state relative-caret-position="332">
           <caret line="51" selection-start-line="51" selection-end-line="51" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_audio_utils/gui/juce_AudioAppComponent.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
+        <state relative-caret-position="179">
           <caret line="77" selection-start-line="77" selection-end-line="77" />
         </state>
       </provider>
@@ -632,41 +595,104 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_audio_basics/buffers/juce_AudioSampleBuffer.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="37" column="4" selection-start-line="37" selection-start-column="4" selection-end-line="37" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///Library/Developer/CommandLineTools/usr/include/c++/v1/vector">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="1550" column="25" selection-start-line="1550" selection-start-column="25" selection-end-line="1550" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_audio_formats/format/juce_AudioFormatReaderSource.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="284">
-          <caret line="42" column="30" selection-start-line="42" selection-start-column="30" selection-end-line="42" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../Source/MainComponent.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11624">
-          <caret line="2110" column="60" selection-start-line="2110" selection-start-column="60" selection-end-line="2110" selection-end-column="60" />
+        <state relative-caret-position="188">
+          <caret line="1553" selection-start-line="1553" selection-end-line="1553" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../Source/Main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
-          <caret line="20" selection-start-line="20" selection-end-line="20" />
+        <state relative-caret-position="410">
+          <caret line="64" selection-start-line="64" selection-end-line="64" />
           <folding>
             <element signature="e#245#287#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_events/messages/juce_ApplicationBase.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="261" selection-start-line="261" selection-end-line="261" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_core/memory/juce_LeakedObjectDetector.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="65" selection-start-line="65" selection-end-line="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_audio_devices/sources/juce_AudioTransportSource.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="30" selection-start-line="30" selection-end-line="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_dsp/containers/juce_AudioBlock.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="56" column="6" selection-start-line="56" selection-start-column="6" selection-end-line="56" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_dsp/frequency/juce_Convolution.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2066">
+          <caret line="40" column="49" selection-start-line="40" selection-start-column="27" selection-end-line="40" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_core/containers/juce_OwnedArray.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="795" selection-start-line="795" selection-end-line="795" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_core/memory/juce_ContainerDeletePolicy.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="771">
+          <caret line="53" selection-start-line="53" selection-end-line="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_events/native/juce_mac_MessageManager.mm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="342" selection-start-line="342" selection-end-line="342" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_dsp/processors/juce_ProcessContext.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="37" column="7" selection-start-line="37" selection-start-column="7" selection-end-line="37" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_audio_basics/buffers/juce_AudioSampleBuffer.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="567" selection-start-line="567" selection-end-line="567" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../JUCE/modules/juce_dsp/frequency/juce_Convolution.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="1099" column="70" selection-start-line="1099" selection-start-column="66" selection-end-line="1099" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../Source/MainComponent.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-5194">
+          <caret line="735" column="85" lean-forward="true" selection-start-line="735" selection-start-column="85" selection-end-line="735" selection-end-column="85" />
         </state>
       </provider>
     </entry>
